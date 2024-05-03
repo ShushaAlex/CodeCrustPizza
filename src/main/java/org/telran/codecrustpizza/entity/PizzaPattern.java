@@ -14,6 +14,7 @@ import lombok.ToString;
 import org.telran.codecrustpizza.entity.enums.Dough;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -32,6 +33,10 @@ public class PizzaPattern {
     private int size;
     private Dough dough;
     private BigDecimal price;
-    private Set<PizzaIngredient> pizzaIngredientSet;
+
+    @Builder.Default
+    private Set<PizzaIngredient> pizzaIngredientSet = new HashSet<>();
+
     private int calories;
 }
+
