@@ -24,8 +24,8 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = "patternIngredients")
-@ToString(exclude = "patternIngredients")
+@EqualsAndHashCode(exclude = {"patternIngredients", "pizzas"})
+@ToString(exclude = {"patternIngredients", "pizzas"})
 public class PizzaPattern {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,16 +40,30 @@ public class PizzaPattern {
     @OneToMany(mappedBy = "pizzaPattern", cascade = CascadeType.ALL)
     private Set<PizzaPatternIngredient> patternIngredients = new HashSet<>();
 
+    @Builder.Default
+    @OneToMany(mappedBy = "pizzaPattern", cascade = CascadeType.ALL)
+    private Set<Pizza> pizzas = new HashSet<>();
+
     private int calories;
 
     public void addPizzaPatternIngredient(PizzaPatternIngredient patternIngredient) {
         patternIngredients.add(patternIngredient);
         patternIngredient.setPizzaPattern(this);
     }
-
     public void removePizzaPatternIngredient(PizzaPatternIngredient patternIngredient) {
         patternIngredients.remove(patternIngredient);
         patternIngredient.setPizzaPattern(null);
     }
+
+    public void addPizza(Pizza pizza) {
+        pizzas.add(pizza);
+        pizza.setPizzaPattern(this);
+    }
+
+    public void removePizza(Pizza pizza) {
+        pizzas.remove(pizza);
+        pizza.setPizzaPattern(null);
+    }
+
 }
 
