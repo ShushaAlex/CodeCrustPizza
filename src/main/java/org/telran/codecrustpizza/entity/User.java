@@ -4,6 +4,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -11,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -61,6 +63,12 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "pizza_id"))
     private Set<Pizza> favoritePizzas = new HashSet<>();
 
+    @OneToOne(mappedBy = "user",
+            optional = false,
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private Cart cart;
+
     private LocalDateTime creationDate;
 
     @Builder.Default
@@ -93,6 +101,11 @@ public class User {
     public void removeOrder(Order order) {
         orders.remove(order);
         order.setUser(null);
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+        cart.setUser(this);
     }
 
 }
