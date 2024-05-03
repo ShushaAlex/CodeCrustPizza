@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,7 +44,10 @@ public class Order {
     private OrderStatus orderStatus;
     private BigDecimal orderItemsTotal;
     private BigDecimal totalWithDelivery;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "order")
     private Delivery delivery;
+
     private LocalDateTime creationDate;
 
     public void addOrderItem(OrderItem orderItem) {
@@ -54,5 +58,11 @@ public class Order {
     public void removeOrderItem(OrderItem orderItem) {
         orderItems.remove(orderItem);
         orderItem.setOrder(null);
+    }
+
+    //TODO нужно ли во второй сущности прописывать сеттер, или произойдет зацикливание?
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
+        delivery.setOrder(this);
     }
 }
