@@ -1,9 +1,11 @@
 package org.telran.codecrustpizza.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,8 +24,8 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(exclude = "patternIngredients")
+@ToString(exclude = "patternIngredients")
 public class PizzaPattern {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,8 +37,19 @@ public class PizzaPattern {
     private BigDecimal price;
 
     @Builder.Default
-    private Set<PizzaIngredient> pizzaIngredientSet = new HashSet<>();
+    @OneToMany(mappedBy = "pizzaPattern", cascade = CascadeType.ALL)
+    private Set<PizzaPatternIngredient> patternIngredients = new HashSet<>();
 
     private int calories;
+
+    public void addPizzaPatternIngredient(PizzaPatternIngredient patternIngredient) {
+        patternIngredients.add(patternIngredient);
+        patternIngredient.setPizzaPattern(this);
+    }
+
+    public void removePizzaPatternIngredient(PizzaPatternIngredient patternIngredient) {
+        patternIngredients.remove(patternIngredient);
+        patternIngredient.setPizzaPattern(null);
+    }
 }
 
