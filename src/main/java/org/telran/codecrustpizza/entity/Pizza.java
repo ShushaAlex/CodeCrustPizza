@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +13,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -27,6 +29,12 @@ public class Pizza extends Item {
     private Long id;
     private PizzaPattern pizzaPattern;
     private int size;
-    private Set<PizzaIngredient> pizzaIngredientSet;
+
+    @Builder.Default
+    private Set<PizzaIngredient> pizzaIngredients = new HashSet<>();
+
+    @Builder.Default
+    @ManyToMany(mappedBy = "favoritePizzas")
+    private Set<User> users = new HashSet<>();
 
 }

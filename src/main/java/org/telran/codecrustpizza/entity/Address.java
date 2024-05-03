@@ -31,6 +31,6 @@ public class Address {
     private String house;
     private String comment;
 
-    @ManyToMany(mappedBy = "addressSet")
+    @ManyToMany(mappedBy = "addresses")
     private Set<User> users;
 }

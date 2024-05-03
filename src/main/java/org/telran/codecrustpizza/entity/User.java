@@ -21,6 +21,7 @@ import lombok.ToString;
 import org.telran.codecrustpizza.entity.enums.Role;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -28,8 +29,8 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"addressSet", "favoritePizzaSet"})
-@ToString(exclude = {"addressSet", "favoritePizzaSet"})
+@EqualsAndHashCode(exclude = {"addresses", "favoritePizzas"})
+@ToString(exclude = {"addresses", "favoritePizzas"})
 @Table(name = "_user")
 public class User {
     @Id
@@ -40,29 +41,45 @@ public class User {
     private String password;
     private String phone;
 
+    @Builder.Default
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_address",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "address_id"))
-    private Set<Address> addressSet;
+    private Set<Address> addresses = new HashSet<>();
 
     @Enumerated(value = EnumType.STRING)
     private Role role;
     private boolean isBlocked;
 
-
-    private Set<Pizza> favoritePizzaSet;
+    @Builder.Default
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_favorite_pizza",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "pizza_id"))
+    private Set<Pizza> favoritePizzas = new HashSet<>();
 
     private LocalDateTime creationDate;
 
 
     public void addAddress(Address address) {
-        addressSet.add(address);
+        addresses.add(address);
         address.getUsers().add(this);
     }
 
     public void removeAddress(Address address) {
-        addressSet.remove(address);
+        addresses.remove(address);
         address.getUsers().remove(this);
     }
+
+    public void addPizza(Pizza pizza) {
+        favoritePizzas.add(pizza);
+        pizza.getUsers().add(this);
+    }
+
+    public void removePizza(Pizza pizza) {
+        favoritePizzas.remove(pizza);
+        pizza.getUsers().remove(this);
+    }
+
 }
