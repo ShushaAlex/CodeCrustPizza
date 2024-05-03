@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -50,6 +51,7 @@ public class User {
 
     @Enumerated(value = EnumType.STRING)
     private Role role;
+
     private boolean isBlocked;
 
     @Builder.Default
@@ -61,12 +63,14 @@ public class User {
 
     private LocalDateTime creationDate;
 
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Order> orders = new HashSet<>();
 
     public void addAddress(Address address) {
         addresses.add(address);
         address.getUsers().add(this);
     }
-
     public void removeAddress(Address address) {
         addresses.remove(address);
         address.getUsers().remove(this);
@@ -76,10 +80,19 @@ public class User {
         favoritePizzas.add(pizza);
         pizza.getUsers().add(this);
     }
-
     public void removePizza(Pizza pizza) {
         favoritePizzas.remove(pizza);
         pizza.getUsers().remove(this);
+    }
+
+    public void addOrder(Order order) {
+        orders.add(order);
+        order.setUser(this);
+    }
+
+    public void removeOrder(Order order) {
+        orders.remove(order);
+        order.setUser(null);
     }
 
 }
