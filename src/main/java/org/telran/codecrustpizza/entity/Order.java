@@ -1,11 +1,13 @@
 package org.telran.codecrustpizza.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,10 +35,24 @@ public class Order {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
-    private Set<OrderItem> orderItemSet;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private Set<OrderItem> orderItems;
+
     private OrderStatus orderStatus;
     private BigDecimal orderItemsTotal;
     private BigDecimal totalWithDelivery;
     private Delivery delivery;
     private LocalDateTime creationDate;
+
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
+    }
+
+    public void removeOrderItem(OrderItem orderItem) {
+        orderItems.remove(orderItem);
+        orderItem.setOrder(null);
+    }
 }
