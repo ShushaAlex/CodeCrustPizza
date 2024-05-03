@@ -2,6 +2,8 @@ package org.telran.codecrustpizza.entity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,10 +32,14 @@ public class PizzaPattern {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String title;
     private String description;
     private int size;
+
+    @Enumerated(value = EnumType.STRING)
     private Dough dough;
+
     private BigDecimal price;
 
     @Builder.Default
