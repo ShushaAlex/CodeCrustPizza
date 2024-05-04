@@ -32,6 +32,9 @@ public class CartItem {
     @ManyToOne(fetch = FetchType.LAZY)
     private Item item;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Cart cart;
+
     private int quantity;
     private BigDecimal price;
     private LocalDateTime creationDate;
