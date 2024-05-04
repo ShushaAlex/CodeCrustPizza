@@ -28,8 +28,8 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(exclude = {"categories", "cartItems", "orderItems"})
+@ToString(exclude = {"categories", "cartItems", "orderItems"})
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Item {
     @Id
@@ -50,6 +50,10 @@ public class Item {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private Set<CartItem> cartItems = new HashSet<>();
 
+    @Builder.Default
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    private Set<OrderItem> orderItems = new HashSet<>();
+
     public void addCategory(Category category) {
         categories.add(category);
         category.getItems().add(this);
@@ -63,9 +67,18 @@ public class Item {
         cartItems.add(cartItem);
         cartItem.setItem(this);
     }
-
     public void removeCartItem(CartItem cartItem) {
         cartItems.remove(cartItem);
         cartItem.setItem(null);
+    }
+
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        orderItem.setItem(this);
+    }
+
+    public void removeOrderItem(OrderItem orderItem) {
+        orderItems.remove(orderItem);
+        orderItem.setItem(null);
     }
 }

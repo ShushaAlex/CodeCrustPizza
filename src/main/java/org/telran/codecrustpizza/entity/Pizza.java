@@ -50,7 +50,6 @@ public class Pizza extends Item {
         pizzaIngredients.add(ingredient);
         ingredient.setPizza(this);
     }
-
     public void removePizzaIngredient(PizzaIngredient ingredient) {
         pizzaIngredients.remove(ingredient);
         ingredient.setPizza(null);

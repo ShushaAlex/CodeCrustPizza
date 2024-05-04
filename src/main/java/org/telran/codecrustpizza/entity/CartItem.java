@@ -22,8 +22,8 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(exclude = {"item", "cart"})
+@ToString(exclude = {"item", "cart"})
 public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

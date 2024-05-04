@@ -65,11 +65,8 @@ public class PizzaPattern {
         pizzas.add(pizza);
         pizza.setPizzaPattern(this);
     }
-
     public void removePizza(Pizza pizza) {
         pizzas.remove(pizza);
         pizza.setPizzaPattern(null);
     }
-
 }
-

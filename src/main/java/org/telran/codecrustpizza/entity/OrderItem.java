@@ -19,8 +19,8 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(exclude = {"order", "item"})
+@ToString(exclude = {"order", "item"})
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +29,8 @@ public class OrderItem {
     @ManyToOne(fetch = FetchType.LAZY)
     private Order order;
 
+    @ManyToOne(fetch = FetchType.LAZY)
     private Item item;
+
     private int quantity;
 }

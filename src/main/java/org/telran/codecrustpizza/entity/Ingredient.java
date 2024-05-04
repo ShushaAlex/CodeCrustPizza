@@ -54,10 +54,8 @@ public class Ingredient {
         pizzaPatternIngredients.add(ingredient);
         ingredient.setIngredient(this);
     }
-
     public void removePizzaPatternIngredient(PizzaPatternIngredient ingredient) {
         pizzaPatternIngredients.remove(ingredient);
         ingredient.setIngredient(null);
     }
-
 }

@@ -32,8 +32,8 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"addresses", "favoritePizzas"})
-@ToString(exclude = {"addresses", "favoritePizzas"})
+@EqualsAndHashCode(exclude = {"addresses", "favoritePizzas", "cart", "orders"})
+@ToString(exclude = {"addresses", "favoritePizzas", "cart", "orders"})
 @Table(name = "_user")
 public class User {
     @Id
@@ -97,7 +97,6 @@ public class User {
         orders.add(order);
         order.setUser(this);
     }
-
     public void removeOrder(Order order) {
         orders.remove(order);
         order.setUser(null);
@@ -107,5 +106,4 @@ public class User {
         this.cart = cart;
         cart.setUser(this);
     }
-
 }

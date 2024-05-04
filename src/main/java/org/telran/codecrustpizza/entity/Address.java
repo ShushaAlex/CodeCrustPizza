@@ -47,7 +47,6 @@ public class Address {
         deliveries.add(delivery);
         delivery.setAddress(this);
     }
-
     public void removeDelivery(Delivery delivery) {
         deliveries.remove(delivery);
         delivery.setAddress(null);

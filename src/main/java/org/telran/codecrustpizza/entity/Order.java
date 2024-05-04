@@ -59,7 +59,6 @@ public class Order {
         orderItems.add(orderItem);
         orderItem.setOrder(this);
     }
-
     public void removeOrderItem(OrderItem orderItem) {
         orderItems.remove(orderItem);
         orderItem.setOrder(null);
