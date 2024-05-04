@@ -9,9 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -22,8 +20,7 @@ import java.util.Set;
 
 @Data
 @Entity
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true, exclude = {"pizzaIngredients", "pizzaPattern", "users"})
 @ToString(exclude = {"pizzaIngredients", "pizzaPattern", "users"})
@@ -38,11 +35,9 @@ public class Pizza extends Item {
 
     private int size;
 
-    @Builder.Default
     @OneToMany(mappedBy = "pizza", cascade = CascadeType.ALL)
     private Set<PizzaIngredient> pizzaIngredients = new HashSet<>();
 
-    @Builder.Default
     @ManyToMany(mappedBy = "favoritePizzas")
     private Set<User> users = new HashSet<>();
 
