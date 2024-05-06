@@ -32,8 +32,8 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"addresses", "favoritePizzas", "cart", "orders"})
-@ToString(exclude = {"addresses", "favoritePizzas", "cart", "orders"})
+@EqualsAndHashCode(exclude = {"phones", "addresses", "favoritePizzas", "cart", "orders"})
+@ToString(exclude = {"phones", "addresses", "favoritePizzas", "cart", "orders"})
 @Table(name = "_user")
 public class User {
     @Id
@@ -42,7 +42,10 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private String phone;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Phone> phones = new HashSet<>();
 
     @Builder.Default
     @ManyToMany(cascade = CascadeType.ALL)
@@ -105,5 +108,15 @@ public class User {
     public void setCart(Cart cart) {
         this.cart = cart;
         cart.setUser(this);
+    }
+
+    public void addPhone(Phone phone) {
+        phones.add(phone);
+        phone.setUser(this);
+    }
+
+    public void removePhone(Phone phone) {
+        phones.remove(phone);
+        phone.setUser(null);
     }
 }
