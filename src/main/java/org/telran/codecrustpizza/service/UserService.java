@@ -22,5 +22,7 @@ public interface UserService {
 
     UserResponseDto addPhone(Long userId, PhoneCreateRequestDto phoneDto);
 
+    UserResponseDto removePhone(Long userId, Long phoneId);
+
     UserResponseDto addAddress(Long userId, AddressCreateRequestDto addressDto);
 }
