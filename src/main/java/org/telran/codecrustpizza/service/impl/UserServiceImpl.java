@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telran.codecrustpizza.dto.address.AddressCreateRequestDto;
 import org.telran.codecrustpizza.dto.phone.PhoneCreateRequestDto;
+import org.telran.codecrustpizza.dto.user.UserChangePasswordRequestDto;
 import org.telran.codecrustpizza.dto.user.UserCreateRequestDto;
 import org.telran.codecrustpizza.dto.user.UserResponseDto;
 import org.telran.codecrustpizza.entity.Address;
@@ -98,7 +99,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserResponseDto addPhone(Long userId, PhoneCreateRequestDto phoneDto) {
+    public UserResponseDto addPhone(Long userId, PhoneCreateRequestDto phoneDto) {  //TODO может нужно возвращать сущность с подтянутыми телефонами
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", userId)));
         Phone phone = phoneMapper.toPhone(phoneDto);
 
@@ -145,11 +146,41 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserResponseDto removeAddress(Long userId, Long addressId) {
+    public UserResponseDto removeAddress(Long userId, Long addressId) { //TODO может нужно возвращать сущность с подтянутыми адресами
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", userId)));
         Address address = addressRepository.findById(addressId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("address", addressId)));
         user.removeAddress(address);
         addressRepository.delete(address);
+        userRepository.save(user);
+
+        return userMapper.toResponseDto(user);
+    }
+
+    @Override
+    @Transactional
+    public UserResponseDto changePassword(Long userId, UserChangePasswordRequestDto changePasswordRequestDto) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", userId)));
+        user.setPassword(changePasswordRequestDto.password());
+        userRepository.save(user);
+
+        return userMapper.toResponseDto(user);
+    }
+
+    @Override
+    @Transactional
+    public UserResponseDto changeEmail(Long userId, String newEmail) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", userId)));
+        user.setEmail(newEmail);
+        userRepository.save(user);
+
+        return userMapper.toResponseDto(user);
+    }
+
+    @Override
+    @Transactional
+    public UserResponseDto changeName(Long userId, String name) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", userId)));
+        user.setName(name);
         userRepository.save(user);
 
         return userMapper.toResponseDto(user);

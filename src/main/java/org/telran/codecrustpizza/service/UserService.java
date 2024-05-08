@@ -2,6 +2,7 @@ package org.telran.codecrustpizza.service;
 
 import org.telran.codecrustpizza.dto.address.AddressCreateRequestDto;
 import org.telran.codecrustpizza.dto.phone.PhoneCreateRequestDto;
+import org.telran.codecrustpizza.dto.user.UserChangePasswordRequestDto;
 import org.telran.codecrustpizza.dto.user.UserCreateRequestDto;
 import org.telran.codecrustpizza.dto.user.UserResponseDto;
 import org.telran.codecrustpizza.entity.enums.Role;
@@ -27,4 +28,10 @@ public interface UserService {
     UserResponseDto addAddress(Long userId, AddressCreateRequestDto addressDto);
 
     UserResponseDto removeAddress(Long userId, Long addressId);
+
+    UserResponseDto changePassword(Long userId, UserChangePasswordRequestDto changePasswordRequestDto);
+
+    UserResponseDto changeEmail(Long userId, String newEmail);
+
+    UserResponseDto changeName(Long userId, String name);
 }
