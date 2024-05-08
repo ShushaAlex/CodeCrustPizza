@@ -1,11 +1,19 @@
 package org.telran.codecrustpizza.mapper;
 
-import org.mapstruct.Mapper;
+import org.springframework.stereotype.Component;
 import org.telran.codecrustpizza.dto.phone.PhoneCreateRequestDto;
 import org.telran.codecrustpizza.entity.Phone;
 
-@Mapper(componentModel = "spring")
-public interface PhoneMapper {
+@Component
+public class PhoneMapper {
 
-    Phone toPhone(PhoneCreateRequestDto createRequestDto);
+    public Phone toPhone(PhoneCreateRequestDto createRequestDto) {
+        return Phone.builder()
+                .title(createRequestDto.title())
+                .countryCode(createRequestDto.countryCode())
+                .areaCode(createRequestDto.areaCode())
+                .number(createRequestDto.number())
+                .extension(createRequestDto.extension())
+                .build();
+    }
 }
