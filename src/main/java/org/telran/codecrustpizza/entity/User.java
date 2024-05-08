@@ -11,6 +11,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.NamedEntityGraphs;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -35,6 +38,20 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"phones", "addresses", "favoritePizzas", "cart", "orders"})
 @ToString(exclude = {"phones", "addresses", "favoritePizzas", "cart", "orders"})
 @Table(name = "_user")
+@NamedEntityGraphs({ //TODO подумать над тем, какие энтити графы необходимы в каждой сущности
+        @NamedEntityGraph(
+                name = "User.withPhones", // как будет называться что мы получаем
+                attributeNodes = @NamedAttributeNode("phones") // какое поле подтягиваем
+        ),
+        @NamedEntityGraph(
+                name = "User.withAddresses",
+                attributeNodes = @NamedAttributeNode("addresses")
+        ),
+        @NamedEntityGraph(
+                name = "User.withPhonesAndAddresses",
+                attributeNodes = {@NamedAttributeNode("phones"), @NamedAttributeNode("addresses")}
+        )
+})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
