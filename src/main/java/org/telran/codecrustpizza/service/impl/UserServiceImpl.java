@@ -11,6 +11,7 @@ import org.telran.codecrustpizza.entity.Address;
 import org.telran.codecrustpizza.entity.Phone;
 import org.telran.codecrustpizza.entity.User;
 import org.telran.codecrustpizza.entity.enums.Role;
+import org.telran.codecrustpizza.exception.EntityException;
 import org.telran.codecrustpizza.mapper.AddressMapper;
 import org.telran.codecrustpizza.mapper.PhoneMapper;
 import org.telran.codecrustpizza.mapper.UserMapper;
@@ -20,7 +21,12 @@ import org.telran.codecrustpizza.repository.UserRepository;
 import org.telran.codecrustpizza.service.UserService;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import static org.telran.codecrustpizza.exception.ExceptionMessage.EMAIL_EXIST;
+import static org.telran.codecrustpizza.exception.ExceptionMessage.ENTITY_EXIST;
+import static org.telran.codecrustpizza.exception.ExceptionMessage.NO_SUCH_EMAIL;
+import static org.telran.codecrustpizza.exception.ExceptionMessage.NO_SUCH_ID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -53,14 +59,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto findById(Long id) {
-        User user = userRepository.findById(id).orElse(null); // TODO бросать исключение
+        User user = userRepository.findById(id).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", id)));
 
         return userMapper.toResponseDto(user);
     }
 
     @Override
     public UserResponseDto findByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElse(null); // TODO бросать исключение
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new EntityException(NO_SUCH_EMAIL.getCustomMessage("user", email)));
 
         return userMapper.toResponseDto(user);
     }
@@ -68,6 +74,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDto save(UserCreateRequestDto dto) {
+
+        Optional<User> existingUser = userRepository.findByEmail(dto.email());
+        if (existingUser.isPresent()) {
+            throw new EntityException(EMAIL_EXIST.getCustomMessage("user", dto.email()));
+        }
+
         User user = userMapper.toUser(dto);
         userRepository.save(user);
 
@@ -77,7 +89,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDto assignRole(Long userId, Role role) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("user not found")); //TODO создать свое исключение
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", userId)));
         user.setRole(role);
         userRepository.save(user);
 
@@ -87,8 +99,14 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDto addPhone(Long userId, PhoneCreateRequestDto phoneDto) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("user not found")); //TODO создать свое исключение
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", userId)));
         Phone phone = phoneMapper.toPhone(phoneDto);
+
+        Optional<Phone> existingPhone = phoneRepository.findByCountryCodeAndNumber(phone.getCountryCode(), phone.getNumber());
+        if (existingPhone.isPresent()) {
+            throw new EntityException(ENTITY_EXIST.getCustomMessage("phone"));
+        }
+
         phone = phoneRepository.save(phone);
         user.addPhone(phone);
 
@@ -98,8 +116,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDto removePhone(Long userId, Long phoneId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("such user doesn't exist")); //TODO создать свое исключение
-        Phone phone = phoneRepository.findById(phoneId).orElseThrow(() -> new NoSuchElementException("phone with such id doesn't exist")); //TODO создать свое исключение
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", userId)));
+        Phone phone = phoneRepository.findById(phoneId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("phone", phoneId)));
         user.removePhone(phone);
         phoneRepository.delete(phone);
         userRepository.save(user);
@@ -110,10 +128,28 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDto addAddress(Long userId, AddressCreateRequestDto addressDto) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("user not found")); //TODO создать свое исключение
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", userId)));
         Address address = addressMapper.toAddress(addressDto);
+
+        Optional<Address> existingAddress = addressRepository.findByCityAndStreetAndHouse(address.getCity(), address.getStreet(), address.getHouse());
+        if (existingAddress.isPresent()) {
+            throw new EntityException(ENTITY_EXIST.getCustomMessage("address"));
+        }
+
         address = addressRepository.save(address);
         user.addAddress(address);
+        userRepository.save(user);
+
+        return userMapper.toResponseDto(user);
+    }
+
+    @Override
+    @Transactional
+    public UserResponseDto removeAddress(Long userId, Long addressId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", userId)));
+        Address address = addressRepository.findById(addressId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("address", addressId)));
+        user.removeAddress(address);
+        addressRepository.delete(address);
         userRepository.save(user);
 
         return userMapper.toResponseDto(user);

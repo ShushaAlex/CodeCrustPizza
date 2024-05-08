@@ -25,4 +25,6 @@ public interface UserService {
     UserResponseDto removePhone(Long userId, Long phoneId);
 
     UserResponseDto addAddress(Long userId, AddressCreateRequestDto addressDto);
+
+    UserResponseDto removeAddress(Long userId, Long addressId);
 }
