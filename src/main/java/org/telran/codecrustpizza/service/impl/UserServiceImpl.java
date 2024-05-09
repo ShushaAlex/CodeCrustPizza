@@ -110,6 +110,7 @@ public class UserServiceImpl implements UserService {
 
         phone = phoneRepository.save(phone);
         user.addPhone(phone);
+        userRepository.save(user);
 
         return userMapper.toResponseDto(user);
     }

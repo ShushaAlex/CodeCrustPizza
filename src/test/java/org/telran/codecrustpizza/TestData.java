@@ -2,6 +2,7 @@ package org.telran.codecrustpizza;
 
 import org.telran.codecrustpizza.dto.address.AddressCreateRequestDto;
 import org.telran.codecrustpizza.dto.phone.PhoneCreateRequestDto;
+import org.telran.codecrustpizza.dto.user.UserChangePasswordRequestDto;
 import org.telran.codecrustpizza.dto.user.UserCreateRequestDto;
 import org.telran.codecrustpizza.dto.user.UserResponseDto;
 import org.telran.codecrustpizza.entity.Phone;
@@ -78,6 +79,11 @@ public class TestData {
             STREET_1,
             HOUSE_1,
             COMMENT_1
+    );
+
+    public static UserChangePasswordRequestDto CHANGE_PASSWORD_DTO_1 = new UserChangePasswordRequestDto(
+            PASSWORD_1,
+            PASSWORD_2
     );
 }
 
