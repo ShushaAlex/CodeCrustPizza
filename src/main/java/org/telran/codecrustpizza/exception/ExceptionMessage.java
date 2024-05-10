@@ -6,7 +6,8 @@ public enum ExceptionMessage {
     NO_SUCH_EMAIL("There is no %s with email: %s"),
     EMAIL_EXIST("%s with such email: %s already exist"),
     ENTITY_NOT_EXIST("This %s doesn't exist"),
-    ENTITY_EXIST("This %s already exist");
+    ENTITY_EXIST("This %s already exist"),
+    ENTITY_IS_NULL("This %s is null");
 
     private final String message;
 

@@ -30,6 +30,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.telran.codecrustpizza.util.EntityUtil.changeManyToManyRef;
+
 @Data
 @Entity
 @Builder
@@ -106,9 +108,12 @@ public class User {
     }
 
     public void addPizza(Pizza pizza) {
-        favoritePizzas.add(pizza);
-        pizza.getUsers().add(this);
+//        favoritePizzas.add(pizza);
+//        pizza.getUsers().add(this);
+        changeManyToManyRef(favoritePizzas::add, pizza.getUsers()::add, pizza, this);
     }
+
+
     public void removePizza(Pizza pizza) {
         favoritePizzas.remove(pizza);
         pizza.getUsers().remove(this);
