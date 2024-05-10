@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,6 +33,7 @@ import java.util.Set;
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"user", "orderItems", "delivery"})
 @ToString(exclude = {"user", "orderItems", "delivery"})
+@Table(name = "order_")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

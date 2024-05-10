@@ -50,3 +50,5 @@ public class Pizza extends Item {
         ingredient.setPizza(null);
     }
 }
+
+//TODO сделать свой билдер для этого класса

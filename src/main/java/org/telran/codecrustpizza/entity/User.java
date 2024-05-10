@@ -11,6 +11,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.NamedEntityGraphs;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -27,14 +30,30 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.telran.codecrustpizza.util.EntityUtil.changeManyToManyRef;
+
 @Data
 @Entity
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"addresses", "favoritePizzas", "cart", "orders"})
-@ToString(exclude = {"addresses", "favoritePizzas", "cart", "orders"})
+@EqualsAndHashCode(exclude = {"phones", "addresses", "favoritePizzas", "cart", "orders"})
+@ToString(exclude = {"phones", "addresses", "favoritePizzas", "cart", "orders"})
 @Table(name = "_user")
+@NamedEntityGraphs({ //TODO подумать над тем, какие энтити графы необходимы в каждой сущности
+        @NamedEntityGraph(
+                name = "User.withPhones", // как будет называться что мы получаем
+                attributeNodes = @NamedAttributeNode("phones") // какое поле подтягиваем
+        ),
+        @NamedEntityGraph(
+                name = "User.withAddresses",
+                attributeNodes = @NamedAttributeNode("addresses")
+        ),
+        @NamedEntityGraph(
+                name = "User.withPhonesAndAddresses",
+                attributeNodes = {@NamedAttributeNode("phones"), @NamedAttributeNode("addresses")}
+        )
+})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +61,10 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private String phone;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Phone> phones = new HashSet<>();
 
     @Builder.Default
     @ManyToMany(cascade = CascadeType.ALL)
@@ -52,7 +74,8 @@ public class User {
     private Set<Address> addresses = new HashSet<>();
 
     @Enumerated(value = EnumType.STRING)
-    private Role role;
+    @Builder.Default
+    private Role role = Role.USER;
 
     private boolean isBlocked;
 
@@ -85,9 +108,12 @@ public class User {
     }
 
     public void addPizza(Pizza pizza) {
-        favoritePizzas.add(pizza);
-        pizza.getUsers().add(this);
+//        favoritePizzas.add(pizza);
+//        pizza.getUsers().add(this);
+        changeManyToManyRef(favoritePizzas::add, pizza.getUsers()::add, pizza, this);
     }
+
+
     public void removePizza(Pizza pizza) {
         favoritePizzas.remove(pizza);
         pizza.getUsers().remove(this);
@@ -105,5 +131,15 @@ public class User {
     public void setCart(Cart cart) {
         this.cart = cart;
         cart.setUser(this);
+    }
+
+    public void addPhone(Phone phone) {
+        phones.add(phone);
+        phone.setUser(this);
+    }
+
+    public void removePhone(Phone phone) {
+        phones.remove(phone);
+        phone.setUser(null);
     }
 }
