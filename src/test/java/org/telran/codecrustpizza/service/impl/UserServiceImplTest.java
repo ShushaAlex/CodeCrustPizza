@@ -15,6 +15,7 @@ import org.telran.codecrustpizza.entity.Address;
 import org.telran.codecrustpizza.entity.Phone;
 import org.telran.codecrustpizza.entity.User;
 import org.telran.codecrustpizza.entity.enums.Role;
+import org.telran.codecrustpizza.exception.EntityException;
 import org.telran.codecrustpizza.mapper.AddressMapper;
 import org.telran.codecrustpizza.mapper.PhoneMapper;
 import org.telran.codecrustpizza.mapper.UserMapper;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -76,7 +78,7 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void findUserByIdTest() {
+    public void findUserByIdSuccessTest() {
         // Prepare data
         User user = USER_1;
         Long userId = 1L;
@@ -94,7 +96,18 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void findUserByEmailTest() {
+    public void findByIdThrowsEntityExceptionTest() {
+        // Prepare data
+        Long userId = 1L;
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        // Validate
+        assertThrows(EntityException.class, () -> userServiceImpl.findById(userId));
+        verify(userRepository, times(1)).findById(userId);
+    }
+
+    @Test
+    public void findUserByEmailSuccessTest() {
         // Prepare data
         User user = USER_1;
         String email = EMAIL_1;
@@ -112,7 +125,18 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void saveUserTest() {
+    public void findByEmailThrowsEntityExceptionTest() {
+        // Prepare data
+        String email = EMAIL_1;
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+        // Validate
+        assertThrows(EntityException.class, () -> userServiceImpl.findByEmail(email));
+        verify(userRepository, times(1)).findByEmail(email);
+    }
+
+    @Test
+    public void saveUserSuccessTest() {
         // Prepare data
         User user = USER_1;
         String email = EMAIL_1;
@@ -134,7 +158,19 @@ public class UserServiceImplTest {
     }
 
     @Test
-    void assignRoleTest() {
+    public void saveUserThrowsEntityExceptionTest() {
+        // Prepare data
+        String email = EMAIL_1;
+        UserCreateRequestDto createRequestDto = USER_CREATE_DTO_1;
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(new User()));
+        // Validate
+        assertThrows(EntityException.class, () -> userServiceImpl.save(createRequestDto));
+        verify(userRepository, times(1)).findByEmail(email);
+    }
+
+    @Test
+    void assignRoleSuccessTest() {
         // Prepare data
         Long userId = 1L;
         Role role = Role.ADMIN;
@@ -155,7 +191,19 @@ public class UserServiceImplTest {
     }
 
     @Test
-    void addPhoneTest() {
+    public void assignRoleThrowsEntityExceptionTest() {
+        // Prepare data
+        Long userId = 1L;
+        Role role = Role.ADMIN;
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        // Validate
+        assertThrows(EntityException.class, () -> userServiceImpl.assignRole(userId, role));
+        verify(userRepository, times(1)).findById(userId);
+    }
+
+    @Test
+    void addPhoneSuccessTest() {
         // Prepare data
         Long userId = 1L;
         PhoneCreateRequestDto phoneDto = PHONE_CREATE_DTO_1;
@@ -165,6 +213,7 @@ public class UserServiceImplTest {
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(phoneMapper.toPhone(phoneDto)).thenReturn(phone);
+        when(phoneRepository.findByCountryCodeAndNumber(phone.getCountryCode(), phone.getNumber())).thenReturn(Optional.empty());
         when(phoneRepository.save(phone)).thenReturn(phone);
         when(userMapper.toResponseDto(user)).thenReturn(responseDto);
         // Execute
@@ -174,13 +223,44 @@ public class UserServiceImplTest {
         assertEquals(1, user.getPhones().size());
         verify(userRepository, times(1)).findById(userId);
         verify(phoneMapper, times(1)).toPhone(phoneDto);
+        verify(phoneRepository, times(1)).findByCountryCodeAndNumber(phone.getCountryCode(), phone.getNumber());
         verify(phoneRepository, times(1)).save(phone);
         verify(userMapper, times(1)).toResponseDto(user);
         verify(userRepository, times(1)).save(user);
     }
 
     @Test
-    void removePhoneTest() {
+    public void addPhoneUserNotExistThrowsEntityExceptionTest() {
+        // Prepare data
+        Long userId = 1L;
+        PhoneCreateRequestDto phoneDto = PHONE_CREATE_DTO_1;
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        // Validate
+        assertThrows(EntityException.class, () -> userServiceImpl.addPhone(userId, phoneDto));
+        verify(userRepository, times(1)).findById(userId);
+    }
+
+    @Test
+    public void addPhonePhoneAlreadyExistThrowsEntityExceptionTest() {
+        // Prepare data
+        Long userId = 1L;
+        PhoneCreateRequestDto phoneDto = PHONE_CREATE_DTO_1;
+        Phone phone = PHONE_1;
+        User user = new User();
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(phoneMapper.toPhone(phoneDto)).thenReturn(phone);
+        when(phoneRepository.findByCountryCodeAndNumber(phone.getCountryCode(), phone.getNumber())).thenReturn(Optional.of(phone));
+        // Validate
+        assertThrows(EntityException.class, () -> userServiceImpl.addPhone(userId, phoneDto));
+        verify(userRepository, times(1)).findById(userId);
+        verify(phoneMapper, times(1)).toPhone(phoneDto);
+        verify(phoneRepository, times(1)).findByCountryCodeAndNumber(phone.getCountryCode(), phone.getNumber());
+    }
+
+    @Test
+    void removePhoneSuccessTest() {
         // Prepare data
         Long userId = 1L;
         Long phoneId = 1L;
@@ -201,6 +281,33 @@ public class UserServiceImplTest {
         verify(phoneRepository, times(1)).findById(phoneId);
         verify(phoneRepository, times(1)).delete(phone);
         verify(userRepository, times(1)).save(user);
+    }
+
+    @Test
+    public void removePhoneUserNotExistThrowsEntityExceptionTest() {
+        // Prepare data
+        Long userId = 1L;
+        Long phoneId = 1L;
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        // Validate
+        assertThrows(EntityException.class, () -> userServiceImpl.removePhone(userId, phoneId));
+        verify(userRepository, times(1)).findById(userId);
+    }
+
+    @Test
+    public void removePhonePhoneNotExistThrowsEntityExceptionTest() {
+        // Prepare data
+        Long userId = 1L;
+        Long phoneId = 1L;
+        User user = new User();
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(phoneRepository.findById(phoneId)).thenReturn(Optional.empty());
+        // Validate
+        assertThrows(EntityException.class, () -> userServiceImpl.removePhone(userId, phoneId));
+        verify(userRepository, times(1)).findById(userId);
+        verify(phoneRepository, times(1)).findById(phoneId);
     }
 
     @Test
@@ -229,7 +336,37 @@ public class UserServiceImplTest {
     }
 
     @Test
-    void removeAddressTest() {
+    public void addAddressUserNotExistThrowsEntityExceptionTest() {
+        // Prepare data
+        Long userId = 1L;
+        AddressCreateRequestDto addressDto = ADDRESS_CREATE_DTO_1;
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        // Validate
+        assertThrows(EntityException.class, () -> userServiceImpl.addAddress(userId, addressDto));
+        verify(userRepository, times(1)).findById(userId);
+    }
+
+    @Test
+    public void addAddressAddressAlreadyExistThrowsEntityExceptionTest() {
+        // Prepare data
+        Long userId = 1L;
+        AddressCreateRequestDto addressDto = ADDRESS_CREATE_DTO_1;
+        Address address = new Address();
+        User user = new User();
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(addressMapper.toAddress(addressDto)).thenReturn(address);
+        when(addressRepository.findByCityAndStreetAndHouse(address.getCity(), address.getStreet(), address.getHouse())).thenReturn(Optional.of(address));
+        // Validate
+        assertThrows(EntityException.class, () -> userServiceImpl.addAddress(userId, addressDto));
+        verify(userRepository, times(1)).findById(userId);
+        verify(addressMapper, times(1)).toAddress(addressDto);
+        verify(addressRepository, times(1)).findByCityAndStreetAndHouse(address.getCity(), address.getStreet(), address.getHouse());
+    }
+
+    @Test
+    void removeAddressSuccessTest() {
         // Prepare data
         Long userId = 1L;
         Long addressId = 1L;
@@ -253,7 +390,34 @@ public class UserServiceImplTest {
     }
 
     @Test
-    void changePasswordTest() {
+    public void removeAddressUserNotExistThrowsEntityExceptionTest() {
+        // Prepare data
+        Long userId = 1L;
+        Long addressId = 1L;
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        // Validate
+        assertThrows(EntityException.class, () -> userServiceImpl.removePhone(userId, addressId));
+        verify(userRepository, times(1)).findById(userId);
+    }
+
+    @Test
+    public void removeAddressAddressNotExistThrowsEntityExceptionTest() {
+        // Prepare data
+        Long userId = 1L;
+        Long addressId = 1L;
+        User user = new User();
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(addressRepository.findById(addressId)).thenReturn(Optional.empty());
+        // Validate
+        assertThrows(EntityException.class, () -> userServiceImpl.removeAddress(userId, addressId));
+        verify(userRepository, times(1)).findById(userId);
+        verify(addressRepository, times(1)).findById(addressId);
+    }
+
+    @Test
+    void changePasswordSuccessTest() {
         // Prepare data
         Long userId = 1L;
         User user = USER_1;
@@ -275,7 +439,19 @@ public class UserServiceImplTest {
     }
 
     @Test
-    void changeEmailTest() {
+    public void changePasswordUserNotExistThrowsEntityExceptionTest() {
+        // Prepare data
+        Long userId = 1L;
+        UserChangePasswordRequestDto passwordDto = CHANGE_PASSWORD_DTO_1;
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        // Validate
+        assertThrows(EntityException.class, () -> userServiceImpl.changePassword(userId, passwordDto));
+        verify(userRepository, times(1)).findById(userId);
+    }
+
+    @Test
+    void changeEmailSuccessTest() {
         // Prepare data
         Long userId = 1L;
         User user = USER_1;
@@ -296,7 +472,19 @@ public class UserServiceImplTest {
     }
 
     @Test
-    void changeNameTest() {
+    public void changeEmailUserNotExistThrowsEntityExceptionTest() {
+        // Prepare data
+        Long userId = 1L;
+        String newEmail = EMAIL_1;
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        // Validate
+        assertThrows(EntityException.class, () -> userServiceImpl.changeEmail(userId, newEmail));
+        verify(userRepository, times(1)).findById(userId);
+    }
+
+    @Test
+    void changeNameSuccessTest() {
         // Prepare data
         Long userId = 1L;
         User user = USER_1;
@@ -314,5 +502,17 @@ public class UserServiceImplTest {
         verify(userRepository, times(1)).findById(userId);
         verify(userRepository, times(1)).save(user);
         verify(userMapper, times(1)).toResponseDto(user);
+    }
+
+    @Test
+    public void changeNameUserNotExistThrowsEntityExceptionTest() {
+        // Prepare data
+        Long userId = 1L;
+        String newName = NAME_1;
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        // Validate
+        assertThrows(EntityException.class, () -> userServiceImpl.changeName(userId, newName));
+        verify(userRepository, times(1)).findById(userId);
     }
 }
