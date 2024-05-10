@@ -50,11 +50,15 @@ public class TestData {
             .creationDate(LOCAL_DATE_TIME_1)
             .build();
 
+    public static UserChangePasswordRequestDto CHANGE_PASSWORD_DTO_1 = new UserChangePasswordRequestDto(
+            PASSWORD_1,
+            PASSWORD_2
+    );
+
     public static UserCreateRequestDto USER_CREATE_DTO_1 = new UserCreateRequestDto(
             NAME_1,
             EMAIL_1,
-            PASSWORD_1,
-            PASSWORD_1
+            CHANGE_PASSWORD_DTO_1
     );
 
     public static PhoneCreateRequestDto PHONE_CREATE_DTO_1 = new PhoneCreateRequestDto(
@@ -79,11 +83,6 @@ public class TestData {
             STREET_1,
             HOUSE_1,
             COMMENT_1
-    );
-
-    public static UserChangePasswordRequestDto CHANGE_PASSWORD_DTO_1 = new UserChangePasswordRequestDto(
-            PASSWORD_1,
-            PASSWORD_2
     );
 }
 
