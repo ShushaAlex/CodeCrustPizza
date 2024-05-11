@@ -65,6 +65,13 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public IngredientResponseDto updateIngredient(Long id, IngredientCreateRequestDto createDto) {
-        return null;
+        Ingredient ingredient = ingredientRepository.findById(id).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("ingredient", id)));
+
+        ingredient.setTitle(createDto.title());
+        ingredient.setPrice(createDto.price());
+        ingredient.setCalories(createDto.calories());
+        ingredientRepository.save(ingredient);
+
+        return ingredientMapper.toDto(ingredient);
     }
 }
