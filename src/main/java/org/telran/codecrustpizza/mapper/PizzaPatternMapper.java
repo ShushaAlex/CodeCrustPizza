@@ -9,19 +9,17 @@ import org.telran.codecrustpizza.entity.enums.Dough;
 @Component
 public class PizzaPatternMapper {
 
-    PizzaPattern toPizzaPattern(PizzaPatternCreateDto dto) {
+    public PizzaPattern toPizzaPattern(PizzaPatternCreateDto dto) {
         return PizzaPattern.builder()
                 .title(dto.title())
                 .description(dto.description())
                 .size(dto.size())
                 .dough(Dough.valueOf(dto.dough().toUpperCase()))
-                .price(dto.price())
-                .calories(dto.calories())
                 .patternIngredients(dto.patternIngredients())
                 .build();
     }
 
-    PizzaPatternResponseDto toDto(PizzaPattern pizzaPattern) {
+    public PizzaPatternResponseDto toDto(PizzaPattern pizzaPattern) {
         return new PizzaPatternResponseDto(
                 pizzaPattern.getId(),
                 pizzaPattern.getTitle(),

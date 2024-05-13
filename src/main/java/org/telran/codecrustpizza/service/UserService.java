@@ -34,4 +34,6 @@ public interface UserService {
     UserResponseDto changeEmail(Long userId, String newEmail);
 
     UserResponseDto changeName(Long userId, String name);
+
+    //TODO добавить методы по добавлению и удалению любимой пиццы
 }

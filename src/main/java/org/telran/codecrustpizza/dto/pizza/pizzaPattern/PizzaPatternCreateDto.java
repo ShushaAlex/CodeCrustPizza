@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import org.telran.codecrustpizza.entity.PizzaPatternIngredient;
 
-import java.math.BigDecimal;
 import java.util.Set;
 
 public record PizzaPatternCreateDto(
@@ -18,10 +17,6 @@ public record PizzaPatternCreateDto(
         int size,
         @Pattern(regexp = "(?i)^(THICK|THIN)$")
         String dough,
-        @Positive
-        BigDecimal price,
-        @Positive
-        int calories,
         Set<PizzaPatternIngredient> patternIngredients
 ) {
 }
