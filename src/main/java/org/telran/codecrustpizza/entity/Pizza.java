@@ -15,6 +15,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,6 +39,8 @@ public class Pizza extends Item {
     @OneToMany(mappedBy = "pizza", cascade = CascadeType.ALL)
     private Set<PizzaIngredient> pizzaIngredients = new HashSet<>();
 
+    private int calories;
+
     @ManyToMany(mappedBy = "favoritePizzas")
     private Set<User> users = new HashSet<>();
 
@@ -49,6 +52,51 @@ public class Pizza extends Item {
         pizzaIngredients.remove(ingredient);
         ingredient.setPizza(null);
     }
-}
 
-//TODO сделать свой билдер для этого класса
+    public static class Builder {
+        private Pizza pizza;
+
+        public Builder() {
+            pizza = new Pizza();
+        }
+
+        public Builder id(Long id) {
+            pizza.id = id;
+            return this;
+        }
+
+        public Builder pizzaPattern(PizzaPattern pizzaPattern) {
+            pizza.pizzaPattern = pizzaPattern;
+            return this;
+        }
+
+        public Builder size(int size) {
+            pizza.size = size;
+            return this;
+        }
+
+        public Builder calories(int calories) {
+            pizza.calories = calories;
+            return this;
+        }
+
+        public Builder description(String description) {
+            pizza.setDescription(description);
+            return this;
+        }
+
+        public Builder title(String title) {
+            pizza.setTitle(title);
+            return this;
+        }
+
+        public Builder price(BigDecimal price) {
+            pizza.setPrice(price);
+            return this;
+        }
+
+        public Pizza build() {
+            return pizza;
+        }
+    }
+}
