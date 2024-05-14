@@ -10,7 +10,7 @@ import org.telran.codecrustpizza.entity.User;
 
 import java.time.LocalDateTime;
 
-public class TestData {
+public class UserServiceTestData {
     // 1 set of user data
     public static LocalDateTime LOCAL_DATE_TIME_1 = LocalDateTime.of(2023, 1, 1, 1, 1);
     public static String EMAIL_1 = "john.doe@example.com";
