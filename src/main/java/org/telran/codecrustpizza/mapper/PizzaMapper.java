@@ -7,11 +7,11 @@ import org.telran.codecrustpizza.entity.Pizza;
 @Component
 public class PizzaMapper {
 
-    PizzaResponseDto toDto(Pizza pizza) {
+    public PizzaResponseDto toDto(Pizza pizza) {
         return PizzaResponseDto.builder()
                 .id(pizza.getId())
                 .title(pizza.getTitle())
-                .dough(pizza.getPizzaPattern().getDough())
+                .dough(pizza.getDough())
                 .description(pizza.getDescription())
                 .size(pizza.getSize())
                 .pizzaIngredients(pizza.getPizzaIngredients())
