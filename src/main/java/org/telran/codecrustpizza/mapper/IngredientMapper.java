@@ -18,6 +18,7 @@ public class IngredientMapper {
 
     public IngredientResponseDto toDto(Ingredient ingredient) {
         return new IngredientResponseDto(
+                ingredient.getId(),
                 ingredient.getTitle(),
                 ingredient.getPrice(),
                 ingredient.getCalories()
