@@ -41,11 +41,11 @@ public class PizzaPatternServiceImpl implements PizzaService<PizzaPatternRespons
     }
 
     @Override
-    public PizzaPatternResponseDto createPizzaPattern(PizzaPatternCreateDto pizzaPatternCreateDto) {
-        Optional<PizzaPattern> existingPizza = pizzaPatternRepository.findByTitleAndDough(pizzaPatternCreateDto.title(), Dough.valueOf(pizzaPatternCreateDto.dough()));
+    public PizzaPatternResponseDto createPizza(PizzaPatternCreateDto pizzaCreateDto) {
+        Optional<PizzaPattern> existingPizza = pizzaPatternRepository.findByTitleAndDough(pizzaCreateDto.title(), Dough.valueOf(pizzaCreateDto.dough()));
         if (existingPizza.isPresent()) throw new EntityException(ENTITY_EXIST.getCustomMessage("PizzaPattern"));
 
-        PizzaPattern pizzaPattern = pizzaPatternMapper.toPizzaPattern(pizzaPatternCreateDto);
+        PizzaPattern pizzaPattern = pizzaPatternMapper.toPizzaPattern(pizzaCreateDto);
         pizzaPattern.setCalories(calculateTotalCalories(pizzaPattern.getPatternIngredients()));
         pizzaPattern.setPrice(calculateTotalPrice(pizzaPattern.getPatternIngredients()));
 
@@ -55,7 +55,7 @@ public class PizzaPatternServiceImpl implements PizzaService<PizzaPatternRespons
     }
 
     @Override
-    public PizzaPatternResponseDto getPizzaPatternById(Long id) {
+    public PizzaPatternResponseDto getPizzaById(Long id) {
         Optional<PizzaPattern> pizzaPatternOptional = pizzaPatternRepository.findByIdWithIngredients(id);
         if (pizzaPatternOptional.isEmpty()) throw new EntityException(NO_SUCH_ID.getCustomMessage("PizzaPattern", id));
 
@@ -63,16 +63,16 @@ public class PizzaPatternServiceImpl implements PizzaService<PizzaPatternRespons
     }
 
     @Override
-    public PizzaPatternResponseDto updatePizzaPattern(Long id, PizzaPatternCreateDto pizzaPatternCreateDto) {
+    public PizzaPatternResponseDto updatePizza(Long id, PizzaPatternCreateDto pizzaCreateDto) {
         Optional<PizzaPattern> existingPizza = pizzaPatternRepository.findByIdWithIngredients(id);
         if (existingPizza.isEmpty()) throw new EntityException(NO_SUCH_ID.getCustomMessage("PizzaPattern", id));
 
         PizzaPattern pizzaPattern = existingPizza.get();
-        pizzaPattern.setTitle(pizzaPatternCreateDto.title());
-        pizzaPattern.setDescription(pizzaPatternCreateDto.description());
-        pizzaPattern.setSize(pizzaPatternCreateDto.size());
-        pizzaPattern.setDough(Dough.valueOf(pizzaPatternCreateDto.dough()));
-        pizzaPattern.setPatternIngredients(pizzaPatternCreateDto.patternIngredients());
+        pizzaPattern.setTitle(pizzaCreateDto.title());
+        pizzaPattern.setDescription(pizzaCreateDto.description());
+        pizzaPattern.setSize(pizzaCreateDto.size());
+        pizzaPattern.setDough(Dough.valueOf(pizzaCreateDto.dough()));
+        pizzaPattern.setPatternIngredients(pizzaCreateDto.patternIngredients());
         pizzaPattern.setCalories(calculateTotalCalories(pizzaPattern.getPatternIngredients()));
         pizzaPattern.setPrice(calculateTotalPrice(pizzaPattern.getPatternIngredients()));
 
@@ -82,7 +82,7 @@ public class PizzaPatternServiceImpl implements PizzaService<PizzaPatternRespons
     }
 
     @Override
-    public boolean deletePizzaPattern(Long id) { // TODO подумать над логикой удаления
+    public boolean deletePizza(Long id) { // TODO подумать над логикой удаления
         Optional<PizzaPattern> pizzaPatternOptional = pizzaPatternRepository.findByIdWithIngredients(id);
         if (pizzaPatternOptional.isEmpty()) throw new EntityException(NO_SUCH_ID.getCustomMessage("PizzaPattern", id));
 

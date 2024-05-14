@@ -16,13 +16,13 @@ public interface PizzaService<T, U, V> {
 
     List<T> findAll();
 
-    T createPizzaPattern(U pizzaPatternCreateDto);
+    T createPizza(U pizzaCreateDto);
 
-    T getPizzaPatternById(Long id);
+    T getPizzaById(Long id);
 
-    T updatePizzaPattern(Long id, U pizzaPatternCreateDto);
+    T updatePizza(Long id, U pizzaCreateDto);
 
-    boolean deletePizzaPattern(Long id);
+    boolean deletePizza(Long id);
 
     int calculateTotalCalories(Set<V> ingredients);
 
