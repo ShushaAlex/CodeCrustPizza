@@ -34,7 +34,7 @@ import static org.telran.codecrustpizza.util.EntityUtil.changeManyToManyRef;
 
 @Data
 @Entity
-@Builder
+@Builder(toBuilder = true) //затем вызываем toBuilder.build()
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"phones", "addresses", "favoritePizzas", "cart", "orders"})

@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface PizzaRepository extends JpaRepository<Pizza, Long> {
 
     @EntityGraph(value = "Pizza.withIngredients", type = EntityGraph.EntityGraphType.LOAD)
-    Optional<Pizza> findByIdWithIngredients(Long id);
+    Optional<Pizza> findById(Long id);
 
     Optional<Pizza> findByTitle(String title);
 }

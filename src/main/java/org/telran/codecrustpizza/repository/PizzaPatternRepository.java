@@ -11,8 +11,8 @@ import java.util.Optional;
 @Repository
 public interface PizzaPatternRepository extends JpaRepository<PizzaPattern, Long> {
 
-    @EntityGraph(value = "PizzaPattern.withIngredients", type = EntityGraph.EntityGraphType.LOAD)
-    Optional<PizzaPattern> findByIdWithIngredients(Long id);
+    @EntityGraph(value = "PizzaPattern.patternIngredients", type = EntityGraph.EntityGraphType.LOAD)
+    Optional<PizzaPattern> findById(Long id);
 
     Optional<PizzaPattern> findByTitleAndDough(String title, Dough dough);
 }

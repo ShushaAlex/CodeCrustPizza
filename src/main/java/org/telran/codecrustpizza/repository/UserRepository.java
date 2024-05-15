@@ -18,7 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByIdWithFavorites(Long id);
 
     @EntityGraph(value = "User.withPhones", type = EntityGraph.EntityGraphType.LOAD)
-    Optional<User> findByIdWithPhones(Long id);
+    Optional<User> findById(Long id);
 
     //TODO создать аналогичные методы на кадждый энтити граф
 }

@@ -31,7 +31,7 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"patternIngredients", "pizzas"})
 @ToString(exclude = {"patternIngredients", "pizzas"})
 @NamedEntityGraph(
-        name = "PizzaPattern.withIngredients",
+        name = "PizzaPattern.patternIngredients",
         attributeNodes = @NamedAttributeNode("patternIngredients")
 )
 public class PizzaPattern {
