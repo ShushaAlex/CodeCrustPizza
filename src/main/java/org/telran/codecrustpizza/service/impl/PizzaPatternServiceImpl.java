@@ -56,7 +56,7 @@ public class PizzaPatternServiceImpl implements PizzaService<PizzaPatternRespons
 
     @Override
     public PizzaPatternResponseDto getPizzaById(Long id) {
-        Optional<PizzaPattern> pizzaPatternOptional = pizzaPatternRepository.findByIdWithIngredients(id);
+        Optional<PizzaPattern> pizzaPatternOptional = pizzaPatternRepository.findById(id);
         if (pizzaPatternOptional.isEmpty()) throw new EntityException(NO_SUCH_ID.getCustomMessage("PizzaPattern", id));
 
         return pizzaPatternMapper.toDto(pizzaPatternOptional.get());
@@ -64,10 +64,8 @@ public class PizzaPatternServiceImpl implements PizzaService<PizzaPatternRespons
 
     @Override
     public PizzaPatternResponseDto updatePizza(Long id, PizzaPatternCreateDto pizzaCreateDto) {
-        Optional<PizzaPattern> existingPizza = pizzaPatternRepository.findByIdWithIngredients(id);
-        if (existingPizza.isEmpty()) throw new EntityException(NO_SUCH_ID.getCustomMessage("PizzaPattern", id));
+        PizzaPattern pizzaPattern = pizzaPatternRepository.findById(id).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("PizzaPattern", id)));
 
-        PizzaPattern pizzaPattern = existingPizza.get();
         pizzaPattern.setTitle(pizzaCreateDto.title());
         pizzaPattern.setDescription(pizzaCreateDto.description());
         pizzaPattern.setSize(pizzaCreateDto.size());
@@ -83,10 +81,9 @@ public class PizzaPatternServiceImpl implements PizzaService<PizzaPatternRespons
 
     @Override
     public boolean deletePizza(Long id) { // TODO подумать над логикой удаления
-        Optional<PizzaPattern> pizzaPatternOptional = pizzaPatternRepository.findByIdWithIngredients(id);
-        if (pizzaPatternOptional.isEmpty()) throw new EntityException(NO_SUCH_ID.getCustomMessage("PizzaPattern", id));
+        PizzaPattern pizzaPattern = pizzaPatternRepository.findById(id).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("PizzaPattern", id)));
 
-        pizzaPatternRepository.delete(pizzaPatternOptional.get());
+        pizzaPatternRepository.delete(pizzaPattern);
         return true;
     }
 

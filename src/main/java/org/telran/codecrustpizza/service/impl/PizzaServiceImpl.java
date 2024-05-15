@@ -50,7 +50,7 @@ public class PizzaServiceImpl implements PizzaService<PizzaResponseDto, PizzaCre
         Optional<Pizza> existingPizza = pizzaRepository.findByTitle(pizzaCreateDto.title());
         if (existingPizza.isPresent()) throw new EntityException(ENTITY_EXIST.getCustomMessage("Pizza"));
 
-        PizzaPattern pizzaPattern = pizzaPatternRepository.findByIdWithIngredients(pizzaCreateDto.patternId())
+        PizzaPattern pizzaPattern = pizzaPatternRepository.findById(pizzaCreateDto.patternId())
                 .orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("PizzaPattern", pizzaCreateDto.patternId())));
 
         Pizza pizza = Pizza.builder()
@@ -72,7 +72,7 @@ public class PizzaServiceImpl implements PizzaService<PizzaResponseDto, PizzaCre
 
     @Override
     public PizzaResponseDto getPizzaById(Long id) {
-        Optional<Pizza> pizza = pizzaRepository.findByIdWithIngredients(id);
+        Optional<Pizza> pizza = pizzaRepository.findById(id);
         if (pizza.isEmpty()) throw new EntityException(NO_SUCH_ID.getCustomMessage("Pizza", id));
 
         return pizzaMapper.toDto(pizza.get());
@@ -80,13 +80,13 @@ public class PizzaServiceImpl implements PizzaService<PizzaResponseDto, PizzaCre
 
     @Override
     public PizzaResponseDto updatePizza(Long id, PizzaCreateRequestDto pizzaCreateDto) {
-        //TODO как сделать заглушку?
+        //TODO как сделать заглушку? / 2 interfaces or plug with exception
         return null;
     }
 
     @Override
     public boolean deletePizza(Long id) {
-        Optional<Pizza> pizza = pizzaRepository.findByIdWithIngredients(id);
+        Optional<Pizza> pizza = pizzaRepository.findById(id);
         if (pizza.isEmpty()) throw new EntityException(NO_SUCH_ID.getCustomMessage("Pizza", id));
 
         pizzaRepository.delete(pizza.get());
