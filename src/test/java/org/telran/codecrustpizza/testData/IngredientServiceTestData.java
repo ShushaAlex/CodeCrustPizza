@@ -1,4 +1,4 @@
-package org.telran.codecrustpizza;
+package org.telran.codecrustpizza.testData;
 
 import org.telran.codecrustpizza.dto.ingredient.IngredientCreateRequestDto;
 import org.telran.codecrustpizza.dto.ingredient.IngredientResponseDto;

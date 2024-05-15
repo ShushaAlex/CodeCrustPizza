@@ -22,10 +22,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.telran.codecrustpizza.IngredientServiceTestData.INGREDIENT_1;
-import static org.telran.codecrustpizza.IngredientServiceTestData.INGREDIENT_CREATE_DTO_1;
-import static org.telran.codecrustpizza.IngredientServiceTestData.INGREDIENT_RESPONSE_DTO_1;
-import static org.telran.codecrustpizza.IngredientServiceTestData.TITLE_1;
+import static org.telran.codecrustpizza.testData.IngredientServiceTestData.INGREDIENT_1;
+import static org.telran.codecrustpizza.testData.IngredientServiceTestData.INGREDIENT_CREATE_DTO_1;
+import static org.telran.codecrustpizza.testData.IngredientServiceTestData.INGREDIENT_RESPONSE_DTO_1;
+import static org.telran.codecrustpizza.testData.IngredientServiceTestData.TITLE_1;
 
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration(classes = IngredientServiceImpl.class)
@@ -35,7 +35,6 @@ class IngredientServiceImplTest {
     private IngredientRepository ingredientRepository;
     @Mock
     private IngredientMapper ingredientMapper;
-
     @InjectMocks
     private IngredientServiceImpl ingredientService;
 

@@ -32,15 +32,15 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.telran.codecrustpizza.UserServiceTestData.ADDRESS_CREATE_DTO_1;
-import static org.telran.codecrustpizza.UserServiceTestData.CHANGE_PASSWORD_DTO_1;
-import static org.telran.codecrustpizza.UserServiceTestData.EMAIL_1;
-import static org.telran.codecrustpizza.UserServiceTestData.NAME_1;
-import static org.telran.codecrustpizza.UserServiceTestData.PHONE_1;
-import static org.telran.codecrustpizza.UserServiceTestData.PHONE_CREATE_DTO_1;
-import static org.telran.codecrustpizza.UserServiceTestData.USER_1;
-import static org.telran.codecrustpizza.UserServiceTestData.USER_CREATE_DTO_1;
-import static org.telran.codecrustpizza.UserServiceTestData.USER_RESPONSE_DTO_1;
+import static org.telran.codecrustpizza.testData.UserServiceTestData.ADDRESS_CREATE_DTO_1;
+import static org.telran.codecrustpizza.testData.UserServiceTestData.CHANGE_PASSWORD_DTO_1;
+import static org.telran.codecrustpizza.testData.UserServiceTestData.EMAIL_1;
+import static org.telran.codecrustpizza.testData.UserServiceTestData.NAME_1;
+import static org.telran.codecrustpizza.testData.UserServiceTestData.PHONE_1;
+import static org.telran.codecrustpizza.testData.UserServiceTestData.PHONE_CREATE_DTO_1;
+import static org.telran.codecrustpizza.testData.UserServiceTestData.USER_1;
+import static org.telran.codecrustpizza.testData.UserServiceTestData.USER_CREATE_DTO_1;
+import static org.telran.codecrustpizza.testData.UserServiceTestData.USER_RESPONSE_DTO_1;
 
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration(classes = UserServiceImpl.class)

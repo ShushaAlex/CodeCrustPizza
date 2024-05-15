@@ -1,4 +1,4 @@
-package org.telran.codecrustpizza;
+package org.telran.codecrustpizza.testData;
 
 import org.telran.codecrustpizza.dto.address.AddressCreateRequestDto;
 import org.telran.codecrustpizza.dto.phone.PhoneCreateRequestDto;
