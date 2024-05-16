@@ -4,6 +4,7 @@ public enum ExceptionMessage {
 
     NO_SUCH_ID("There is no %s with id: %d"),
     NO_SUCH_EMAIL("There is no %s with email: %s"),
+    NO_SUCH_CATEGORY("There is no %s with category: %s"),
     EMAIL_EXIST("%s with such email: %s already exist"),
     ENTITY_NOT_EXIST("This %s doesn't exist"),
     ENTITY_EXIST("This %s already exist"),

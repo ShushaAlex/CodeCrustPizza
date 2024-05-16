@@ -2,6 +2,7 @@ package org.telran.codecrustpizza.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.telran.codecrustpizza.dto.pizza.pizzaPattern.PizzaPatternCreateDto;
 import org.telran.codecrustpizza.dto.pizza.pizzaPattern.PizzaPatternResponseDto;
 import org.telran.codecrustpizza.entity.PizzaPattern;
@@ -41,6 +42,7 @@ public class PizzaPatternServiceImpl implements PizzaService<PizzaPatternRespons
     }
 
     @Override
+    @Transactional
     public PizzaPatternResponseDto createPizza(PizzaPatternCreateDto pizzaCreateDto) {
         Optional<PizzaPattern> existingPizza = pizzaPatternRepository.findByTitleAndDough(pizzaCreateDto.title(), Dough.valueOf(pizzaCreateDto.dough()));
         if (existingPizza.isPresent()) throw new EntityException(ENTITY_EXIST.getCustomMessage("PizzaPattern"));
@@ -63,6 +65,7 @@ public class PizzaPatternServiceImpl implements PizzaService<PizzaPatternRespons
     }
 
     @Override
+    @Transactional
     public PizzaPatternResponseDto updatePizza(Long id, PizzaPatternCreateDto pizzaCreateDto) {
         PizzaPattern pizzaPattern = pizzaPatternRepository.findById(id).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("PizzaPattern", id)));
 
@@ -80,6 +83,7 @@ public class PizzaPatternServiceImpl implements PizzaService<PizzaPatternRespons
     }
 
     @Override
+    @Transactional
     public boolean deletePizza(Long id) { // TODO подумать над логикой удаления
         PizzaPattern pizzaPattern = pizzaPatternRepository.findById(id).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("PizzaPattern", id)));
 

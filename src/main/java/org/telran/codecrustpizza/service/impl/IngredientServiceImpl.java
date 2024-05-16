@@ -2,6 +2,7 @@ package org.telran.codecrustpizza.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.telran.codecrustpizza.dto.ingredient.IngredientCreateRequestDto;
 import org.telran.codecrustpizza.dto.ingredient.IngredientResponseDto;
 import org.telran.codecrustpizza.entity.Ingredient;
@@ -44,6 +45,7 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
+    @Transactional
     public IngredientResponseDto saveIngredient(IngredientCreateRequestDto createDto) {
         Optional<Ingredient> existingIngredient = ingredientRepository.findByTitle(createDto.title());
         if (existingIngredient.isPresent()) throw new EntityException(ENTITY_EXIST.getCustomMessage("ingredient"));
@@ -55,6 +57,7 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
+    @Transactional
     public IngredientResponseDto deleteIngredient(Long id) { //TODO подумать над каскадом изменений после удаления ингредиента
         Ingredient ingredient = ingredientRepository.findById(id).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("ingredient", id)));
 
@@ -64,6 +67,7 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
+    @Transactional
     public IngredientResponseDto updateIngredient(Long id, IngredientCreateRequestDto createDto) {
         Ingredient ingredient = ingredientRepository.findById(id).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("ingredient", id)));
 

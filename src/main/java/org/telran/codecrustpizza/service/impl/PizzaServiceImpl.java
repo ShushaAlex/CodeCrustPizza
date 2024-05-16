@@ -2,6 +2,7 @@ package org.telran.codecrustpizza.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.telran.codecrustpizza.dto.pizza.PizzaCreateRequestDto;
 import org.telran.codecrustpizza.dto.pizza.PizzaResponseDto;
 import org.telran.codecrustpizza.entity.Pizza;
@@ -46,6 +47,7 @@ public class PizzaServiceImpl implements PizzaService<PizzaResponseDto, PizzaCre
     }
 
     @Override
+    @Transactional
     public PizzaResponseDto createPizza(PizzaCreateRequestDto pizzaCreateDto) {
         Optional<Pizza> existingPizza = pizzaRepository.findByTitle(pizzaCreateDto.title());
         if (existingPizza.isPresent()) throw new EntityException(ENTITY_EXIST.getCustomMessage("Pizza"));
@@ -80,12 +82,14 @@ public class PizzaServiceImpl implements PizzaService<PizzaResponseDto, PizzaCre
     }
 
     @Override
+    @Transactional
     public PizzaResponseDto updatePizza(Long id, PizzaCreateRequestDto pizzaCreateDto) {
         //TODO как сделать заглушку? / 2 interfaces or plug with exception
         return null;
     }
 
     @Override
+    @Transactional
     public boolean deletePizza(Long id) {
         Optional<Pizza> pizza = pizzaRepository.findById(id);
         if (pizza.isEmpty()) throw new EntityException(NO_SUCH_ID.getCustomMessage("Pizza", id));
