@@ -26,7 +26,7 @@ import java.util.Set;
 
 @Data
 @Entity
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"categories", "cartItems", "orderItems"})

@@ -53,6 +53,7 @@ public class PizzaServiceImpl implements PizzaService<PizzaResponseDto, PizzaCre
         PizzaPattern pizzaPattern = pizzaPatternRepository.findById(pizzaCreateDto.patternId())
                 .orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("PizzaPattern", pizzaCreateDto.patternId())));
 
+        // ToDo replace to mapper with arg PizzaPattern pizzaPattern
         Pizza pizza = Pizza.builder()
                 .title(pizzaCreateDto.title())
                 .size(pizzaCreateDto.size())
@@ -119,7 +120,7 @@ public class PizzaServiceImpl implements PizzaService<PizzaResponseDto, PizzaCre
         return BigDecimal.valueOf(totalPrice);
     }
 
-    private Set<PizzaIngredient> calculateIngredientQuantity(Pizza pizza) {
+    public Set<PizzaIngredient> calculateIngredientQuantity(Pizza pizza) {
         double sizeDif = calculateSizeDif(pizza.getPizzaPattern().getSize(), pizza.getSize());
         Set<PizzaPatternIngredient> patternIngredients = pizza.getPizzaPattern().getPatternIngredients();
 
@@ -131,11 +132,7 @@ public class PizzaServiceImpl implements PizzaService<PizzaResponseDto, PizzaCre
                     .pizza(pizza)
                     .build();
 
-            if (sizeDif == 0.0) {
-                pizzaIngredient.setQuantity(patternIngredient.getQuantity());
-            } else {
-                pizzaIngredient.setQuantity((int) Math.round(patternIngredient.getQuantity() * (sizeDif + 1)));
-            }
+            pizzaIngredient.setQuantity((int) Math.round(patternIngredient.getQuantity() * (sizeDif + 1)));
 
             pizzaIngredients.add(pizzaIngredient);
         }
@@ -143,12 +140,20 @@ public class PizzaServiceImpl implements PizzaService<PizzaResponseDto, PizzaCre
         return pizzaIngredients;
     }
 
-    private double calculateSizeDif(int patternSize, int pizzaSize) {
+    public double calculateSizeDif(int patternSize, int pizzaSize) {
         if (pizzaSize == patternSize) return 0.0;
 
-        double diff = Math.abs(patternSize - pizzaSize);
-        double avg = (double) (patternSize + patternSize) / 2;
+        double patternRadius = patternSize / 2.0;
+        double pizzaRadius = pizzaSize / 2.0;
 
-        return (diff / avg);
+        double patternArea = Math.PI * Math.pow(patternRadius, 2);
+        double pizzaArea = Math.PI * Math.pow(pizzaRadius, 2);
+
+        double difference = pizzaArea - patternArea;
+        double ratio = difference / pizzaArea;
+
+        ratio = Math.round(ratio * 100) / 100.0;
+
+        return ratio;
     }
 }

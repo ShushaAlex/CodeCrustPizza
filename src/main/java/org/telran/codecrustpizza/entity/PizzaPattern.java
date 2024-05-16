@@ -25,7 +25,7 @@ import java.util.Set;
 
 @Data
 @Entity
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"patternIngredients", "pizzas"})

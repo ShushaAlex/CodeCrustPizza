@@ -36,7 +36,7 @@ import java.util.Set;
         name = "Pizza.withIngredients",
         attributeNodes = @NamedAttributeNode("pizzaIngredients")
 )
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 public class Pizza extends Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
