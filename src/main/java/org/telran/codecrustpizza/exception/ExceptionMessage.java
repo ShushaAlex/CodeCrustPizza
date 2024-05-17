@@ -6,6 +6,8 @@ public enum ExceptionMessage {
     NO_SUCH_EMAIL("There is no %s with email: %s"),
     NO_SUCH_CATEGORY("There is no %s with category: %s"),
     EMAIL_EXIST("%s with such email: %s already exist"),
+    CATEGORY_EXIST("such category already exist in this %s"),
+    CATEGORY_NOT_EXIST("such category not exist in this %s"),
     ENTITY_NOT_EXIST("This %s doesn't exist"),
     ENTITY_EXIST("This %s already exist"),
     ENTITY_IS_NULL("This %s is null");
