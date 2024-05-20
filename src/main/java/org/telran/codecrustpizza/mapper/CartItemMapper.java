@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telran.codecrustpizza.dto.cart.CartItemResponseDto;
 import org.telran.codecrustpizza.entity.CartItem;
-import org.telran.codecrustpizza.entity.Item;
 
 @Component
 public class CartItemMapper {
@@ -16,10 +15,10 @@ public class CartItemMapper {
         this.itemMapper = itemMapper;
     }
 
-    public CartItemResponseDto toDto(CartItem cartItem, Item item) {
+    public CartItemResponseDto toDto(CartItem cartItem) {
         return new CartItemResponseDto(
                 cartItem.getId(),
-                itemMapper.toDto(item),
+                itemMapper.toDto(cartItem.getItem()),
                 cartItem.getQuantity(),
                 cartItem.getPrice()
         );

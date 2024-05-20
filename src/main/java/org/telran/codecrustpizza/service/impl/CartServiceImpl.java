@@ -2,8 +2,8 @@ package org.telran.codecrustpizza.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.telran.codecrustpizza.dto.cart.CartItemResponseDto;
 import org.telran.codecrustpizza.dto.cart.CartResponseDto;
-import org.telran.codecrustpizza.dto.item.ItemResponseDto;
 import org.telran.codecrustpizza.entity.Cart;
 import org.telran.codecrustpizza.entity.CartItem;
 import org.telran.codecrustpizza.entity.Item;
@@ -17,10 +17,12 @@ import org.telran.codecrustpizza.repository.UserRepository;
 import org.telran.codecrustpizza.service.CartService;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.telran.codecrustpizza.exception.ExceptionMessage.NO_SUCH_ID;
+import static org.telran.codecrustpizza.exception.ExceptionMessage.NO_SUCH_ITEM_IN_CART;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -73,24 +75,57 @@ public class CartServiceImpl implements CartService {
         }
 
         cartItem.setPrice(BigDecimal.valueOf(item.getPrice().doubleValue() * cartItem.getQuantity()));
-
         cartItemRepository.save(cartItem);
 
-        return null;
+        List<CartItemResponseDto> cartItems = getCartItems(userId);
+
+        return new CartResponseDto(userId, cartItems);
     }
 
     @Override
     public CartResponseDto removeItemFromCart(Long itemId, Long userId) {
-        return null;
+        Cart cart = getCart(userId);
+        Item item = itemRepository.findById(itemId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("item", itemId)));
+        CartItem cartItem = cartItemRepository.findByCart_IdAndItem_Id(cart.getId(), itemId).orElseThrow(() -> new EntityException(NO_SUCH_ITEM_IN_CART.getCustomMessage()));
+
+        if (cartItem.getQuantity() == 1) {
+            cartItemRepository.delete(cartItem);
+            item.removeCartItem(cartItem);
+            cart.removeCartItem(cartItem);
+            cartRepository.save(cart);
+            itemRepository.save(item);
+        } else {
+            cartItem.setQuantity(cartItem.getQuantity() - 1);
+            cartItem.setPrice(BigDecimal.valueOf(item.getPrice().doubleValue() * cartItem.getQuantity()));
+            cartItemRepository.save(cartItem);
+        }
+
+        List<CartItemResponseDto> cartItems = getCartItems(userId);
+
+        return new CartResponseDto(userId, cartItems);
     }
 
     @Override
-    public List<ItemResponseDto> getCartItems(Long userId) {
-        return List.of();
+    public List<CartItemResponseDto> getCartItems(Long userId) {
+        Cart cart = getCart(userId);
+
+        return cartItemRepository.getCartItemByCart_Id(cart.getId())
+                .stream()
+                .map(cartItemMapper::toDto)
+                .toList();
     }
 
     @Override
     public CartResponseDto clearCart(Long userId) {
-        return null;
+        Cart cart = getCart(userId);
+
+        List<CartItem> cartItems = cartItemRepository.getCartItemByCart_Id(cart.getId());
+        for (CartItem cartItem : cartItems) {
+            cartItem.getItem().removeCartItem(cartItem);
+            cartItem.getCart().removeCartItem(cartItem);
+            cartItemRepository.delete(cartItem);
+        }
+
+        return new CartResponseDto(userId, new ArrayList<>());
     }
 }
