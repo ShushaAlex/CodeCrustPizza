@@ -1,17 +1,17 @@
 package org.telran.codecrustpizza.dto.user;
 
-import org.telran.codecrustpizza.entity.Address;
-import org.telran.codecrustpizza.entity.Phone;
+import org.telran.codecrustpizza.dto.address.AddressResponseDto;
+import org.telran.codecrustpizza.dto.phone.PhoneResponseDto;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 public record UserResponseDto(
         Long id,
         String name,
         String email,
-        List<Phone> phones,
-        List<Address> addresses,
+        Set<PhoneResponseDto> phones,
+        Set<AddressResponseDto> addresses,
         Boolean isBlocked,
         LocalDateTime creationDate
 ) {
