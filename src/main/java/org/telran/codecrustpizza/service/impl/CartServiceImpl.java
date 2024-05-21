@@ -2,6 +2,7 @@ package org.telran.codecrustpizza.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.telran.codecrustpizza.dto.cart.CartItemResponseDto;
 import org.telran.codecrustpizza.dto.cart.CartResponseDto;
 import org.telran.codecrustpizza.entity.Cart;
@@ -57,6 +58,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public CartResponseDto addItemToCart(Long itemId, Long userId) {
         Cart cart = getCart(userId);
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("item", itemId)));
@@ -83,6 +85,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public CartResponseDto removeItemFromCart(Long itemId, Long userId) {
         Cart cart = getCart(userId);
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("item", itemId)));
@@ -106,6 +109,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public List<CartItemResponseDto> getCartItems(Long userId) {
         Cart cart = getCart(userId);
 
@@ -116,6 +120,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public CartResponseDto clearCart(Long userId) {
         Cart cart = getCart(userId);
 
