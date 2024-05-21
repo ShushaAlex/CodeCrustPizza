@@ -21,6 +21,7 @@ import org.telran.codecrustpizza.repository.PhoneRepository;
 import org.telran.codecrustpizza.repository.UserRepository;
 import org.telran.codecrustpizza.service.UserService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,6 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public List<UserResponseDto> findAll() {
 
         return userRepository.findAll()
@@ -59,8 +61,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserResponseDto findById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", id)));
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", id)));
 
         return userMapper.toResponseDto(user);
     }
@@ -82,6 +86,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = userMapper.toUser(dto);
+        user.setCreationDate(LocalDateTime.now());
         userRepository.save(user);
 
         return userMapper.toResponseDto(user);

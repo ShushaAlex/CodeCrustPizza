@@ -17,7 +17,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u JOIN FETCH u.favoritePizzas WHERE u.id = :id")
     Optional<User> findByIdWithFavorites(Long id);
 
-    @EntityGraph(value = "User.withPhones", type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(value = "User.withPhones", type = EntityGraph.EntityGraphType.FETCH)
     Optional<User> findById(Long id);
 
     //TODO создать аналогичные методы на кадждый энтити граф
