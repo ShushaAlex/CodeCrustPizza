@@ -1,6 +1,6 @@
 package org.telran.codecrustpizza.dto.pizza.pizzaPattern;
 
-import org.telran.codecrustpizza.entity.PizzaPatternIngredient;
+import org.telran.codecrustpizza.dto.pizza.PizzaPatternIngredient.PizzaPatternIngredientResponseDto;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -13,6 +13,6 @@ public record PizzaPatternResponseDto(
         String dough,
         BigDecimal price,
         int calories,
-        Set<PizzaPatternIngredient> patternIngredients
+        Set<PizzaPatternIngredientResponseDto> patternIngredients
 ) {
 }
