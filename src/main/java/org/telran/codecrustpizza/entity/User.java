@@ -38,7 +38,7 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"phones", "addresses", "favoritePizzas", "cart", "orders"})
 @ToString(exclude = {"phones", "addresses", "favoritePizzas", "cart", "orders"})
 @Table(name = "_user")
-@NamedEntityGraphs({ //TODO подумать над тем, какие энтити графы необходимы в каждой сущности
+@NamedEntityGraphs({
         @NamedEntityGraph(
                 name = "User.withPhones", // как будет называться что мы получаем
                 attributeNodes = @NamedAttributeNode("phones") // какое поле подтягиваем

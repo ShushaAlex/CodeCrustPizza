@@ -1,5 +1,6 @@
 package org.telran.codecrustpizza.controller;
 
+import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -56,6 +57,7 @@ public class UserController {
         return userService.getUserDtoById(id);
     }
 
+    @PermitAll
     @PostMapping("/register")
     public UserResponseDto registerUser(@Valid @RequestBody UserCreateRequestDto userCreateRequestDto) {
 
