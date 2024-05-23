@@ -2,7 +2,7 @@ package org.telran.codecrustpizza.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.telran.codecrustpizza.dto.pizza.PizzaPatternIngredient.PizzaPatternIngredientResponseDto;
+import org.telran.codecrustpizza.dto.pizza.PizzaPatternIngredient.PizzaIngredientResponseDto;
 import org.telran.codecrustpizza.dto.pizza.pizzaPattern.PizzaPatternCreateDto;
 import org.telran.codecrustpizza.dto.pizza.pizzaPattern.PizzaPatternResponseDto;
 import org.telran.codecrustpizza.entity.PizzaPattern;
@@ -35,7 +35,7 @@ public class PizzaPatternMapper {
 
     public PizzaPatternResponseDto toDto(PizzaPattern pizzaPattern) {
 
-        Set<PizzaPatternIngredientResponseDto> ppIngredients = pizzaPattern.getPatternIngredients()
+        Set<PizzaIngredientResponseDto> ppIngredients = pizzaPattern.getPatternIngredients()
                 .stream()
                 .map(pizzaPatternIngredientMapper::toDto)
                 .collect(Collectors.toSet());

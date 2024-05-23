@@ -39,6 +39,7 @@ public class PizzaServiceImpl implements PizzaService<PizzaResponseDto, PizzaCre
     }
 
     @Override
+    @Transactional
     public List<PizzaResponseDto> findAll() {
         return pizzaRepository.findAll()
                 .stream()
@@ -74,6 +75,7 @@ public class PizzaServiceImpl implements PizzaService<PizzaResponseDto, PizzaCre
     }
 
     @Override
+    @Transactional
     public PizzaResponseDto getPizzaById(Long id) {
         Optional<Pizza> pizza = pizzaRepository.findById(id);
         if (pizza.isEmpty()) throw new EntityException(NO_SUCH_ID.getCustomMessage("Pizza", id));

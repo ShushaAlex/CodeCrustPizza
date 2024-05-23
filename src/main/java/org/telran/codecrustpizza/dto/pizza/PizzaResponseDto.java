@@ -1,7 +1,7 @@
 package org.telran.codecrustpizza.dto.pizza;
 
 import lombok.Builder;
-import org.telran.codecrustpizza.entity.PizzaIngredient;
+import org.telran.codecrustpizza.dto.pizza.PizzaPatternIngredient.PizzaIngredientResponseDto;
 import org.telran.codecrustpizza.entity.enums.Dough;
 
 import java.math.BigDecimal;
@@ -14,7 +14,7 @@ public record PizzaResponseDto(
         Dough dough,
         String description,
         int size,
-        Set<PizzaIngredient> pizzaIngredients,
+        Set<PizzaIngredientResponseDto> pizzaIngredients,
         int calories,
         BigDecimal price
 ) {
