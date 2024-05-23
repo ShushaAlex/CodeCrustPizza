@@ -1,6 +1,6 @@
 package org.telran.codecrustpizza.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telran.codecrustpizza.dto.pizza.PizzaPatternIngredient.PizzaPatternIngredientCreateRequestDto;
@@ -11,10 +11,9 @@ import org.telran.codecrustpizza.entity.PizzaPattern;
 import org.telran.codecrustpizza.entity.PizzaPatternIngredient;
 import org.telran.codecrustpizza.entity.enums.Dough;
 import org.telran.codecrustpizza.exception.EntityException;
-import org.telran.codecrustpizza.mapper.PizzaPatternIngredientMapper;
 import org.telran.codecrustpizza.mapper.PizzaPatternMapper;
-import org.telran.codecrustpizza.repository.IngredientRepository;
 import org.telran.codecrustpizza.repository.PizzaPatternRepository;
+import org.telran.codecrustpizza.service.IngredientService;
 import org.telran.codecrustpizza.service.PizzaService;
 
 import java.math.BigDecimal;
@@ -25,23 +24,14 @@ import java.util.Set;
 
 import static org.telran.codecrustpizza.exception.ExceptionMessage.ENTITY_EXIST;
 import static org.telran.codecrustpizza.exception.ExceptionMessage.NO_SUCH_ID;
-import static org.telran.codecrustpizza.exception.ExceptionMessage.NO_SUCH_INGREDIENT;
 
 @Service
-public class PizzaPatternServiceImpl implements PizzaService<PizzaPatternResponseDto, PizzaPatternCreateDto, PizzaPatternIngredient> {
+@RequiredArgsConstructor
+public class PizzaPatternServiceImpl implements PizzaService<PizzaPatternResponseDto, PizzaPatternCreateDto, PizzaPatternIngredient, PizzaPattern> {
 
     private final PizzaPatternRepository pizzaPatternRepository;
     private final PizzaPatternMapper pizzaPatternMapper;
-    private final PizzaPatternIngredientMapper ingredientMapper;
-    private final IngredientRepository ingredientRepository;
-
-    @Autowired
-    public PizzaPatternServiceImpl(PizzaPatternRepository pizzaPatternRepository, PizzaPatternMapper pizzaPatternMapper, PizzaPatternIngredientMapper ingredientMapper, IngredientRepository ingredientRepository) {
-        this.pizzaPatternRepository = pizzaPatternRepository;
-        this.pizzaPatternMapper = pizzaPatternMapper;
-        this.ingredientMapper = ingredientMapper;
-        this.ingredientRepository = ingredientRepository;
-    }
+    private final IngredientService ingredientService;
 
     @Override
     @Transactional
@@ -75,18 +65,24 @@ public class PizzaPatternServiceImpl implements PizzaService<PizzaPatternRespons
     }
 
     @Override
-    public PizzaPatternResponseDto getPizzaById(Long id) {
-        Optional<PizzaPattern> pizzaPatternOptional = pizzaPatternRepository.findById(id);
-        if (pizzaPatternOptional.isEmpty()) throw new EntityException(NO_SUCH_ID.getCustomMessage("PizzaPattern", id));
+    @Transactional
+    public PizzaPatternResponseDto getPizzaDtoById(Long id) {
 
-        return pizzaPatternMapper.toDto(pizzaPatternOptional.get());
+        return pizzaPatternMapper.toDto(getPizzaById(id));
+    }
+
+    @Override
+    @Transactional
+    public PizzaPattern getPizzaById(Long id) {
+
+        return pizzaPatternRepository.findById(id)
+                .orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("PizzaPattern", id)));
     }
 
     @Override
     @Transactional
     public PizzaPatternResponseDto updatePizza(Long id, PizzaPatternCreateDto pizzaCreateDto) {
-        PizzaPattern pizzaPattern = pizzaPatternRepository.findById(id)
-                .orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("PizzaPattern", id)));
+        PizzaPattern pizzaPattern = getPizzaById(id);
 
         Set<PizzaPatternIngredient> patternIngredients = getPizzaPatternIngredients(pizzaCreateDto.patternIngredients());
 
@@ -148,8 +144,7 @@ public class PizzaPatternServiceImpl implements PizzaService<PizzaPatternRespons
 
         for (PizzaPatternIngredientCreateRequestDto patternIngredientDto : createDto) {
             String title = patternIngredientDto.ingredientTitle();
-            Ingredient ingredient = ingredientRepository.findByTitle(title)
-                    .orElseThrow(() -> new EntityException(NO_SUCH_INGREDIENT.getCustomMessage(title)));
+            Ingredient ingredient = ingredientService.findByTitle(title);
 
             patternIngredients.add(PizzaPatternIngredient.builder()
                     .ingredient(ingredient)

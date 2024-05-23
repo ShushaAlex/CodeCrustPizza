@@ -25,7 +25,7 @@ import static org.telran.codecrustpizza.exception.ExceptionMessage.ENTITY_EXIST;
 import static org.telran.codecrustpizza.exception.ExceptionMessage.NO_SUCH_ID;
 
 @Service
-public class PizzaServiceImpl implements PizzaService<PizzaResponseDto, PizzaCreateRequestDto, PizzaIngredient> {
+public class PizzaServiceImpl implements PizzaService<PizzaResponseDto, PizzaCreateRequestDto, PizzaIngredient, Pizza> {
 
     private final PizzaRepository pizzaRepository;
     private final PizzaPatternRepository pizzaPatternRepository;
@@ -76,27 +76,30 @@ public class PizzaServiceImpl implements PizzaService<PizzaResponseDto, PizzaCre
 
     @Override
     @Transactional
-    public PizzaResponseDto getPizzaById(Long id) {
-        Optional<Pizza> pizza = pizzaRepository.findById(id);
-        if (pizza.isEmpty()) throw new EntityException(NO_SUCH_ID.getCustomMessage("Pizza", id));
+    public PizzaResponseDto getPizzaDtoById(Long id) {
 
-        return pizzaMapper.toDto(pizza.get());
+        return pizzaMapper.toDto(getPizzaById(id));
     }
 
     @Override
-    @Transactional
+    public Pizza getPizzaById(Long id) {
+
+        return pizzaRepository.findById(id)
+                .orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("Pizza", id)));
+    }
+
+    @Override
     public PizzaResponseDto updatePizza(Long id, PizzaCreateRequestDto pizzaCreateDto) {
-        //TODO как сделать заглушку? / 2 interfaces or plug with exception
-        return null;
+
+        throw new UnsupportedOperationException("Implementation of this method is not provided.");
     }
 
     @Override
     @Transactional
     public boolean deletePizza(Long id) {
-        Optional<Pizza> pizza = pizzaRepository.findById(id);
-        if (pizza.isEmpty()) throw new EntityException(NO_SUCH_ID.getCustomMessage("Pizza", id));
 
-        pizzaRepository.delete(pizza.get());
+        Pizza pizza = getPizzaById(id);
+        pizzaRepository.delete(pizza);
         return true;
     }
 

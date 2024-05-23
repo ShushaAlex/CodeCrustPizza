@@ -125,7 +125,7 @@ class PizzaServiceImplTest {
         when(pizzaRepository.findById(id)).thenReturn(Optional.of(pizza));
         when(pizzaMapper.toDto(pizza)).thenReturn(responseDto);
         // Execute
-        PizzaResponseDto result = pizzaService.getPizzaById(id);
+        PizzaResponseDto result = pizzaService.getPizzaDtoById(id);
         //Validate
         assertEquals(responseDto.id(), result.id());
         verify(pizzaRepository, times(1)).findById(id);
@@ -139,7 +139,7 @@ class PizzaServiceImplTest {
 
         when(pizzaRepository.findById(id)).thenReturn(Optional.empty());
         // Validate
-        assertThrows(EntityException.class, () -> pizzaService.getPizzaById(id));
+        assertThrows(EntityException.class, () -> pizzaService.getPizzaDtoById(id));
     }
 
     @Test

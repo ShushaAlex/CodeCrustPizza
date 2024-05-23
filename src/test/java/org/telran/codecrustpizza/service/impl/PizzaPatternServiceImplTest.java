@@ -108,7 +108,7 @@ class PizzaPatternServiceImplTest {
         when(pizzaPatternRepository.findById(id)).thenReturn(Optional.of(pizzaPattern));
         when(pizzaPatternMapper.toDto(pizzaPattern)).thenReturn(responseDto);
         // Execute
-        PizzaPatternResponseDto result = pizzaPatternService.getPizzaById(id);
+        PizzaPatternResponseDto result = pizzaPatternService.getPizzaDtoById(id);
         // Validate
         assertEquals(responseDto.id(), result.id());
         verify(pizzaPatternRepository, times(1)).findById(id);
@@ -122,7 +122,7 @@ class PizzaPatternServiceImplTest {
 
         when(pizzaPatternRepository.findById(id)).thenReturn(Optional.empty());
         // Validate
-        assertThrows(EntityException.class, () -> pizzaPatternService.getPizzaById(id));
+        assertThrows(EntityException.class, () -> pizzaPatternService.getPizzaDtoById(id));
         verify(pizzaPatternRepository, times(1)).findById(id);
     }
 

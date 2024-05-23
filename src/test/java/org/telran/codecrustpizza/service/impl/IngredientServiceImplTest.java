@@ -54,7 +54,7 @@ class IngredientServiceImplTest {
     }
 
     @Test
-    void getByIdSuccessTest() {
+    void getIngredientDtoByIdSuccessTest() {
         // Prepare data
         Long id = 1L;
         Ingredient ingredient = INGREDIENT_1;
@@ -63,7 +63,7 @@ class IngredientServiceImplTest {
         when(ingredientRepository.findById(id)).thenReturn(Optional.of(ingredient));
         when(ingredientMapper.toDto(ingredient)).thenReturn(responseDto);
         // Execute
-        IngredientResponseDto result = ingredientService.getById(id);
+        IngredientResponseDto result = ingredientService.getIngredientDtoById(id);
         // Validate
         assertEquals(responseDto.title(), result.title());
         verify(ingredientRepository, times(1)).findById(id);
@@ -71,13 +71,13 @@ class IngredientServiceImplTest {
     }
 
     @Test
-    void getByIdThrowsEntityExceptionTest() {
+    void getIngredientDtoByIdThrowsEntityExceptionTest() {
         // Prepare data
         Long id = 1L;
 
         when(ingredientRepository.findById(id)).thenReturn(Optional.empty());
         // Validate
-        assertThrows(EntityException.class, () -> ingredientService.getById(id));
+        assertThrows(EntityException.class, () -> ingredientService.getIngredientDtoById(id));
         verify(ingredientRepository, times(1)).findById(id);
     }
 

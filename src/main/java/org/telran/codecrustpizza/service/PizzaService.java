@@ -10,15 +10,18 @@ import java.util.Set;
  * @param <T> The type of response DTO for pizza.
  * @param <U> The type of DTO used for creating or updating pizza.
  * @param <V> The type of ingredient used in pizza patterns.
+ * @param <Y> The type of entity.
  */
 
-public interface PizzaService<T, U, V> {
+public interface PizzaService<T, U, V, Y> {
 
     List<T> findAll();
 
     T createPizza(U pizzaCreateDto);
 
-    T getPizzaById(Long id);
+    T getPizzaDtoById(Long id);
+
+    Y getPizzaById(Long id);
 
     T updatePizza(Long id, U pizzaCreateDto);
 
@@ -27,4 +30,5 @@ public interface PizzaService<T, U, V> {
     int calculateTotalCalories(Set<V> ingredients);
 
     BigDecimal calculateTotalPrice(Set<V> ingredients);
+
 }

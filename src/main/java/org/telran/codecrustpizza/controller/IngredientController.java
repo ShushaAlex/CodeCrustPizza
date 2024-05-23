@@ -31,7 +31,7 @@ public class IngredientController {
     @GetMapping("/{id}")
     IngredientResponseDto getById(@PathVariable Long id) {
 
-        return ingredientService.getById(id);
+        return ingredientService.getIngredientDtoById(id);
     }
 
     @PostMapping

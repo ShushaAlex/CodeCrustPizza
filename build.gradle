@@ -41,6 +41,8 @@ dependencies {
     annotationProcessor group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: '0.1.0'
     // Swagger
     implementation group: 'io.swagger.core.v3', name: 'swagger-annotations', version: '2.2.21'
+    // Security
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '3.2.5'
     // Tests
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

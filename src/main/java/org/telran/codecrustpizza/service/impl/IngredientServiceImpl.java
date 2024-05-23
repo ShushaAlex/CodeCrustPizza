@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import static org.telran.codecrustpizza.exception.ExceptionMessage.ENTITY_EXIST;
 import static org.telran.codecrustpizza.exception.ExceptionMessage.NO_SUCH_ID;
+import static org.telran.codecrustpizza.exception.ExceptionMessage.NO_SUCH_INGREDIENT;
 
 @Service
 public class IngredientServiceImpl implements IngredientService {
@@ -38,10 +39,23 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public IngredientResponseDto getById(Long id) {
-        Ingredient ingredient = ingredientRepository.findById(id).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("ingredient", id)));
+    public IngredientResponseDto getIngredientDtoById(Long id) {
 
-        return ingredientMapper.toDto(ingredient);
+        return ingredientMapper.toDto(findById(id));
+    }
+
+    @Override
+    public Ingredient findById(Long id) {
+
+        return ingredientRepository.findById(id)
+                .orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("ingredient", id)));
+    }
+
+    @Override
+    public Ingredient findByTitle(String title) {
+
+        return ingredientRepository.findByTitle(title)
+                .orElseThrow(() -> new EntityException(NO_SUCH_INGREDIENT.getCustomMessage(title)));
     }
 
     @Override
@@ -59,8 +73,7 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     @Transactional
     public IngredientResponseDto deleteIngredient(Long id) { //TODO подумать над каскадом изменений после удаления ингредиента
-        Ingredient ingredient = ingredientRepository.findById(id).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("ingredient", id)));
-
+        Ingredient ingredient = findById(id);
         ingredientRepository.delete(ingredient);
 
         return ingredientMapper.toDto(ingredient);
@@ -69,7 +82,7 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     @Transactional
     public IngredientResponseDto updateIngredient(Long id, IngredientCreateRequestDto createDto) {
-        Ingredient ingredient = ingredientRepository.findById(id).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("ingredient", id)));
+        Ingredient ingredient = findById(id);
 
         ingredient.setTitle(createDto.title());
         ingredient.setPrice(createDto.price());
