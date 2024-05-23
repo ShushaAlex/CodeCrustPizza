@@ -18,7 +18,9 @@ public interface UserService {
 
     User getById(Long id);
 
-    UserResponseDto findByEmail(String email);
+    UserResponseDto getUserDtoByEmail(String email);
+
+    User getByEmail(String email);
 
     UserResponseDto save(UserCreateRequestDto dto);
 

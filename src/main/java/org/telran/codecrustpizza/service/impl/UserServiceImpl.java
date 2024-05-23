@@ -74,10 +74,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto findByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new EntityException(NO_SUCH_EMAIL.getCustomMessage("user", email)));
+    public UserResponseDto getUserDtoByEmail(String email) {
 
-        return userMapper.toResponseDto(user);
+        return userMapper.toResponseDto(getByEmail(email));
+    }
+
+    @Override
+    public User getByEmail(String email) {
+
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityException(NO_SUCH_EMAIL.getCustomMessage("user", email)));
     }
 
     @Override

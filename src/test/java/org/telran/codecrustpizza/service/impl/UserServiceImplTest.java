@@ -116,7 +116,7 @@ public class UserServiceImplTest {
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
         when(userMapper.toResponseDto(user)).thenReturn(responseDto);
         // Execute
-        UserResponseDto result = userServiceImpl.findByEmail(email);
+        UserResponseDto result = userServiceImpl.getUserDtoByEmail(email);
         // Validate
         assertEquals(responseDto.name(), result.name());
         assertEquals(responseDto.email(), result.email());
@@ -125,13 +125,13 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void findByEmailThrowsEntityExceptionTest() {
+    public void getUserDtoByEmailThrowsEntityExceptionTest() {
         // Prepare data
         String email = EMAIL_1;
 
         when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
         // Validate
-        assertThrows(EntityException.class, () -> userServiceImpl.findByEmail(email));
+        assertThrows(EntityException.class, () -> userServiceImpl.getUserDtoByEmail(email));
         verify(userRepository, times(1)).findByEmail(email);
     }
 

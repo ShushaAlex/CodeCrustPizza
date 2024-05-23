@@ -11,7 +11,9 @@ import org.telran.codecrustpizza.dto.pizza.PizzaCreateRequestDto;
 import org.telran.codecrustpizza.dto.pizza.PizzaResponseDto;
 import org.telran.codecrustpizza.dto.pizza.pizzaPattern.PizzaPatternCreateDto;
 import org.telran.codecrustpizza.dto.pizza.pizzaPattern.PizzaPatternResponseDto;
+import org.telran.codecrustpizza.entity.Pizza;
 import org.telran.codecrustpizza.entity.PizzaIngredient;
+import org.telran.codecrustpizza.entity.PizzaPattern;
 import org.telran.codecrustpizza.entity.PizzaPatternIngredient;
 import org.telran.codecrustpizza.service.PizzaService;
 
@@ -22,8 +24,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PizzaController {
 
-    private final PizzaService<PizzaResponseDto, PizzaCreateRequestDto, PizzaIngredient> pizzaService;
-    private final PizzaService<PizzaPatternResponseDto, PizzaPatternCreateDto, PizzaPatternIngredient> pizzaPatternService;
+    private final PizzaService<PizzaResponseDto, PizzaCreateRequestDto, PizzaIngredient, Pizza> pizzaService;
+    private final PizzaService<PizzaPatternResponseDto, PizzaPatternCreateDto, PizzaPatternIngredient, PizzaPattern> pizzaPatternService;
 
     @GetMapping
     public List<PizzaResponseDto> findAllPizza() {

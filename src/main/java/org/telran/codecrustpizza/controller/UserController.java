@@ -3,8 +3,9 @@ package org.telran.codecrustpizza.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,9 @@ import org.telran.codecrustpizza.dto.user.UserChangePasswordRequestDto;
 import org.telran.codecrustpizza.dto.user.UserCreateRequestDto;
 import org.telran.codecrustpizza.dto.user.UserResponseDto;
 import org.telran.codecrustpizza.entity.enums.Role;
+import org.telran.codecrustpizza.security.AuthenticationService;
+import org.telran.codecrustpizza.security.model.JwtAuthenticationResponse;
+import org.telran.codecrustpizza.security.model.SignInRequest;
 import org.telran.codecrustpizza.service.UserService;
 
 import java.util.List;
@@ -28,19 +32,22 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping("api/user")
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final AuthenticationService authenticationService;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping
     public List<UserResponseDto> getAllUsers() {
 
         return userService.findAll();
+    }
+
+    @PostMapping("/login")
+    public JwtAuthenticationResponse login(@RequestBody SignInRequest request) {
+        return authenticationService.authenticate(request);
     }
 
     @GetMapping("/{id}")

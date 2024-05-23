@@ -1,36 +1,53 @@
 package org.telran.codecrustpizza.config;
 
-//@Configuration
-//@EnableWebSecurity
-//@EnableMethodSecurity // позволяет делать аннотации над методами в контроллере
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.telran.codecrustpizza.security.JwtAuthenticationFilter;
+
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    //@Autowired
-    //private final UserDetailService userDetailService;
-//    @Bean
-//    public PasswordEncoder passwordEncoder() { ипользуем одно из двух
-//        return NoOpPasswordEncoder.getInstance();
-//        return new BCryptPasswordEncoder();
-//    }
+    private final JwtAuthenticationFilter authenticationFilter;
 
-//    @Bean
-//    public AuthentificationManager authentificationManager(PasswordEncoder passwordEncoder)
-//        DaoAuthentificationProvider daoAuthprovider = New DaoAuthentificationProvider();
-//        daoAuthprovider.setUserDetailsService(userDetailsService);
-//        daoAuthprovider.setPasswordEncoder(passwordEncoder);
-//        return new ProviderManager(daoAuthprovider);
-//    }
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers("api/v1/users").permitAll()
+                        .requestMatchers("api/v1/users/login").permitAll()
 
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthentificationManager authentificationManager) {
-//        return http.csrf() // .disable(); чтобы отключить csrf
-//                .disable()
-//                .authorizeHttpRequest(authorize -> authorize
-//                        .requestMatchers("/auth/login", "/auth/register", "/error").permitAll() //перечисляем открытые эндпойнты
-//                        .anyRequest().authenticated())
-//                .httpBasic(Customizer.withDefaults())
-//                .logout(Customizer.withDefaults())
-//                .authentificationManager(authentificationManager)
-//                .build();
-//    }
+                        .anyRequest().authenticated())
+                .httpBasic(Customizer.withDefaults())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
 }
