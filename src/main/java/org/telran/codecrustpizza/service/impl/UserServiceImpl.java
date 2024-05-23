@@ -62,11 +62,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserResponseDto findById(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", id)));
+    public UserResponseDto getUserDtoById(Long id) {
 
-        return userMapper.toResponseDto(user);
+        return userMapper.toResponseDto(getById(id));
+    }
+
+    @Override
+    public User getById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", id)));
     }
 
     @Override
@@ -95,7 +99,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDto assignRole(Long userId, Role role) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", userId)));
+        User user = getById(userId);
         user.setRole(role);
         userRepository.save(user);
 
@@ -104,8 +108,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserResponseDto addPhone(Long userId, PhoneCreateRequestDto phoneDto) {  //TODO может нужно возвращать сущность с подтянутыми телефонами
-        User user = userRepository.findById(userId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", userId)));
+    public UserResponseDto addPhone(Long userId, PhoneCreateRequestDto phoneDto) {
+        User user = getById(userId);
         Phone phone = phoneMapper.toPhone(phoneDto);
 
         Optional<Phone> existingPhone = phoneRepository.findByCountryCodeAndNumber(phone.getCountryCode(), phone.getNumber());
@@ -123,8 +127,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDto removePhone(Long userId, Long phoneId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", userId)));
-        Phone phone = phoneRepository.findById(phoneId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("phone", phoneId)));
+        User user = getById(userId);
+        Phone phone = getPhoneById(phoneId);
         user.removePhone(phone);
         phoneRepository.delete(phone);
         userRepository.save(user);
@@ -135,7 +139,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDto addAddress(Long userId, AddressCreateRequestDto addressDto) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", userId)));
+        User user = getById(userId);
         Address address = addressMapper.toAddress(addressDto);
 
         Optional<Address> existingAddress = addressRepository.findByCityAndStreetAndHouse(address.getCity(), address.getStreet(), address.getHouse());
@@ -152,9 +156,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserResponseDto removeAddress(Long userId, Long addressId) { //TODO может нужно возвращать сущность с подтянутыми адресами
-        User user = userRepository.findById(userId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", userId)));
-        Address address = addressRepository.findById(addressId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("address", addressId)));
+    public UserResponseDto removeAddress(Long userId, Long addressId) {
+        User user = getById(userId);
+        Address address = getAddressById(addressId);
         user.removeAddress(address);
         addressRepository.delete(address);
         userRepository.save(user);
@@ -165,7 +169,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDto changePassword(Long userId, UserChangePasswordRequestDto changePasswordRequestDto) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", userId)));
+        User user = getById(userId);
         user.setPassword(changePasswordRequestDto.password());
         userRepository.save(user);
 
@@ -175,7 +179,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDto changeEmail(Long userId, String newEmail) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", userId)));
+        User user = getById(userId);
         user.setEmail(newEmail);
         userRepository.save(user);
 
@@ -185,13 +189,24 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDto changeName(Long userId, String name) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", userId)));
+        User user = getById(userId);
         user.setName(name);
         userRepository.save(user);
 
         return userMapper.toResponseDto(user);
     }
 
+    private Phone getPhoneById(Long phoneId) {
+
+        return phoneRepository.findById(phoneId)
+                .orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("phone", phoneId)));
+    }
+
+    private Address getAddressById(Long addressId) {
+
+        return addressRepository.findById(addressId)
+                .orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("address", addressId)));
+    }
 
 //    @Override
 //    public Long getCurrentUserId() {

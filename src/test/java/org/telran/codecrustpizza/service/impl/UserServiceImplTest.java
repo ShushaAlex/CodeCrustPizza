@@ -87,7 +87,7 @@ public class UserServiceImplTest {
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(userMapper.toResponseDto(user)).thenReturn(responseDto);
         // Execute
-        UserResponseDto result = userServiceImpl.findById(userId);
+        UserResponseDto result = userServiceImpl.getUserDtoById(userId);
         // Validate
         assertEquals(responseDto.name(), result.name());
         assertEquals(responseDto.email(), result.email());
@@ -96,13 +96,13 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void findByIdThrowsEntityExceptionTest() {
+    public void getUserDtoByIdThrowsEntityExceptionTest() {
         // Prepare data
         Long userId = 1L;
 
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
         // Validate
-        assertThrows(EntityException.class, () -> userServiceImpl.findById(userId));
+        assertThrows(EntityException.class, () -> userServiceImpl.getUserDtoById(userId));
         verify(userRepository, times(1)).findById(userId);
     }
 

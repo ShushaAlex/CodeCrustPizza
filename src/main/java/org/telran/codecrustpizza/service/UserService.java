@@ -5,6 +5,7 @@ import org.telran.codecrustpizza.dto.phone.PhoneCreateRequestDto;
 import org.telran.codecrustpizza.dto.user.UserChangePasswordRequestDto;
 import org.telran.codecrustpizza.dto.user.UserCreateRequestDto;
 import org.telran.codecrustpizza.dto.user.UserResponseDto;
+import org.telran.codecrustpizza.entity.User;
 import org.telran.codecrustpizza.entity.enums.Role;
 
 import java.util.List;
@@ -13,7 +14,9 @@ public interface UserService {
 
     List<UserResponseDto> findAll();
 
-    UserResponseDto findById(Long id);
+    UserResponseDto getUserDtoById(Long id);
+
+    User getById(Long id);
 
     UserResponseDto findByEmail(String email);
 
