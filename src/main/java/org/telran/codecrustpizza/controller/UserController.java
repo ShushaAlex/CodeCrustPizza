@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,15 +16,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.telran.codecrustpizza.dto.JwtAuthenticationResponse;
 import org.telran.codecrustpizza.dto.address.AddressCreateRequestDto;
 import org.telran.codecrustpizza.dto.phone.PhoneCreateRequestDto;
 import org.telran.codecrustpizza.dto.user.UserChangePasswordRequestDto;
 import org.telran.codecrustpizza.dto.user.UserCreateRequestDto;
 import org.telran.codecrustpizza.dto.user.UserResponseDto;
+import org.telran.codecrustpizza.dto.user.UserSignInRequestDto;
 import org.telran.codecrustpizza.entity.enums.Role;
 import org.telran.codecrustpizza.security.AuthenticationService;
-import org.telran.codecrustpizza.security.model.JwtAuthenticationResponse;
-import org.telran.codecrustpizza.security.model.SignInRequest;
 import org.telran.codecrustpizza.service.UserService;
 
 import java.util.List;
@@ -38,7 +38,6 @@ public class UserController {
 
     private final UserService userService;
     private final AuthenticationService authenticationService;
-    private final PasswordEncoder passwordEncoder;
 
     @GetMapping
     public List<UserResponseDto> getAllUsers() {
@@ -46,8 +45,9 @@ public class UserController {
         return userService.findAll();
     }
 
+    @PermitAll
     @PostMapping("/login")
-    public JwtAuthenticationResponse login(@RequestBody SignInRequest request) {
+    public JwtAuthenticationResponse login(@RequestBody UserSignInRequestDto request) {
         return authenticationService.authenticate(request);
     }
 
@@ -77,6 +77,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}/change-name")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public UserResponseDto changeName(@PathVariable Long id, @NotBlank @RequestParam String name) {
 
         return userService.changeName(id, name);

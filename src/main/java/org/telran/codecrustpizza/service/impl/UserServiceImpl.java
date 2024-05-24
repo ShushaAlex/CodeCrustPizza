@@ -1,6 +1,6 @@
 package org.telran.codecrustpizza.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telran.codecrustpizza.dto.address.AddressCreateRequestDto;
@@ -31,6 +31,7 @@ import static org.telran.codecrustpizza.exception.ExceptionMessage.NO_SUCH_EMAIL
 import static org.telran.codecrustpizza.exception.ExceptionMessage.NO_SUCH_ID;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -39,16 +40,6 @@ public class UserServiceImpl implements UserService {
     private final PhoneMapper phoneMapper;
     private final UserMapper userMapper;
     private final AddressMapper addressMapper;
-
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository, PhoneRepository phoneRepository, AddressRepository addressRepository, PhoneMapper phoneMapper, UserMapper userMapper, AddressMapper addressMapper) {
-        this.userRepository = userRepository;
-        this.phoneRepository = phoneRepository;
-        this.addressRepository = addressRepository;
-        this.phoneMapper = phoneMapper;
-        this.userMapper = userMapper;
-        this.addressMapper = addressMapper;
-    }
 
     @Override
     @Transactional

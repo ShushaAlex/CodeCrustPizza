@@ -175,7 +175,7 @@ public class UserServiceImplTest {
         Long userId = 1L;
         Role role = Role.ADMIN;
         User user = new User();
-        user.setRole(Role.ROLEUSER);
+        user.setRole(Role.USER);
         UserResponseDto responseDto = USER_RESPONSE_DTO_1;
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));

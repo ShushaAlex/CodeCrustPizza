@@ -1,9 +1,9 @@
-package org.telran.codecrustpizza.security.model;
+package org.telran.codecrustpizza.dto.user;
 
 import lombok.Data;
 
 @Data
-public class SignInRequest {
+public class UserSignInRequestDto {
 
     private String login;
 

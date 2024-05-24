@@ -1,4 +1,4 @@
-package org.telran.codecrustpizza.security.model;
+package org.telran.codecrustpizza.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

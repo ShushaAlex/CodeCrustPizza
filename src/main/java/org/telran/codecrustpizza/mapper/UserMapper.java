@@ -1,6 +1,8 @@
 package org.telran.codecrustpizza.mapper;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.telran.codecrustpizza.dto.address.AddressResponseDto;
 import org.telran.codecrustpizza.dto.phone.PhoneResponseDto;
@@ -12,16 +14,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class UserMapper {
 
     private final PhoneMapper phoneMapper;
     private final AddressMapper addressMapper;
 
     @Autowired
-    public UserMapper(PhoneMapper phoneMapper, AddressMapper addressMapper) {
-        this.phoneMapper = phoneMapper;
-        this.addressMapper = addressMapper;
-    }
+    private PasswordEncoder passwordEncoder;
 
     public UserResponseDto toResponseDto(User user) {
         Set<AddressResponseDto> addresses = user.getAddresses()
@@ -49,7 +49,7 @@ public class UserMapper {
         return User.builder()
                 .name(dto.name())
                 .email(dto.email())
-                .password(dto.passwordRequestDto().password())
+                .password(passwordEncoder.encode(dto.passwordRequestDto().password()))
                 .build();
     }
 }
