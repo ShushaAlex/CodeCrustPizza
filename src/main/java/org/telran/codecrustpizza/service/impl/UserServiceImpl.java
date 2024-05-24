@@ -1,6 +1,9 @@
 package org.telran.codecrustpizza.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telran.codecrustpizza.dto.address.AddressCreateRequestDto;
@@ -205,22 +208,22 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("address", addressId)));
     }
 
-//    @Override
-//    public Long getCurrentUserId() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (authentication == null || !authentication.isAuthenticated()) {
-//            throw new SecurityException("User is not authenticated");
-//        }
-//
-//        Object principal = authentication.getPrincipal();
-//        if (principal instanceof UserDetails) {
-//            String username = ((UserDetails) principal).getUsername();
-//            UserEntity user = getByLogin(username);
-//            return user.getId();
-//        } else {
-//            throw new IllegalArgumentException("The primary authentication object cannot be used to obtain the ID");
-//        }
-//    }
+    @Override
+    public Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new SecurityException("User is not authenticated");
+        }
+
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails) principal).getUsername();
+            User user = getByEmail(username);
+            return user.getId();
+        } else {
+            throw new IllegalArgumentException("The primary authentication object cannot be used to obtain the ID");
+        }
+    }
 //
 //    @Override
 //    public UserEntity getByLogin(String login) {

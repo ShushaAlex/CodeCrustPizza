@@ -40,5 +40,7 @@ public interface UserService {
 
     UserResponseDto changeName(Long userId, String name);
 
+    Long getCurrentUserId();
+
     //TODO добавить методы по добавлению и удалению любимой пиццы
 }

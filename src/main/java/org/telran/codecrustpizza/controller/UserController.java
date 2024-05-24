@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -77,7 +76,6 @@ public class UserController {
     }
 
     @PutMapping("/{id}/change-name")
-    @PreAuthorize("hasRole('ROLE_USER')")
     public UserResponseDto changeName(@PathVariable Long id, @NotBlank @RequestParam String name) {
 
         return userService.changeName(id, name);
