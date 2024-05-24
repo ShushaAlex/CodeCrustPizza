@@ -196,6 +196,16 @@ public class UserServiceImpl implements UserService {
         return userMapper.toResponseDto(user);
     }
 
+    @Override
+    @Transactional
+    public UserResponseDto changeNameForCurrentUser(String name) {
+        User user = getById(getCurrentUserId());
+        user.setName(name);
+        userRepository.save(user);
+
+        return userMapper.toResponseDto(user);
+    }
+
     private Phone getPhoneById(Long phoneId) {
 
         return phoneRepository.findById(phoneId)

@@ -38,7 +38,7 @@ public class UserController {
     private final UserService userService;
     private final AuthenticationService authenticationService;
 
-    @GetMapping
+    @GetMapping("/all")
     public List<UserResponseDto> getAllUsers() {
 
         return userService.findAll();
@@ -50,10 +50,10 @@ public class UserController {
         return authenticationService.authenticate(request);
     }
 
-    @GetMapping("/{id}")
-    public UserResponseDto getUserById(@PathVariable Long id) {
-
-        return userService.getUserDtoById(id);
+    @GetMapping
+    public UserResponseDto getCurrentUser() {
+        Long userId = userService.getCurrentUserId();
+        return userService.getUserDtoById(userId);
     }
 
     @PermitAll
@@ -63,24 +63,27 @@ public class UserController {
         return userService.save(userCreateRequestDto);
     }
 
-    @PutMapping("/{id}/change-password")
-    public UserResponseDto changePassword(@PathVariable Long id, @Valid @RequestBody UserChangePasswordRequestDto passwordRequestDto) {
+    @PutMapping("/change-password")
+    public UserResponseDto changePassword(@Valid @RequestBody UserChangePasswordRequestDto passwordRequestDto) {
+        Long userId = userService.getCurrentUserId();
 
-        return userService.changePassword(id, passwordRequestDto);
+        return userService.changePassword(userId, passwordRequestDto);
     }
 
-    @PutMapping("/{id}/change-email")
-    public UserResponseDto changeEmail(@PathVariable Long id, @Email @RequestParam String email) {
+    @PutMapping("/change-email")
+    public UserResponseDto changeEmail(@Email @RequestParam String email) {
+        Long userId = userService.getCurrentUserId();
 
-        return userService.changeEmail(id, email);
+        return userService.changeEmail(userId, email);
     }
 
-    @PutMapping("/{id}/change-name")
-    public UserResponseDto changeName(@PathVariable Long id, @NotBlank @RequestParam String name) {
-
-        return userService.changeName(id, name);
+    @PutMapping("/change-name")
+    public UserResponseDto changeName(@NotBlank @RequestParam String name) {
+        Long userId = userService.getCurrentUserId();
+        return userService.changeName(userId, name);
     }
 
+    //Admin
     @PutMapping("/{id}/assign-role")
     public UserResponseDto assignRole(@PathVariable Long id, @RequestParam String role) {
         Role role1 = Role.valueOf(role.toUpperCase());
@@ -88,28 +91,31 @@ public class UserController {
         return userService.assignRole(id, role1);
     }
 
-    @PutMapping("/{id}/phone/add")
-    public UserResponseDto addPhone(@PathVariable Long id, @Valid @RequestBody PhoneCreateRequestDto phoneCreateRequestDto) {
+    @PutMapping("/phone/add")
+    public UserResponseDto addPhone(@Valid @RequestBody PhoneCreateRequestDto phoneCreateRequestDto) {
+        Long userId = userService.getCurrentUserId();
 
-        return userService.addPhone(id, phoneCreateRequestDto);
+        return userService.addPhone(userId, phoneCreateRequestDto);
     }
 
-    @PutMapping("/{id}/phone/remove")
-    public UserResponseDto removePhone(@PathVariable Long id, @RequestParam Long phoneId) {
+    @PutMapping("/phone/remove")
+    public UserResponseDto removePhone(@RequestParam Long phoneId) {
+        Long userId = userService.getCurrentUserId();
 
-        return userService.removePhone(id, phoneId);
+        return userService.removePhone(userId, phoneId);
     }
 
-    @PutMapping("/{id}/address/add")
-    public UserResponseDto addAddress(@PathVariable Long id, @Valid @RequestBody AddressCreateRequestDto addressDto) {
+    @PutMapping("/address/add")
+    public UserResponseDto addAddress(@Valid @RequestBody AddressCreateRequestDto addressDto) {
+        Long userId = userService.getCurrentUserId();
 
-        return userService.addAddress(id, addressDto);
+        return userService.addAddress(userId, addressDto);
     }
 
-    @PutMapping("/{id}/address/remove")
-    public UserResponseDto removeAddress(@PathVariable Long id, @RequestParam Long addressId) {
+    @PutMapping("/address/remove")
+    public UserResponseDto removeAddress(@RequestParam Long addressId) {
+        Long userId = userService.getCurrentUserId();
 
-        return userService.removeAddress(id, addressId);
+        return userService.removeAddress(userId, addressId);
     }
-
 }
