@@ -21,5 +21,5 @@ public interface ItemService {
 
     ItemResponseDto removeCategory(Long id, String category);
 
-    ItemResponseDto deleteItem(Long id);
+    boolean deleteItem(Long id);
 }

@@ -128,11 +128,11 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public ItemResponseDto deleteItem(Long id) {
+    public boolean deleteItem(Long id) {
         Item item = itemRepository.findById(id).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("item", id)));
 
         itemRepository.delete(item);
 
-        return itemMapper.toDto(item);
+        return true;
     }
 }

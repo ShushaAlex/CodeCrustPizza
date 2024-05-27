@@ -128,12 +128,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Order updateOrderStatus(Long orderId, OrderStatus status) {
+    public OrderResponseDto updateOrderStatus(Long orderId, OrderStatus status) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("order", orderId)));
         order.setOrderStatus(status);
         orderRepository.save(order);
-        return order;
+
+        return orderMapper.toDto(order);
     }
 
     @Override

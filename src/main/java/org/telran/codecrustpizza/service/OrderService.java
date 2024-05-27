@@ -2,7 +2,6 @@ package org.telran.codecrustpizza.service;
 
 import org.telran.codecrustpizza.dto.order.OrderResponseDto;
 import org.telran.codecrustpizza.entity.Delivery;
-import org.telran.codecrustpizza.entity.Order;
 import org.telran.codecrustpizza.entity.enums.OrderStatus;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public interface OrderService {
 
     List<OrderResponseDto> getAllOrders();
 
-    Order updateOrderStatus(Long orderId, OrderStatus status);
+    OrderResponseDto updateOrderStatus(Long orderId, OrderStatus status);
 
     Delivery createDelivery(Long addressId);
 
