@@ -38,6 +38,7 @@ public class UserController {
     private final UserService userService;
     private final AuthenticationService authenticationService;
 
+    //Admin
     @GetMapping("/all")
     public List<UserResponseDto> getAllUsers() {
 
@@ -53,6 +54,7 @@ public class UserController {
     @GetMapping
     public UserResponseDto getCurrentUser() {
         Long userId = userService.getCurrentUserId();
+
         return userService.getUserDtoById(userId);
     }
 

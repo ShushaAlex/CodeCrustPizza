@@ -33,6 +33,7 @@ public class SecurityConfig {
 
                         .requestMatchers("api/user/register").permitAll()
                         .requestMatchers("api/user/login").permitAll()
+                        .requestMatchers(SWAGGER).permitAll()
 
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
@@ -51,4 +52,28 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
+
+    private static final String[] SWAGGER = {
+            "/v2/api-docs",
+            "/v3/api-docs/",
+            "/swagger-resources/",
+            "/swagger-resources",
+            "/swagger-ui/",
+            "/swagger-ui.html",
+            "/swagger-ui/**", "/v3/api-docs/**",
+            "/swagger-ui/",
+            "/webjars/",
+            "/configuration/",
+            "/configuration/ui",
+            "/configuration/security",
+            "/public",
+            "/favicon.ico",
+            "/h2-console/",
+            "/conferenc/v1/swagger-ui.html",
+            "/swagger-resources/configuration/ui",
+            "/swagger-resources/configuration/security",
+            "/",
+            "/login", "/logout",
+            "/csrf"
+    };
 }

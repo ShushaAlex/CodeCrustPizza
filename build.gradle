@@ -42,7 +42,7 @@ dependencies {
     //Commons
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.14.0'
     // Swagger
-    implementation group: 'io.swagger.core.v3', name: 'swagger-annotations', version: '2.2.21'
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.5.0'
     // Security
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '3.2.5'
     implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.12.5'
