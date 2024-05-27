@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.telran.codecrustpizza.dto.item.ItemCreateRequestDto;
 import org.telran.codecrustpizza.dto.item.ItemResponseDto;
+import org.telran.codecrustpizza.dto.menu.MenuResponseDto;
 import org.telran.codecrustpizza.service.ItemService;
+import org.telran.codecrustpizza.service.MenuService;
 
 import java.util.List;
 
@@ -25,11 +27,18 @@ import java.util.List;
 public class ItemController {
 
     private final ItemService itemService;
+    private final MenuService menuService;
 
     @GetMapping
     public List<ItemResponseDto> getAll() {
 
         return itemService.getAll();
+    }
+
+    @GetMapping("/menu")
+    public MenuResponseDto getMenu() {
+
+        return menuService.getMenu();
     }
 
     @GetMapping("/{itemId}")
