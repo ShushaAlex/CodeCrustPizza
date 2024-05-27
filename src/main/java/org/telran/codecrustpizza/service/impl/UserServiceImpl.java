@@ -196,16 +196,6 @@ public class UserServiceImpl implements UserService {
         return userMapper.toResponseDto(user);
     }
 
-    @Override
-    @Transactional
-    public UserResponseDto changeNameForCurrentUser(String name) {
-        User user = getById(getCurrentUserId());
-        user.setName(name);
-        userRepository.save(user);
-
-        return userMapper.toResponseDto(user);
-    }
-
     private Phone getPhoneById(Long phoneId) {
 
         return phoneRepository.findById(phoneId)
@@ -234,10 +224,4 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("The primary authentication object cannot be used to obtain the ID");
         }
     }
-//
-//    @Override
-//    public UserEntity getByLogin(String login) {
-//        return repository.findByName(login)
-//                .orElseThrow(() -> new UserNotFoundException("User with login {} not found " + login));
-//    }
 }

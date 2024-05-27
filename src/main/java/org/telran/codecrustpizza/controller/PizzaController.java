@@ -2,8 +2,11 @@ package org.telran.codecrustpizza.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +42,18 @@ public class PizzaController {
         return pizzaPatternService.findAll();
     }
 
+    @GetMapping("/{pizzaId}")
+    public PizzaResponseDto findPizzaById(@PathVariable Long pizzaId) {
+
+        return pizzaService.getPizzaDtoById(pizzaId);
+    }
+
+    @GetMapping("pattern/{patternId}")
+    public PizzaPatternResponseDto findPatternById(@PathVariable Long patternId) {
+
+        return pizzaPatternService.getPizzaDtoById(patternId);
+    }
+
     @PostMapping
     public PizzaResponseDto createPizza(@Valid @RequestBody PizzaCreateRequestDto createDto) {
 
@@ -46,8 +61,21 @@ public class PizzaController {
     }
 
     @PostMapping("/pattern")
-    public PizzaPatternResponseDto createPizza(@Valid @RequestBody PizzaPatternCreateDto createDto) {
+    public PizzaPatternResponseDto createPizzaPattern(@Valid @RequestBody PizzaPatternCreateDto createDto) {
 
         return pizzaPatternService.createPizza(createDto);
     }
+
+    @PutMapping("/pattern/update/{patternId}")
+    public PizzaPatternResponseDto updatePizzaPattern(@PathVariable Long patternId, @RequestBody PizzaPatternCreateDto createDto) {
+
+        return pizzaPatternService.updatePizza(patternId, createDto);
+    }
+
+    @DeleteMapping("/delete/{pizzaId}")
+    public boolean deletePizza(@PathVariable Long pizzaId) {
+
+        return pizzaService.deletePizza(pizzaId);
+    }
+
 }

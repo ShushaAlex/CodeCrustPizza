@@ -2,6 +2,7 @@ package org.telran.codecrustpizza.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.telran.codecrustpizza.service.IngredientService;
 
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("api/ingredient")
 @RequiredArgsConstructor
