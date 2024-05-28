@@ -47,7 +47,7 @@ class AddressRepositoryTest {
     }
 
     @Test
-    public void testFindByCityAndStreetAndHouse_WhenAddressExists_ThenReturnAddress() {
+    public void testFindByCityAndStreetAndHouse_WhenAddressExists() {
         // Prepare data
         String city = CITY_1;
         String street = STREET_1;
