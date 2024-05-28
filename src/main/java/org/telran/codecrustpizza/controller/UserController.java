@@ -1,5 +1,9 @@
 package org.telran.codecrustpizza.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -34,6 +38,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/user")
 @RequiredArgsConstructor
+@Tag(name = "User Controller", description = "Operations related to user management")
 public class UserController {
 
     private final UserService userService;
@@ -41,6 +46,11 @@ public class UserController {
 
     //Admin
     @GetMapping("/all")
+    @Operation(summary = "Get all users", description = "Retrieve a list of all users. Requires admin privileges.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved list of users"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
+    })
     public List<UserResponseDto> getAllUsers() {
 
         return userService.findAll();
@@ -48,11 +58,22 @@ public class UserController {
 
     @PermitAll
     @PostMapping("/login")
+    @Operation(summary = "Login", description = "Authenticate user and return JWT token")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully authenticated user"),
+            @ApiResponse(responseCode = "401", description = "Invalid credentials")
+    })
     public JwtAuthenticationResponse login(@RequestBody UserSignInRequestDto request) {
         return authenticationService.authenticate(request);
     }
 
+
     @GetMapping
+    @Operation(summary = "Get current user", description = "Retrieve details of the currently authenticated user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved user details"),
+            @ApiResponse(responseCode = "401", description = "User not authenticated")
+    })
     public UserResponseDto getCurrentUser() {
         Long userId = userService.getCurrentUserId();
 
