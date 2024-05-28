@@ -5,6 +5,7 @@ import org.telran.codecrustpizza.dto.phone.PhoneCreateRequestDto;
 import org.telran.codecrustpizza.dto.user.UserChangePasswordRequestDto;
 import org.telran.codecrustpizza.dto.user.UserCreateRequestDto;
 import org.telran.codecrustpizza.dto.user.UserResponseDto;
+import org.telran.codecrustpizza.dto.user.UserWithFavoritePizzaResponseDto;
 import org.telran.codecrustpizza.entity.User;
 import org.telran.codecrustpizza.entity.enums.Role;
 
@@ -37,6 +38,14 @@ public interface UserService {
      * @return the {@link User} entity.
      */
     User getById(Long id);
+
+    /**
+     * Retrieves a user entity by its ID. With join fetch of users favorite pizzas.
+     *
+     * @param id the ID of the user to be retrieved.
+     * @return the {@link User} entity.
+     */
+    User getByIdWithFavorites(Long id);
 
     /**
      * Retrieves a user response DTO by email.
@@ -141,5 +150,21 @@ public interface UserService {
      */
     Long getCurrentUserId();
 
-    //TODO добавить методы по добавлению и удалению любимой пиццы
+    /**
+     * Adds a favorite pizza to a user.
+     *
+     * @param userId  the ID of the user to be updated.
+     * @param pizzaId the ID of the pizza to be added as favorite.
+     * @return a {@link UserWithFavoritePizzaResponseDto} representing the updated user with the added favorite pizza.
+     */
+    UserWithFavoritePizzaResponseDto addFavoritePizza(Long userId, Long pizzaId);
+
+    /**
+     * Removes a favorite pizza from a user.
+     *
+     * @param userId  the ID of the user to be updated.
+     * @param pizzaId the ID of the pizza to be removed from favorites.
+     * @return a {@link UserWithFavoritePizzaResponseDto} representing the updated user with the removed favorite pizza.
+     */
+    UserWithFavoritePizzaResponseDto removeFavoritePizza(Long userId, Long pizzaId);
 }

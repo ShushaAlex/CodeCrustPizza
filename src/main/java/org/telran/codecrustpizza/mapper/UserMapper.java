@@ -6,8 +6,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.telran.codecrustpizza.dto.address.AddressResponseDto;
 import org.telran.codecrustpizza.dto.phone.PhoneResponseDto;
+import org.telran.codecrustpizza.dto.pizza.PizzaShortResponseDto;
 import org.telran.codecrustpizza.dto.user.UserCreateRequestDto;
 import org.telran.codecrustpizza.dto.user.UserResponseDto;
+import org.telran.codecrustpizza.dto.user.UserWithFavoritePizzaResponseDto;
 import org.telran.codecrustpizza.entity.User;
 
 import java.util.Set;
@@ -43,6 +45,15 @@ public class UserMapper {
                 user.isBlocked(),
                 user.getCreationDate()
         );
+    }
+
+    public UserWithFavoritePizzaResponseDto toResponseDtoWithPizza(User user, Set<PizzaShortResponseDto> pizzas) {
+
+        return UserWithFavoritePizzaResponseDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .favoritePizzas(pizzas)
+                .build();
     }
 
     public User toUser(UserCreateRequestDto dto) {

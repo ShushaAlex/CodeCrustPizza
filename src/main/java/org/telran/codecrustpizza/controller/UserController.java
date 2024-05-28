@@ -22,6 +22,7 @@ import org.telran.codecrustpizza.dto.user.UserChangePasswordRequestDto;
 import org.telran.codecrustpizza.dto.user.UserCreateRequestDto;
 import org.telran.codecrustpizza.dto.user.UserResponseDto;
 import org.telran.codecrustpizza.dto.user.UserSignInRequestDto;
+import org.telran.codecrustpizza.dto.user.UserWithFavoritePizzaResponseDto;
 import org.telran.codecrustpizza.entity.enums.Role;
 import org.telran.codecrustpizza.security.AuthenticationService;
 import org.telran.codecrustpizza.service.UserService;
@@ -119,5 +120,19 @@ public class UserController {
         Long userId = userService.getCurrentUserId();
 
         return userService.removeAddress(userId, addressId);
+    }
+
+    @PutMapping("/favorites/add")
+    public UserWithFavoritePizzaResponseDto addFavoritePizzaToCurrentUser(@RequestParam Long pizzaId) {
+        Long userId = userService.getCurrentUserId();
+
+        return userService.addFavoritePizza(userId, pizzaId);
+    }
+
+    @PutMapping("/favorites/remove")
+    public UserWithFavoritePizzaResponseDto removeFavoritePizzaFromCurrentUser(@RequestParam Long pizzaId) {
+        Long userId = userService.getCurrentUserId();
+
+        return userService.removeFavoritePizza(userId, pizzaId);
     }
 }

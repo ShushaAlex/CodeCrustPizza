@@ -3,6 +3,7 @@ package org.telran.codecrustpizza.mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telran.codecrustpizza.dto.pizza.PizzaResponseDto;
+import org.telran.codecrustpizza.dto.pizza.PizzaShortResponseDto;
 import org.telran.codecrustpizza.entity.Pizza;
 
 import java.util.stream.Collectors;
@@ -26,6 +27,16 @@ public class PizzaMapper {
                         .collect(Collectors.toSet()))
                 .calories(pizza.getCalories())
                 .price(pizza.getPrice())
+                .build();
+    }
+
+    public PizzaShortResponseDto toShortDto(Pizza pizza) {
+        return PizzaShortResponseDto.builder()
+                .id(pizza.getId())
+                .title(pizza.getTitle())
+                .dough(pizza.getDough())
+                .description(pizza.getDescription())
+                .size(pizza.getSize())
                 .build();
     }
 }
