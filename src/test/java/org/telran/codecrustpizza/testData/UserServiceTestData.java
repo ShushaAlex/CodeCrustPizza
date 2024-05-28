@@ -5,6 +5,7 @@ import org.telran.codecrustpizza.dto.phone.PhoneCreateRequestDto;
 import org.telran.codecrustpizza.dto.user.UserChangePasswordRequestDto;
 import org.telran.codecrustpizza.dto.user.UserCreateRequestDto;
 import org.telran.codecrustpizza.dto.user.UserResponseDto;
+import org.telran.codecrustpizza.entity.Address;
 import org.telran.codecrustpizza.entity.Phone;
 import org.telran.codecrustpizza.entity.User;
 
@@ -84,5 +85,11 @@ public class UserServiceTestData {
             HOUSE_1,
             COMMENT_1
     );
-}
 
+    public static Address ADDRESS_1 = Address.builder()
+            .city(CITY_1)
+            .street(STREET_1)
+            .house(HOUSE_1)
+            .comment(COMMENT_1)
+            .build();
+}

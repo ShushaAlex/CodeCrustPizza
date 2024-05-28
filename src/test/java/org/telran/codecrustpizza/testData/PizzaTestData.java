@@ -1,6 +1,7 @@
 package org.telran.codecrustpizza.testData;
 
 import org.telran.codecrustpizza.dto.pizza.PizzaCreateRequestDto;
+import org.telran.codecrustpizza.dto.pizza.PizzaPatternIngredient.PizzaIngredientResponseDto;
 import org.telran.codecrustpizza.dto.pizza.PizzaResponseDto;
 import org.telran.codecrustpizza.entity.Ingredient;
 import org.telran.codecrustpizza.entity.Pizza;
@@ -87,7 +88,7 @@ public class PizzaTestData {
             Dough.THICK,
             DESCRIPTION_2,
             SIZE_2,
-            new HashSet<PizzaIngredient>(),
+            new HashSet<PizzaIngredientResponseDto>(),
             CALORIES_2,
             PRICE_2
     );

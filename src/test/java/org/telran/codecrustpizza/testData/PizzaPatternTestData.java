@@ -69,7 +69,7 @@ public class PizzaPatternTestData {
             DESCRIPTION_1,
             SIZE_1,
             Dough.THICK.toString(),
-            PIZZA_PATTERN_INGREDIENTS
+            new HashSet<>()
     );
 
     public static PizzaPatternResponseDto RESPONSE_DTO_1 = new PizzaPatternResponseDto(
@@ -80,6 +80,6 @@ public class PizzaPatternTestData {
             Dough.THICK.toString(),
             PRICE_1,
             CALORIES_1,
-            PIZZA_PATTERN_INGREDIENTS
+            new HashSet<>()
     );
 }
