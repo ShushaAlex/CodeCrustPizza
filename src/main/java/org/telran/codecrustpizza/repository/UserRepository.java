@@ -13,8 +13,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmail(String email);
 
-    @Query("SELECT u FROM User u JOIN FETCH u.favoritePizzas WHERE u.id = :id")
-    Optional<User> findByIdWithFavorites(Long id);
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.favoritePizzas WHERE u.id = :id")
+    Optional<User> findByIdWithFavoritePizzas(Long id);
 
     @EntityGraph(value = "User.withPhones", type = EntityGraph.EntityGraphType.FETCH)
     Optional<User> findById(Long id);

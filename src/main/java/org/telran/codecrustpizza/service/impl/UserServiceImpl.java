@@ -75,13 +75,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getById(Long id) {
-        return userRepository.findById(id)
+        return userRepository.findByIdWithFavoritePizzas(id)
                 .orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", id)));
     }
 
     @Override
     public User getByIdWithFavorites(Long id) {
-        return userRepository.findByIdWithFavorites(id)
+        return userRepository.findByIdWithFavoritePizzas(id)
                 .orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", id)));
     }
 

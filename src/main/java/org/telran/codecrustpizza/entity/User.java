@@ -50,6 +50,10 @@ import java.util.Set;
         @NamedEntityGraph(
                 name = "User.withPhonesAndAddresses",
                 attributeNodes = {@NamedAttributeNode("phones"), @NamedAttributeNode("addresses")}
+        ),
+        @NamedEntityGraph(
+                name = "User.favoritePizzas",
+                attributeNodes = @NamedAttributeNode("favoritePizzas")
         )
 })
 public class User {
