@@ -22,7 +22,7 @@ import java.util.List;
 
 @Validated
 @RestController
-@RequestMapping("/item")
+@RequestMapping("api/item")
 @RequiredArgsConstructor
 public class ItemController {
 
@@ -44,7 +44,7 @@ public class ItemController {
     @GetMapping("/{itemId}")
     public ItemResponseDto getById(@PathVariable Long itemId) {
 
-        return itemService.findById(itemId);
+        return itemService.getItemDtoById(itemId);
     }
 
     @GetMapping("/category")

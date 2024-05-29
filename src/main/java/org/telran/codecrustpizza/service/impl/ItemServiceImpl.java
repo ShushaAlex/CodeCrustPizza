@@ -45,10 +45,15 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemResponseDto findById(Long id) {
-        Item item = itemRepository.findById(id).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("item", id)));
+    public Item findById(Long id) {
 
-        return itemMapper.toDto(item);
+        return itemRepository.findById(id).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("item", id)));
+    }
+
+    @Override
+    public ItemResponseDto getItemDtoById(Long id) {
+
+        return itemMapper.toDto(findById(id));
     }
 
     @Override
@@ -78,7 +83,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public ItemResponseDto updateItem(Long id, ItemCreateRequestDto createDto) {
-        Item item = itemRepository.findById(id).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("item", id)));
+        Item item = findById(id);
 
         item.setTitle(createDto.title());
         item.setDescription(createDto.description());
@@ -92,7 +97,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public ItemResponseDto addCategory(Long id, String categoryTitle) {
-        Item item = itemRepository.findById(id).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("item", id)));
+        Item item = findById(id);
 
         List<String> itemCategoryTitles = item.getCategories().stream().map(Category::getTitle).toList();
         if (itemCategoryTitles.contains(categoryTitle))
@@ -102,7 +107,6 @@ public class ItemServiceImpl implements ItemService {
                 .orElse(Category.builder().title(categoryTitle).build());
 
         item.addCategory(category);
-        categoryRepository.save(category);
         item = itemRepository.save(item);
 
         return itemMapper.toDto(item);
@@ -111,7 +115,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public ItemResponseDto removeCategory(Long id, String categoryTitle) {
-        Item item = itemRepository.findById(id).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("item", id)));
+        Item item = findById(id);
 
         List<String> itemCategoryTitles = item.getCategories().stream().map(Category::getTitle).toList();
         if (!itemCategoryTitles.contains(categoryTitle))

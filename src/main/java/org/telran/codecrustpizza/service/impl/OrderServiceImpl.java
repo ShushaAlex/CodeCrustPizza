@@ -1,6 +1,6 @@
 package org.telran.codecrustpizza.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telran.codecrustpizza.dto.order.OrderResponseDto;
@@ -16,9 +16,9 @@ import org.telran.codecrustpizza.mapper.OrderItemMapper;
 import org.telran.codecrustpizza.mapper.OrderMapper;
 import org.telran.codecrustpizza.repository.AddressRepository;
 import org.telran.codecrustpizza.repository.OrderRepository;
-import org.telran.codecrustpizza.repository.UserRepository;
 import org.telran.codecrustpizza.service.CartService;
 import org.telran.codecrustpizza.service.OrderService;
+import org.telran.codecrustpizza.service.UserService;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -33,32 +33,22 @@ import static org.telran.codecrustpizza.util.DeliveryConstants.DELIVERY_FEE;
 import static org.telran.codecrustpizza.util.DeliveryConstants.ORDER_PRICE_FOR_FREE_DEL;
 
 @Service
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final CartService cartService;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final OrderItemMapper orderItemMapper;
     private final AddressRepository addressRepository;
-
-    @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, OrderMapper orderMapper, CartService cartService, UserRepository userRepository, OrderItemMapper orderItemMapper, AddressRepository addressRepository) {
-        this.orderRepository = orderRepository;
-        this.orderMapper = orderMapper;
-        this.cartService = cartService;
-        this.userRepository = userRepository;
-        this.orderItemMapper = orderItemMapper;
-        this.addressRepository = addressRepository;
-    }
 
     @Override
     @Transactional
     public OrderResponseDto createOrder(Long userId, Long addressId) {
 
         Cart cart = cartService.getCart(userId);
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("user", userId)));
+        User user = userService.getById(userId);
 
         Order order = cart.getCartItems().stream()
                 .map(orderItemMapper::cartItemToOrderItem)

@@ -1,6 +1,7 @@
 package org.telran.codecrustpizza.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,8 +14,9 @@ import org.telran.codecrustpizza.service.UserService;
 
 import java.util.List;
 
+@Validated
 @RestController
-@RequestMapping("/cart")
+@RequestMapping("api/cart")
 @RequiredArgsConstructor
 public class CartController {
 
@@ -49,5 +51,4 @@ public class CartController {
 
         return cartService.clearCart(userId);
     }
-
 }

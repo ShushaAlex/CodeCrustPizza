@@ -2,6 +2,7 @@ package org.telran.codecrustpizza.service;
 
 import org.telran.codecrustpizza.dto.item.ItemCreateRequestDto;
 import org.telran.codecrustpizza.dto.item.ItemResponseDto;
+import org.telran.codecrustpizza.entity.Item;
 
 import java.util.List;
 
@@ -18,12 +19,20 @@ public interface ItemService {
     List<ItemResponseDto> getAll();
 
     /**
-     * Finds an item by its ID.
+     * Retrieves an Item entity by its ID.
+     *
+     * @param id the ID of the item to be retrieved.
+     * @return a {@link Item} representing the item entity.
+     */
+    Item findById(Long id);
+
+    /**
+     * Retrieves an item response dto by its ID.
      *
      * @param id the ID of the item to be found.
      * @return an {@link ItemResponseDto} representing the found item.
      */
-    ItemResponseDto findById(Long id);
+    ItemResponseDto getItemDtoById(Long id);
 
     /**
      * Finds all items by their category.

@@ -16,5 +16,4 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
 
     @EntityGraph(value = "CartItem.withItem", type = EntityGraph.EntityGraphType.LOAD)
     Optional<CartItem> findByCart_IdAndItem_Id(Long cartId, Long itemId);
-
 }

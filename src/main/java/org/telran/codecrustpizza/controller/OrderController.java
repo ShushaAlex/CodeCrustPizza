@@ -16,7 +16,7 @@ import org.telran.codecrustpizza.service.UserService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("api/order")
 @RequiredArgsConstructor
 public class OrderController {
 
