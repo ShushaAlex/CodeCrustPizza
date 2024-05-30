@@ -1,0 +1,77 @@
+databaseChangeLog:
+  - changeSet:
+      id: 16
+      author: Alex
+      changes:
+        - insert:
+            tableName: ingredient
+            columns:
+              - column:
+                  name: title
+                  value: "Mozzarella Cheese"
+              - column:
+                  name: price
+                  value: "2.5"
+              - column:
+                  name: calories
+                  value: "250"
+        - insert:
+            tableName: ingredient
+            columns:
+              - column:
+                  name: title
+                  value: "Pepperoni"
+              - column:
+                  name: price
+                  value: "3"
+              - column:
+                  name: calories
+                  value: "300"
+        - insert:
+            tableName: ingredient
+            columns:
+              - column:
+                  name: title
+                  value: "Mushrooms"
+              - column:
+                  name: price
+                  value: "1.5"
+              - column:
+                  name: calories
+                  value: "50"
+        - insert:
+            tableName: ingredient
+            columns:
+              - column:
+                  name: title
+                  value: "Onions"
+              - column:
+                  name: price
+                  value: "1.2"
+              - column:
+                  name: calories
+                  value: "30"
+        - insert:
+            tableName: ingredient
+            columns:
+              - column:
+                  name: title
+                  value: "Olives"
+              - column:
+                  name: price
+                  value: "1.5"
+              - column:
+                  name: calories
+                  value: "20"
+        - insert:
+            tableName: ingredient
+            columns:
+              - column:
+                  name: title
+                  value: "Tomatoes"
+              - column:
+                  name: price
+                  value: "0.8"
+              - column:
+                  name: calories
+                  value: "40"

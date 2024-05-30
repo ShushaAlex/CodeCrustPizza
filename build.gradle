@@ -28,6 +28,8 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     //H2
     runtimeOnly 'com.h2database:h2'
+    // Liquibase
+    implementation group: 'org.liquibase', name: 'liquibase-core', version: '4.28.0'
     // Validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     // Web

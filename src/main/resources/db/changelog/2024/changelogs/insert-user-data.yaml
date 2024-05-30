@@ -1,0 +1,68 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: Alex
+      changes:
+        - insert:
+            tableName: _user
+            columns:
+              - column:
+                  name: name
+                  value: "John Doe"
+              - column:
+                  name: email
+                  value: "john.doe@example.com"
+              - column:
+                  name: password
+                  value: "password123"
+              - column:
+                  name: role
+                  value: "USER"
+              - column:
+                  name: is_blocked
+                  value: false
+              - column:
+                  name: creation_date
+                  valueDate: "2024-05-30T10:00:00"
+        - insert:
+            tableName: _user
+            columns:
+              - column:
+                  name: name
+                  value: "Jane Smith"
+              - column:
+                  name: email
+                  value: "jane.smith@example.com"
+              - column:
+                  name: password
+                  value: "securepassword"
+              - column:
+                  name: role
+                  value: "ADMIN"
+              - column:
+                  name: is_blocked
+                  value: false
+              - column:
+                  name: creation_date
+                  valueDate: "2024-05-30T11:00:00"
+        - insert:
+            tableName: _user
+            columns:
+              - column:
+                  name: name
+                  value: "Alice Johnson"
+              - column:
+                  name: email
+                  value: "alice.johnson@example.com"
+              - column:
+                  name: password
+                  value: "alicepassword"
+              - column:
+                  name: role
+                  value: "USER"
+              - column:
+                  name: is_blocked
+                  value: true
+              - column:
+                  name: creation_date
+                  valueDate: "2024-05-30T12:00:00"

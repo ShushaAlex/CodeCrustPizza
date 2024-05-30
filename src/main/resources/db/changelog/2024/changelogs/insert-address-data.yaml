@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4
+      author: Alex
+      changes:
+        - insert:
+            tableName: address
+            columns:
+              - column:
+                  name: city
+                  value: "New York"
+              - column:
+                  name: street
+                  value: "5th Avenue"
+              - column:
+                  name: house
+                  value: "101"
+              - column:
+                  name: comment
+                  value: "Near Central Park"
+        - insert:
+            tableName: address
+            columns:
+              - column:
+                  name: city
+                  value: "Los Angeles"
+              - column:
+                  name: street
+                  value: "Sunset Boulevard"
+              - column:
+                  name: house
+                  value: "202"
+              - column:
+                  name: comment
+                  value: "Close to the beach"
+        - insert:
+            tableName: address
+            columns:
+              - column:
+                  name: city
+                  value: "Chicago"
+              - column:
+                  name: street
+                  value: "Michigan Avenue"
+              - column:
+                  name: house
+                  value: "303"
+              - column:
+                  name: comment
+                  value: "Downtown"
+        - insert:
+            tableName: address
+            columns:
+              - column:
+                  name: city
+                  value: "San Francisco"
+              - column:
+                  name: street
+                  value: "Market Street"
+              - column:
+                  name: house
+                  value: "404"
+              - column:
+                  name: comment
+                  value: "Near Golden Gate Bridge"

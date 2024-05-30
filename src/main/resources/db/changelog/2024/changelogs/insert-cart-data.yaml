@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 8
+      author: Alex
+      changes:
+        - insert:
+            tableName: cart
+            columns:
+              - column:
+                  name: user_id
+                  value: 1
+        - insert:
+            tableName: cart
+            columns:
+              - column:
+                  name: user_id
+                  value: 2
+        - insert:
+            tableName: cart
+            columns:
+              - column:
+                  name: user_id
+                  value: 3

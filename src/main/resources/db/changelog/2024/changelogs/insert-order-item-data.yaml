@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: insertOrderItem1
+      author: Alex
+      changes:
+        - insert:
+            tableName: order_item
+            columns:
+              - column:
+                  name: order_id
+                  value: "1"
+              - column:
+                  name: item_id
+                  value: "1"
+              - column:
+                  name: quantity
+                  value: "2"
+        - insert:
+            tableName: order_item
+            columns:
+              - column:
+                  name: order_id
+                  value: "2"
+              - column:
+                  name: item_id
+                  value: "2"
+              - column:
+                  name: quantity
+                  value: "1"
+        - insert:
+            tableName: order_item
+            columns:
+              - column:
+                  name: order_id
+                  value: "3"
+              - column:
+                  name: item_id
+                  value: "3"
+              - column:
+                  name: quantity
+                  value: "1"
+        - insert:
+            tableName: order_item
+            columns:
+              - column:
+                  name: order_id
+                  value: "3"
+              - column:
+                  name: item_id
+                  value: "1"
+              - column:
+                  name: quantity
+                  value: "2"
+        - insert:
+            tableName: order_item
+            columns:
+              - column:
+                  name: order_id
+                  value: "2"
+              - column:
+                  name: item_id
+                  value: "4"
+              - column:
+                  name: quantity
+                  value: "2"

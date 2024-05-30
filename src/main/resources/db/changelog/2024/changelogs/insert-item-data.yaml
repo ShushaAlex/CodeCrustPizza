@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: 11
+      author: Alex
+      changes:
+        - insert:
+            tableName: item
+            columns:
+              - column:
+                  name: title
+                  value: "Margherita"
+              - column:
+                  name: description
+                  value: "Classic Italian pizza with tomato sauce, mozzarella cheese, and basil"
+              - column:
+                  name: price
+                  value: 9.99
+        - insert:
+            tableName: item
+            columns:
+              - column:
+                  name: title
+                  value: "Pepperoni"
+              - column:
+                  name: description
+                  value: "Pizza topped with spicy pepperoni slices and melted cheese"
+              - column:
+                  name: price
+                  value: 10.99
+        - insert:
+            tableName: item
+            columns:
+              - column:
+                  name: title
+                  value: "Four Cheese"
+              - column:
+                  name: description
+                  value: "Pizza topped with a blend of four cheeses: mozzarella, cheddar, gouda, and parmesan"
+              - column:
+                  name: price
+                  value: 11.99
+        - insert:
+            tableName: item
+            columns:
+              - column:
+                  name: title
+                  value: "Hawaiian"
+              - column:
+                  name: description
+                  value: "Pizza with ham, pineapple, and tomato sauce, topped with mozzarella cheese"
+              - column:
+                  name: price
+                  value: 12.99
+        - insert:
+            tableName: item
+            columns:
+              - column:
+                  name: title
+                  value: "Vegetarian"
+              - column:
+                  name: description
+                  value: "Pizza loaded with fresh vegetables like bell peppers, onions, mushrooms, and olives"
+              - column:
+                  name: price
+                  value: 11.49

@@ -1,0 +1,113 @@
+databaseChangeLog:
+  - changeSet:
+      id: 9
+      author: Alex
+      changes:
+        - insert:
+            tableName: cart_item
+            columns:
+              - column:
+                  name: item_id
+                  value: 1
+              - column:
+                  name: cart_id
+                  value: 1
+              - column:
+                  name: quantity
+                  value: 2
+              - column:
+                  name: price
+                  value: 10.99
+              - column:
+                  name: creation_date
+                  value: "2024-05-30 10:00:00"
+        - insert:
+            tableName: cart_item
+            columns:
+              - column:
+                  name: item_id
+                  value: 2
+              - column:
+                  name: cart_id
+                  value: 1
+              - column:
+                  name: quantity
+                  value: 1
+              - column:
+                  name: price
+                  value: 8.99
+              - column:
+                  name: creation_date
+                  value: "2024-05-30 10:30:00"
+        - insert:
+            tableName: cart_item
+            columns:
+              - column:
+                  name: item_id
+                  value: 3
+              - column:
+                  name: cart_id
+                  value: 2
+              - column:
+                  name: quantity
+                  value: 3
+              - column:
+                  name: price
+                  value: 12.99
+              - column:
+                  name: creation_date
+                  value: "2024-05-30 11:00:00"
+        - insert:
+            tableName: cart_item
+            columns:
+              - column:
+                  name: item_id
+                  value: 1
+              - column:
+                  name: cart_id
+                  value: 2
+              - column:
+                  name: quantity
+                  value: 2
+              - column:
+                  name: price
+                  value: 10.99
+              - column:
+                  name: creation_date
+                  value: "2024-05-30 11:30:00"
+        - insert:
+            tableName: cart_item
+            columns:
+              - column:
+                  name: item_id
+                  value: 2
+              - column:
+                  name: cart_id
+                  value: 3
+              - column:
+                  name: quantity
+                  value: 1
+              - column:
+                  name: price
+                  value: 8.99
+              - column:
+                  name: creation_date
+                  value: "2024-05-30 12:00:00"
+        - insert:
+            tableName: cart_item
+            columns:
+              - column:
+                  name: item_id
+                  value: 3
+              - column:
+                  name: cart_id
+                  value: 3
+              - column:
+                  name: quantity
+                  value: 2
+              - column:
+                  name: price
+                  value: 12.99
+              - column:
+                  name: creation_date
+                  value: "2024-05-30 12:30:00"
