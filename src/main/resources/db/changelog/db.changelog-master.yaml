@@ -15,8 +15,8 @@ databaseChangeLog:
       file: db/changelog/2024/changelogs/insert-item-data.yaml
   - include:
       file: db/changelog/2024/changelogs/insert-pizza-pattern-data.yaml
-  #  - include:
-  #      file: db/changelog/2024/changelogs/insert-pizza-data.yaml
+  - include:
+      file: db/changelog/2024/changelogs/insert-pizza-data.yaml
   - include:
       file: db/changelog/2024/changelogs/insert-cart-item-data.yaml
   - include:
@@ -31,4 +31,9 @@ databaseChangeLog:
       file: db/changelog/2024/changelogs/insert-order-item-data.yaml
   - include:
       file: db/changelog/2024/changelogs/insert-pizza-ingredient-data.yaml
-
+  - include:
+      file: db/changelog/2024/changelogs/insert-pizza-pattern-ingredient-data.yaml
+  - include:
+      file: db/changelog/2024/changelogs/insert-user-favorite-pizza-data.yaml
+  - include:
+      file: db/changelog/2024/changelogs/insert-itenm-category-data.yaml

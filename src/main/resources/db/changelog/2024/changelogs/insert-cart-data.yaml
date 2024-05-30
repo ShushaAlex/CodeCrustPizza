@@ -8,16 +8,16 @@ databaseChangeLog:
             columns:
               - column:
                   name: user_id
-                  value: 1
+                  value: "1"
         - insert:
             tableName: cart
             columns:
               - column:
                   name: user_id
-                  value: 2
+                  value: "2"
         - insert:
             tableName: cart
             columns:
               - column:
                   name: user_id
-                  value: 3
+                  value: "3"

@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1717062684082-18
+      author: alex (generated)
+      changes:
+        - insert:
+            tableName: user_favorite_pizza
+            columns:
+              - column:
+                  name: pizza_id
+                  value: 3
+              - column:
+                  name: user_id
+                  value: 1
+        - insert:
+            tableName: user_favorite_pizza
+            columns:
+              - column:
+                  name: pizza_id
+                  value: 1
+              - column:
+                  name: user_id
+                  value: 1
+        - insert:
+            tableName: user_favorite_pizza
+            columns:
+              - column:
+                  name: pizza_id
+                  value: 1
+              - column:
+                  name: user_id
+                  value: 2
+        - insert:
+            tableName: user_favorite_pizza
+            columns:
+              - column:
+                  name: pizza_id
+                  value: 3
+              - column:
+                  name: user_id
+                  value: 2
+        - insert:
+            tableName: user_favorite_pizza
+            columns:
+              - column:
+                  name: pizza_id
+                  value: 2
+              - column:
+                  name: user_id
+                  value: 3

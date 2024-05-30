@@ -44,7 +44,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: pizza_id
-                  value: "4"
+                  value: "2"
               - column:
                   name: ingredient_id
                   value: "4"

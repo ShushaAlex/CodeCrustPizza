@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1717062684082-16
+      author: alex (generated)
+      changes:
+        - insert:
+            tableName: pizza_pattern_ingredient
+            columns:
+              - column:
+                  name: pizza_pattern_id
+                  value: 1
+              - column:
+                  name: ingredient_id
+                  value: 1
+              - column:
+                  name: quantity
+                  value: 2
+        - insert:
+            tableName: pizza_pattern_ingredient
+            columns:
+              - column:
+                  name: pizza_pattern_id
+                  value: 2  # Example value, replace with actual pizza_pattern_id
+              - column:
+                  name: ingredient_id
+                  value: 2  # Example value, replace with actual ingredient_id
+              - column:
+                  name: quantity
+                  value: 15  # Example value, replace with actual quantity
+        - insert:
+            tableName: pizza_pattern_ingredient
+            columns:
+              - column:
+                  name: pizza_pattern_id
+                  value: 3  # Example value, replace with actual pizza_pattern_id
+              - column:
+                  name: ingredient_id
+                  value: 3  # Example value, replace with actual ingredient_id
+              - column:
+                  name: quantity
+                  value: 20  # Example value, replace with actual quantity
+        - insert:
+            tableName: pizza_pattern_ingredient
+            columns:
+              - column:
+                  name: pizza_pattern_id
+                  value: 2  # Example value, replace with actual pizza_pattern_id
+              - column:
+                  name: ingredient_id
+                  value: 4  # Example value, replace with actual ingredient_id
+              - column:
+                  name: quantity
+                  value: 25  # Example value, replace with actual quantity
+        - insert:
+            tableName: pizza_pattern_ingredient
+            columns:
+              - column:
+                  name: pizza_pattern_id
+                  value: 1  # Example value, replace with actual pizza_pattern_id
+              - column:
+                  name: ingredient_id
+                  value: 5  # Example value, replace with actual ingredient_id
+              - column:
+                  name: quantity
+                  value: 30  # Example value, replace with actual quantity
