@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.telran.codecrustpizza.entity.Address;
 
 import java.util.Optional;
@@ -27,18 +26,12 @@ class AddressRepositoryTest {
     @Autowired
     private AddressRepository addressRepository;
 
-    @Autowired
-    private TestEntityManager entityManager;
-
     private Address address;
 
     @BeforeEach
     public void setUp() {
         address = ADDRESS_1;
         address = addressRepository.save(address);
-
-        entityManager.flush();
-        entityManager.clear();
     }
 
     @AfterEach
