@@ -5,10 +5,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.telran.codecrustpizza.CodeCrustPizzaApplication;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
@@ -23,11 +28,21 @@ class PizzaControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    void findAllPizza() {
+    @WithMockUser(authorities = {"ADMIN", "USER"})
+    void findAllPizzaTest() throws Exception {
+
+        mockMvc.perform(get("http://localhost:8080/api/pizza"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(3));
     }
 
     @Test
-    void findAllPattern() {
+    @WithMockUser(authorities = {"ADMIN", "USER"})
+    void findAllPatternTest() throws Exception {
+
+        mockMvc.perform(get("http://localhost:8080/api/pizza/pattern"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(3));
     }
 
     @Test

@@ -244,7 +244,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserWithFavoritePizzaResponseDto addFavoritePizza(Long userId, Long pizzaId) { // ToDo fix fav pizza add
+    @Transactional
+    public UserWithFavoritePizzaResponseDto addFavoritePizza(Long userId, Long pizzaId) {
         User user = getByIdWithFavorites(userId);
         Pizza pizza = pizzaService.getPizzaById(pizzaId);
         user.addPizza(pizza);
@@ -260,6 +261,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserWithFavoritePizzaResponseDto removeFavoritePizza(Long userId, Long pizzaId) {
         User user = getByIdWithFavorites(userId);
         Pizza pizza = pizzaService.getPizzaById(pizzaId);
