@@ -72,7 +72,9 @@ public class OrderServiceImpl implements OrderService {
 
         order = orderRepository.save(order);
 
-        return orderMapper.toDto(order);
+        cartService.clearCart(userId);
+
+        return orderMapper.toDto(order); // ToDo fix mapping to dto and clear cart after order
     }
 
     @Override

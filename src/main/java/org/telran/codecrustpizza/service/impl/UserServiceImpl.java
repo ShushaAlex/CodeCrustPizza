@@ -244,7 +244,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserWithFavoritePizzaResponseDto addFavoritePizza(Long userId, Long pizzaId) {
+    public UserWithFavoritePizzaResponseDto addFavoritePizza(Long userId, Long pizzaId) { // ToDo fix fav pizza add
         User user = getByIdWithFavorites(userId);
         Pizza pizza = pizzaService.getPizzaById(pizzaId);
         user.addPizza(pizza);

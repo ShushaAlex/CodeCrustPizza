@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,8 +45,8 @@ public class UserController {
     private final UserService userService;
     private final AuthenticationService authenticationService;
 
-    //Admin
     @GetMapping("/all")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Get all users", description = "Retrieve a list of all users. Requires admin privileges.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved list of users"),
@@ -56,7 +57,6 @@ public class UserController {
         return userService.findAll();
     }
 
-    @PermitAll
     @PostMapping("/login")
     @Operation(summary = "Login", description = "Authenticate user and return JWT token")
     @ApiResponses(value = {
@@ -67,8 +67,8 @@ public class UserController {
         return authenticationService.authenticate(request);
     }
 
-
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @Operation(summary = "Get current user", description = "Retrieve details of the currently authenticated user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved user details"),
@@ -80,14 +80,15 @@ public class UserController {
         return userService.getUserDtoById(userId);
     }
 
-    @PermitAll
     @PostMapping("/register")
+    @PermitAll
     public UserResponseDto registerUser(@Valid @RequestBody UserCreateRequestDto userCreateRequestDto) {
 
         return userService.save(userCreateRequestDto);
     }
 
     @PutMapping("/change-password")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public UserResponseDto changePassword(@Valid @RequestBody UserChangePasswordRequestDto passwordRequestDto) {
         Long userId = userService.getCurrentUserId();
 
@@ -95,6 +96,7 @@ public class UserController {
     }
 
     @PutMapping("/change-email")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public UserResponseDto changeEmail(@Email @RequestParam String email) {
         Long userId = userService.getCurrentUserId();
 
@@ -102,13 +104,14 @@ public class UserController {
     }
 
     @PutMapping("/change-name")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public UserResponseDto changeName(@NotBlank @RequestParam String name) {
         Long userId = userService.getCurrentUserId();
         return userService.changeName(userId, name);
     }
 
-    //Admin
     @PutMapping("/{id}/assign-role")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public UserResponseDto assignRole(@PathVariable Long id, @RequestParam String role) {
         Role role1 = Role.valueOf(role.toUpperCase());
 
@@ -116,6 +119,7 @@ public class UserController {
     }
 
     @PutMapping("/phone/add")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public UserResponseDto addPhone(@Valid @RequestBody PhoneCreateRequestDto phoneCreateRequestDto) {
         Long userId = userService.getCurrentUserId();
 
@@ -123,6 +127,7 @@ public class UserController {
     }
 
     @PutMapping("/phone/remove")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public UserResponseDto removePhone(@RequestParam Long phoneId) {
         Long userId = userService.getCurrentUserId();
 
@@ -130,6 +135,7 @@ public class UserController {
     }
 
     @PutMapping("/address/add")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public UserResponseDto addAddress(@Valid @RequestBody AddressCreateRequestDto addressDto) {
         Long userId = userService.getCurrentUserId();
 
@@ -137,6 +143,7 @@ public class UserController {
     }
 
     @PutMapping("/address/remove")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public UserResponseDto removeAddress(@RequestParam Long addressId) {
         Long userId = userService.getCurrentUserId();
 
@@ -144,6 +151,7 @@ public class UserController {
     }
 
     @PutMapping("/favorites/add")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public UserWithFavoritePizzaResponseDto addFavoritePizzaToCurrentUser(@RequestParam Long pizzaId) {
         Long userId = userService.getCurrentUserId();
 
@@ -151,6 +159,7 @@ public class UserController {
     }
 
     @PutMapping("/favorites/remove")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public UserWithFavoritePizzaResponseDto removeFavoritePizzaFromCurrentUser(@RequestParam Long pizzaId) {
         Long userId = userService.getCurrentUserId();
 

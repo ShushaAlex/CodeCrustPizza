@@ -38,7 +38,6 @@ public class SecurityConfig {
                         .requestMatchers("api/user/register").permitAll()
                         .requestMatchers("api/user/login").permitAll()
                         .requestMatchers(SWAGGER).permitAll()
-
                         .anyRequest().permitAll()) //  authenticated()
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -58,6 +57,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
+
 
     private static final String[] SWAGGER = {
             "/v2/api-docs",

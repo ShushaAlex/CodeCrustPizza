@@ -42,7 +42,6 @@ public class Pizza extends Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //TODO нужно пересмотреть связь с шаблонной пиццей
     @ManyToOne(fetch = FetchType.LAZY)
     private PizzaPattern pizzaPattern;
 
