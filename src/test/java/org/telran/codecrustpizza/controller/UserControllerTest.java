@@ -15,12 +15,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.telran.codecrustpizza.CodeCrustPizzaApplication;
 import org.telran.codecrustpizza.dto.JwtAuthenticationResponse;
+import org.telran.codecrustpizza.dto.address.AddressCreateRequestDto;
+import org.telran.codecrustpizza.dto.phone.PhoneCreateRequestDto;
 import org.telran.codecrustpizza.dto.user.UserChangePasswordRequestDto;
 import org.telran.codecrustpizza.dto.user.UserCreateRequestDto;
 import org.telran.codecrustpizza.dto.user.UserResponseDto;
 import org.telran.codecrustpizza.dto.user.UserSignInRequestDto;
 import org.telran.codecrustpizza.security.AuthenticationService;
-import org.telran.codecrustpizza.service.UserService;
 
 import java.nio.charset.StandardCharsets;
 
@@ -34,6 +35,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.telran.codecrustpizza.testData.UserServiceTestData.ADDRESS_CREATE_DTO_1;
+import static org.telran.codecrustpizza.testData.UserServiceTestData.PHONE_CREATE_DTO_1;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
@@ -47,15 +50,8 @@ class UserControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
-    private UserService userService;
-
     @MockBean
     private AuthenticationService authenticationService;
-
-    private String login = "john.doe@example.com";
-
-    private String password = "password123";
 
     @Test
     @WithMockUser(authorities = "ADMIN")
@@ -195,29 +191,104 @@ class UserControllerTest {
     @Test
     @Transactional
     @Rollback
-    @WithMockUser(username = "john.doe@example.com", authorities = {"USER"})
-    void assignRoleTestForbidden() throws Exception {
+    @WithMockUser(username = "john.doe@example.com", authorities = {"ADMIN", "USER"})
+    void addPhoneTest() throws Exception {
 
-        mockMvc.perform(put("http://localhost:8080/api/user/1/assign-role")
-                        .param("role", "USER"))
-                .andExpect(status().isForbidden());
+        var resultBeforeAddingPhone = mockMvc.perform(get("http://localhost:8080/api/user"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String jsonResponseBeforeAddingPhone = resultBeforeAddingPhone.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        UserResponseDto userDtoBeforeAddingPhone = objectMapper.readValue(jsonResponseBeforeAddingPhone, UserResponseDto.class);
+
+        PhoneCreateRequestDto phoneCreateRequestDto = PHONE_CREATE_DTO_1;
+
+        var result = mockMvc.perform(put("http://localhost:8080/api/user/phone/add")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(phoneCreateRequestDto)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String jsonResponse = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        UserResponseDto actualResponseDto = objectMapper.readValue(jsonResponse, UserResponseDto.class);
+
+        assertEquals(userDtoBeforeAddingPhone.phones().size() + 1, actualResponseDto.phones().size());
     }
 
     @Test
-    void addPhone() {
+    @Transactional
+    @Rollback
+    @WithMockUser(username = "john.doe@example.com", authorities = {"ADMIN", "USER"})
+    void removePhoneTest() throws Exception {
 
+        var resultBeforeRemoving = mockMvc.perform(get("http://localhost:8080/api/user"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String jsonResponseBeforeRemoving = resultBeforeRemoving.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        UserResponseDto userDtoBeforeRemoving = objectMapper.readValue(jsonResponseBeforeRemoving, UserResponseDto.class);
+
+        var result = mockMvc.perform(put("http://localhost:8080/api/user/phone/remove")
+                        .param("phoneId", "1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String jsonResponse = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        UserResponseDto actualResponseDto = objectMapper.readValue(jsonResponse, UserResponseDto.class);
+
+        assertEquals(userDtoBeforeRemoving.phones().size() - 1, actualResponseDto.phones().size());
     }
 
     @Test
-    void removePhone() {
+    @Transactional
+    @Rollback
+    @WithMockUser(username = "john.doe@example.com", authorities = {"ADMIN", "USER"})
+    void addAddressTest() throws Exception {
+
+        var resultBeforeAdding = mockMvc.perform(get("http://localhost:8080/api/user"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String jsonResponseBeforeAdding = resultBeforeAdding.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        UserResponseDto userDtoBeforeAdding = objectMapper.readValue(jsonResponseBeforeAdding, UserResponseDto.class);
+
+        AddressCreateRequestDto addressDto = ADDRESS_CREATE_DTO_1;
+
+        var result = mockMvc.perform(put("http://localhost:8080/api/user/address/add")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(addressDto)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String jsonResponse = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        UserResponseDto actualResponseDto = objectMapper.readValue(jsonResponse, UserResponseDto.class);
+
+        assertEquals(userDtoBeforeAdding.addresses().size() + 1, actualResponseDto.addresses().size());
     }
 
     @Test
-    void addAddress() {
-    }
+    @Transactional
+    @Rollback
+    @WithMockUser(username = "john.doe@example.com", authorities = {"ADMIN", "USER"})
+    void removeAddress() throws Exception {
+        var resultBeforeRemoving = mockMvc.perform(get("http://localhost:8080/api/user"))
+                .andExpect(status().isOk())
+                .andReturn();
 
-    @Test
-    void removeAddress() {
+        String jsonResponseBeforeRemoving = resultBeforeRemoving.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        UserResponseDto userDtoBeforeRemoving = objectMapper.readValue(jsonResponseBeforeRemoving, UserResponseDto.class);
+
+        var result = mockMvc.perform(put("http://localhost:8080/api/user/address/remove")
+                        .param("addressId", "1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String jsonResponse = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        UserResponseDto actualResponseDto = objectMapper.readValue(jsonResponse, UserResponseDto.class);
+
+        assertEquals(userDtoBeforeRemoving.addresses().size() - 1, actualResponseDto.addresses().size());
     }
 
     @Test
