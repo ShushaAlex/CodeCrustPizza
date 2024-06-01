@@ -45,6 +45,7 @@ public class PizzaPatternServiceImpl implements PizzaService<PizzaPatternRespons
     @Override
     @Transactional
     public PizzaPatternResponseDto createPizza(PizzaPatternCreateDto pizzaCreateDto) {
+
         Optional<PizzaPattern> existingPizza = pizzaPatternRepository.findByTitleAndDough(pizzaCreateDto.title(), Dough.valueOf(pizzaCreateDto.dough()));
         if (existingPizza.isPresent()) throw new EntityException(ENTITY_EXIST.getCustomMessage("PizzaPattern"));
 

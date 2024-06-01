@@ -2,17 +2,20 @@ package org.telran.codecrustpizza.testData;
 
 import org.telran.codecrustpizza.dto.pizza.PizzaCreateRequestDto;
 import org.telran.codecrustpizza.dto.pizza.PizzaPatternIngredient.PizzaIngredientResponseDto;
+import org.telran.codecrustpizza.dto.pizza.PizzaPatternIngredient.PizzaPatternIngredientCreateRequestDto;
 import org.telran.codecrustpizza.dto.pizza.PizzaResponseDto;
+import org.telran.codecrustpizza.dto.pizza.pizzaPattern.PizzaPatternCreateDto;
 import org.telran.codecrustpizza.entity.Ingredient;
 import org.telran.codecrustpizza.entity.Pizza;
 import org.telran.codecrustpizza.entity.PizzaIngredient;
 import org.telran.codecrustpizza.entity.PizzaPattern;
 import org.telran.codecrustpizza.entity.PizzaPatternIngredient;
-import org.telran.codecrustpizza.entity.enums.Dough;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
+
+import static org.telran.codecrustpizza.entity.enums.Dough.THICK;
 
 public class PizzaTestData {
 
@@ -48,8 +51,26 @@ public class PizzaTestData {
             .title(TITLE_1)
             .description(DESCRIPTION_1)
             .size(SIZE_1)
-            .dough(Dough.THICK)
+            .dough(THICK)
             .build();
+
+    public static PizzaPatternIngredientCreateRequestDto PATTERN_INGR_DTO_1 = new PizzaPatternIngredientCreateRequestDto(
+            "Pepperoni",
+            QUANTITY_1
+    );
+
+    public static PizzaPatternIngredientCreateRequestDto PATTERN_INGR_DTO_2 = new PizzaPatternIngredientCreateRequestDto(
+            "Mushrooms",
+            QUANTITY_2
+    );
+
+    public static PizzaPatternCreateDto PATTERN_CREATE_DTO = new PizzaPatternCreateDto(
+            TITLE_1,
+            DESCRIPTION_1,
+            SIZE_1,
+            THICK.toString(),
+            new HashSet<>(Set.of(PATTERN_INGR_DTO_1, PATTERN_INGR_DTO_2))
+    );
 
     public static PizzaPatternIngredient PATTERN_INGREDIENT_1 = PizzaPatternIngredient.builder()
             .id(1L)
@@ -73,7 +94,7 @@ public class PizzaTestData {
             .description(DESCRIPTION_2)
             .pizzaPattern(PIZZA_PATTERN_1)
             .size(SIZE_2)
-            .dough(Dough.THICK)
+            .dough(THICK)
             .build();
 
     public static PizzaCreateRequestDto CREATE_DTO_1 = new PizzaCreateRequestDto(
@@ -85,7 +106,7 @@ public class PizzaTestData {
     public static PizzaResponseDto RESPONSE_DTO_1 = new PizzaResponseDto(
             1L,
             TITLE_2,
-            Dough.THICK,
+            THICK,
             DESCRIPTION_2,
             SIZE_2,
             new HashSet<PizzaIngredientResponseDto>(),
