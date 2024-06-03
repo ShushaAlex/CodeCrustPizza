@@ -13,12 +13,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmail(String email);
 
-    // JOIN FETCH подтягивает связи many to many и one to many
-    @Query("SELECT u FROM User u JOIN FETCH u.favoritePizzas WHERE u.id = :id")
-    Optional<User> findByIdWithFavorites(Long id);
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.favoritePizzas WHERE u.id = :id")
+    Optional<User> findByIdWithFavoritePizzas(Long id);
 
-    @EntityGraph(value = "User.withPhones", type = EntityGraph.EntityGraphType.LOAD)
-    Optional<User> findByIdWithPhones(Long id);
-
-    //TODO создать аналогичные методы на кадждый энтити граф
+    @EntityGraph(value = "User.withPhones", type = EntityGraph.EntityGraphType.FETCH)
+    Optional<User> findById(Long id);
 }

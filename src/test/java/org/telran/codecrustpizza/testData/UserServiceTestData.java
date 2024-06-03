@@ -1,16 +1,17 @@
-package org.telran.codecrustpizza;
+package org.telran.codecrustpizza.testData;
 
 import org.telran.codecrustpizza.dto.address.AddressCreateRequestDto;
 import org.telran.codecrustpizza.dto.phone.PhoneCreateRequestDto;
 import org.telran.codecrustpizza.dto.user.UserChangePasswordRequestDto;
 import org.telran.codecrustpizza.dto.user.UserCreateRequestDto;
 import org.telran.codecrustpizza.dto.user.UserResponseDto;
+import org.telran.codecrustpizza.entity.Address;
 import org.telran.codecrustpizza.entity.Phone;
 import org.telran.codecrustpizza.entity.User;
 
 import java.time.LocalDateTime;
 
-public class TestData {
+public class UserServiceTestData {
     // 1 set of user data
     public static LocalDateTime LOCAL_DATE_TIME_1 = LocalDateTime.of(2023, 1, 1, 1, 1);
     public static String EMAIL_1 = "john.doe@example.com";
@@ -84,5 +85,11 @@ public class TestData {
             HOUSE_1,
             COMMENT_1
     );
-}
 
+    public static Address ADDRESS_1 = Address.builder()
+            .city(CITY_1)
+            .street(STREET_1)
+            .house(HOUSE_1)
+            .comment(COMMENT_1)
+            .build();
+}

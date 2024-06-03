@@ -1,0 +1,59 @@
+databaseChangeLog:
+  - changeSet:
+      id: 17
+      author: Alex
+      changes:
+        - insert:
+            tableName: order_
+            columns:
+              - column:
+                  name: user_id
+                  value: "1"
+              - column:
+                  name: order_status
+                  value: "RECEIVED"
+              - column:
+                  name: order_items_total
+                  value: "25.0"
+              - column:
+                  name: total_with_delivery
+                  value: "30.0"
+              - column:
+                  name: creation_date
+                  value: "2024-06-01T12:00:00"
+        - insert:
+            tableName: order_
+            columns:
+              - column:
+                  name: user_id
+                  value: "2"
+              - column:
+                  name: order_status
+                  value: "DELIVERED"
+              - column:
+                  name: order_items_total
+                  value: "40.0"
+              - column:
+                  name: total_with_delivery
+                  value: "45.0"
+              - column:
+                  name: creation_date
+                  value: "2024-06-02T10:00:00"
+        - insert:
+            tableName: order_
+            columns:
+              - column:
+                  name: user_id
+                  value: "3"
+              - column:
+                  name: order_status
+                  value: "PREPARATION"
+              - column:
+                  name: order_items_total
+                  value: "35.0"
+              - column:
+                  name: total_with_delivery
+                  value: "40.0"
+              - column:
+                  name: creation_date
+                  value: "2024-06-03T14:00:00"

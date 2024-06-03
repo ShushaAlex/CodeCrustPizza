@@ -32,15 +32,15 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.telran.codecrustpizza.TestData.ADDRESS_CREATE_DTO_1;
-import static org.telran.codecrustpizza.TestData.CHANGE_PASSWORD_DTO_1;
-import static org.telran.codecrustpizza.TestData.EMAIL_1;
-import static org.telran.codecrustpizza.TestData.NAME_1;
-import static org.telran.codecrustpizza.TestData.PHONE_1;
-import static org.telran.codecrustpizza.TestData.PHONE_CREATE_DTO_1;
-import static org.telran.codecrustpizza.TestData.USER_1;
-import static org.telran.codecrustpizza.TestData.USER_CREATE_DTO_1;
-import static org.telran.codecrustpizza.TestData.USER_RESPONSE_DTO_1;
+import static org.telran.codecrustpizza.testData.UserServiceTestData.ADDRESS_CREATE_DTO_1;
+import static org.telran.codecrustpizza.testData.UserServiceTestData.CHANGE_PASSWORD_DTO_1;
+import static org.telran.codecrustpizza.testData.UserServiceTestData.EMAIL_1;
+import static org.telran.codecrustpizza.testData.UserServiceTestData.NAME_1;
+import static org.telran.codecrustpizza.testData.UserServiceTestData.PHONE_1;
+import static org.telran.codecrustpizza.testData.UserServiceTestData.PHONE_CREATE_DTO_1;
+import static org.telran.codecrustpizza.testData.UserServiceTestData.USER_1;
+import static org.telran.codecrustpizza.testData.UserServiceTestData.USER_CREATE_DTO_1;
+import static org.telran.codecrustpizza.testData.UserServiceTestData.USER_RESPONSE_DTO_1;
 
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration(classes = UserServiceImpl.class)
@@ -84,26 +84,26 @@ public class UserServiceImplTest {
         Long userId = 1L;
         UserResponseDto responseDto = USER_RESPONSE_DTO_1;
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findByIdWithFavoritePizzas(userId)).thenReturn(Optional.of(user));
         when(userMapper.toResponseDto(user)).thenReturn(responseDto);
         // Execute
-        UserResponseDto result = userServiceImpl.findById(userId);
+        UserResponseDto result = userServiceImpl.getUserDtoById(userId);
         // Validate
         assertEquals(responseDto.name(), result.name());
         assertEquals(responseDto.email(), result.email());
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdWithFavoritePizzas(userId);
         verify(userMapper, times(1)).toResponseDto(user);
     }
 
     @Test
-    public void findByIdThrowsEntityExceptionTest() {
+    public void getUserDtoByIdThrowsEntityExceptionTest() {
         // Prepare data
         Long userId = 1L;
 
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        when(userRepository.findByIdWithFavoritePizzas(userId)).thenReturn(Optional.empty());
         // Validate
-        assertThrows(EntityException.class, () -> userServiceImpl.findById(userId));
-        verify(userRepository, times(1)).findById(userId);
+        assertThrows(EntityException.class, () -> userServiceImpl.getUserDtoById(userId));
+        verify(userRepository, times(1)).findByIdWithFavoritePizzas(userId);
     }
 
     @Test
@@ -116,7 +116,7 @@ public class UserServiceImplTest {
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
         when(userMapper.toResponseDto(user)).thenReturn(responseDto);
         // Execute
-        UserResponseDto result = userServiceImpl.findByEmail(email);
+        UserResponseDto result = userServiceImpl.getUserDtoByEmail(email);
         // Validate
         assertEquals(responseDto.name(), result.name());
         assertEquals(responseDto.email(), result.email());
@@ -125,13 +125,13 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void findByEmailThrowsEntityExceptionTest() {
+    public void getUserDtoByEmailThrowsEntityExceptionTest() {
         // Prepare data
         String email = EMAIL_1;
 
         when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
         // Validate
-        assertThrows(EntityException.class, () -> userServiceImpl.findByEmail(email));
+        assertThrows(EntityException.class, () -> userServiceImpl.getUserDtoByEmail(email));
         verify(userRepository, times(1)).findByEmail(email);
     }
 
@@ -178,14 +178,14 @@ public class UserServiceImplTest {
         user.setRole(Role.USER);
         UserResponseDto responseDto = USER_RESPONSE_DTO_1;
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findByIdWithFavoritePizzas(userId)).thenReturn(Optional.of(user));
         when(userMapper.toResponseDto(user)).thenReturn(responseDto);
         // Execute
         UserResponseDto result = userServiceImpl.assignRole(userId, role);
         // Validate
         assertEquals(responseDto, result);
         assertEquals(role, user.getRole());
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdWithFavoritePizzas(userId);
         verify(userRepository, times(1)).save(user);
         verify(userMapper, times(1)).toResponseDto(user);
     }
@@ -196,10 +196,10 @@ public class UserServiceImplTest {
         Long userId = 1L;
         Role role = Role.ADMIN;
 
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        when(userRepository.findByIdWithFavoritePizzas(userId)).thenReturn(Optional.empty());
         // Validate
         assertThrows(EntityException.class, () -> userServiceImpl.assignRole(userId, role));
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdWithFavoritePizzas(userId);
     }
 
     @Test
@@ -211,7 +211,7 @@ public class UserServiceImplTest {
         User user = new User();
         Phone phone = PHONE_1;
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findByIdWithFavoritePizzas(userId)).thenReturn(Optional.of(user));
         when(phoneMapper.toPhone(phoneDto)).thenReturn(phone);
         when(phoneRepository.findByCountryCodeAndNumber(phone.getCountryCode(), phone.getNumber())).thenReturn(Optional.empty());
         when(phoneRepository.save(phone)).thenReturn(phone);
@@ -221,7 +221,7 @@ public class UserServiceImplTest {
         // Validate
         assertEquals(responseDto.email(), result.email());
         assertEquals(1, user.getPhones().size());
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdWithFavoritePizzas(userId);
         verify(phoneMapper, times(1)).toPhone(phoneDto);
         verify(phoneRepository, times(1)).findByCountryCodeAndNumber(phone.getCountryCode(), phone.getNumber());
         verify(phoneRepository, times(1)).save(phone);
@@ -235,10 +235,10 @@ public class UserServiceImplTest {
         Long userId = 1L;
         PhoneCreateRequestDto phoneDto = PHONE_CREATE_DTO_1;
 
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        when(userRepository.findByIdWithFavoritePizzas(userId)).thenReturn(Optional.empty());
         // Validate
         assertThrows(EntityException.class, () -> userServiceImpl.addPhone(userId, phoneDto));
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdWithFavoritePizzas(userId);
     }
 
     @Test
@@ -249,12 +249,12 @@ public class UserServiceImplTest {
         Phone phone = PHONE_1;
         User user = new User();
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findByIdWithFavoritePizzas(userId)).thenReturn(Optional.of(user));
         when(phoneMapper.toPhone(phoneDto)).thenReturn(phone);
         when(phoneRepository.findByCountryCodeAndNumber(phone.getCountryCode(), phone.getNumber())).thenReturn(Optional.of(phone));
         // Validate
         assertThrows(EntityException.class, () -> userServiceImpl.addPhone(userId, phoneDto));
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdWithFavoritePizzas(userId);
         verify(phoneMapper, times(1)).toPhone(phoneDto);
         verify(phoneRepository, times(1)).findByCountryCodeAndNumber(phone.getCountryCode(), phone.getNumber());
     }
@@ -269,7 +269,7 @@ public class UserServiceImplTest {
         user.addPhone(phone);
         UserResponseDto responseDto = USER_RESPONSE_DTO_1;
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findByIdWithFavoritePizzas(userId)).thenReturn(Optional.of(user));
         when(phoneRepository.findById(phoneId)).thenReturn(Optional.of(phone));
         when(userMapper.toResponseDto(user)).thenReturn(responseDto);
         // Execute
@@ -277,7 +277,7 @@ public class UserServiceImplTest {
         // Validate
         assertEquals(responseDto, result);
         assertEquals(0, user.getPhones().size());
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdWithFavoritePizzas(userId);
         verify(phoneRepository, times(1)).findById(phoneId);
         verify(phoneRepository, times(1)).delete(phone);
         verify(userRepository, times(1)).save(user);
@@ -289,10 +289,10 @@ public class UserServiceImplTest {
         Long userId = 1L;
         Long phoneId = 1L;
 
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        when(userRepository.findByIdWithFavoritePizzas(userId)).thenReturn(Optional.empty());
         // Validate
         assertThrows(EntityException.class, () -> userServiceImpl.removePhone(userId, phoneId));
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdWithFavoritePizzas(userId);
     }
 
     @Test
@@ -302,11 +302,11 @@ public class UserServiceImplTest {
         Long phoneId = 1L;
         User user = new User();
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findByIdWithFavoritePizzas(userId)).thenReturn(Optional.of(user));
         when(phoneRepository.findById(phoneId)).thenReturn(Optional.empty());
         // Validate
         assertThrows(EntityException.class, () -> userServiceImpl.removePhone(userId, phoneId));
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdWithFavoritePizzas(userId);
         verify(phoneRepository, times(1)).findById(phoneId);
     }
 
@@ -319,7 +319,7 @@ public class UserServiceImplTest {
         User user = new User();
         Address address = new Address();
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findByIdWithFavoritePizzas(userId)).thenReturn(Optional.of(user));
         when(addressMapper.toAddress(addressDto)).thenReturn(address);
         when(addressRepository.save(address)).thenReturn(address);
         when(userMapper.toResponseDto(user)).thenReturn(responseDto);
@@ -328,7 +328,7 @@ public class UserServiceImplTest {
         // Validate
         assertEquals(responseDto, result);
         assertEquals(1, user.getAddresses().size());
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdWithFavoritePizzas(userId);
         verify(addressMapper, times(1)).toAddress(addressDto);
         verify(addressRepository, times(1)).save(address);
         verify(userMapper, times(1)).toResponseDto(user);
@@ -341,10 +341,10 @@ public class UserServiceImplTest {
         Long userId = 1L;
         AddressCreateRequestDto addressDto = ADDRESS_CREATE_DTO_1;
 
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        when(userRepository.findByIdWithFavoritePizzas(userId)).thenReturn(Optional.empty());
         // Validate
         assertThrows(EntityException.class, () -> userServiceImpl.addAddress(userId, addressDto));
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdWithFavoritePizzas(userId);
     }
 
     @Test
@@ -355,12 +355,12 @@ public class UserServiceImplTest {
         Address address = new Address();
         User user = new User();
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findByIdWithFavoritePizzas(userId)).thenReturn(Optional.of(user));
         when(addressMapper.toAddress(addressDto)).thenReturn(address);
         when(addressRepository.findByCityAndStreetAndHouse(address.getCity(), address.getStreet(), address.getHouse())).thenReturn(Optional.of(address));
         // Validate
         assertThrows(EntityException.class, () -> userServiceImpl.addAddress(userId, addressDto));
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdWithFavoritePizzas(userId);
         verify(addressMapper, times(1)).toAddress(addressDto);
         verify(addressRepository, times(1)).findByCityAndStreetAndHouse(address.getCity(), address.getStreet(), address.getHouse());
     }
@@ -375,7 +375,7 @@ public class UserServiceImplTest {
         user.addAddress(address);
         UserResponseDto responseDto = USER_RESPONSE_DTO_1;
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findByIdWithFavoritePizzas(userId)).thenReturn(Optional.of(user));
         when(addressRepository.findById(addressId)).thenReturn(Optional.of(address));
         when(userMapper.toResponseDto(user)).thenReturn(responseDto);
         // Execute
@@ -383,7 +383,7 @@ public class UserServiceImplTest {
         // Validate
         assertEquals(responseDto, result);
         assertEquals(0, user.getAddresses().size());
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdWithFavoritePizzas(userId);
         verify(addressRepository, times(1)).findById(addressId);
         verify(addressRepository, times(1)).delete(address);
         verify(userRepository, times(1)).save(user);
@@ -395,10 +395,10 @@ public class UserServiceImplTest {
         Long userId = 1L;
         Long addressId = 1L;
 
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        when(userRepository.findByIdWithFavoritePizzas(userId)).thenReturn(Optional.empty());
         // Validate
         assertThrows(EntityException.class, () -> userServiceImpl.removePhone(userId, addressId));
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdWithFavoritePizzas(userId);
     }
 
     @Test
@@ -408,11 +408,11 @@ public class UserServiceImplTest {
         Long addressId = 1L;
         User user = new User();
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findByIdWithFavoritePizzas(userId)).thenReturn(Optional.of(user));
         when(addressRepository.findById(addressId)).thenReturn(Optional.empty());
         // Validate
         assertThrows(EntityException.class, () -> userServiceImpl.removeAddress(userId, addressId));
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdWithFavoritePizzas(userId);
         verify(addressRepository, times(1)).findById(addressId);
     }
 
@@ -425,7 +425,7 @@ public class UserServiceImplTest {
         user.setPassword(passwordDto.password());
         UserResponseDto responseDto = USER_RESPONSE_DTO_1;
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findByIdWithFavoritePizzas(userId)).thenReturn(Optional.of(user));
         when(userRepository.save(user)).thenReturn(user);
         when(userMapper.toResponseDto(user)).thenReturn(responseDto);
         // Execute
@@ -433,7 +433,7 @@ public class UserServiceImplTest {
         // Validate
         assertEquals(passwordDto.password(), user.getPassword());
         assertEquals(responseDto, result);
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdWithFavoritePizzas(userId);
         verify(userRepository, times(1)).save(user);
         verify(userMapper, times(1)).toResponseDto(user);
     }
@@ -444,10 +444,10 @@ public class UserServiceImplTest {
         Long userId = 1L;
         UserChangePasswordRequestDto passwordDto = CHANGE_PASSWORD_DTO_1;
 
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        when(userRepository.findByIdWithFavoritePizzas(userId)).thenReturn(Optional.empty());
         // Validate
         assertThrows(EntityException.class, () -> userServiceImpl.changePassword(userId, passwordDto));
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdWithFavoritePizzas(userId);
     }
 
     @Test
@@ -459,14 +459,14 @@ public class UserServiceImplTest {
         UserResponseDto responseDto = USER_RESPONSE_DTO_1;
         user.setEmail(newEmail);
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findByIdWithFavoritePizzas(userId)).thenReturn(Optional.of(user));
         when(userRepository.save(user)).thenReturn(user);
         when(userMapper.toResponseDto(user)).thenReturn(responseDto);
         // Execute
         UserResponseDto result = userServiceImpl.changeEmail(userId, newEmail);
         // Validate
         assertEquals(user.getEmail(), result.email());
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdWithFavoritePizzas(userId);
         verify(userRepository, times(1)).save(user);
         verify(userMapper, times(1)).toResponseDto(user);
     }
@@ -477,10 +477,10 @@ public class UserServiceImplTest {
         Long userId = 1L;
         String newEmail = EMAIL_1;
 
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        when(userRepository.findByIdWithFavoritePizzas(userId)).thenReturn(Optional.empty());
         // Validate
         assertThrows(EntityException.class, () -> userServiceImpl.changeEmail(userId, newEmail));
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdWithFavoritePizzas(userId);
     }
 
     @Test
@@ -492,14 +492,14 @@ public class UserServiceImplTest {
         UserResponseDto responseDto = USER_RESPONSE_DTO_1;
         user.setName(newName);
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findByIdWithFavoritePizzas(userId)).thenReturn(Optional.of(user));
         when(userRepository.save(user)).thenReturn(user);
         when(userMapper.toResponseDto(user)).thenReturn(responseDto);
         // Execute
         UserResponseDto result = userServiceImpl.changeName(userId, newName);
         // Validate
         assertEquals(user.getName(), result.name());
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdWithFavoritePizzas(userId);
         verify(userRepository, times(1)).save(user);
         verify(userMapper, times(1)).toResponseDto(user);
     }
@@ -510,9 +510,9 @@ public class UserServiceImplTest {
         Long userId = 1L;
         String newName = NAME_1;
 
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        when(userRepository.findByIdWithFavoritePizzas(userId)).thenReturn(Optional.empty());
         // Validate
         assertThrows(EntityException.class, () -> userServiceImpl.changeName(userId, newName));
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdWithFavoritePizzas(userId);
     }
 }

@@ -1,0 +1,68 @@
+databaseChangeLog:
+  - changeSet:
+      id: 13
+      author: Alex
+      changes:
+        - insert:
+            tableName: pizza_pattern
+            columns:
+              - column:
+                  name: title
+                  value: "Margherita"
+              - column:
+                  name: description
+                  value: "Classic Italian pizza with tomato sauce, mozzarella cheese, and basil"
+              - column:
+                  name: size
+                  value: 15
+              - column:
+                  name: dough
+                  value: "THIN"
+              - column:
+                  name: price
+                  value: 9.99
+              - column:
+                  name: calories
+                  value: 800
+        - insert:
+            tableName: pizza_pattern
+            columns:
+              - column:
+                  name: title
+                  value: "Pepperoni"
+              - column:
+                  name: description
+                  value: "Pizza topped with spicy pepperoni slices and melted cheese"
+              - column:
+                  name: size
+                  value: 15
+              - column:
+                  name: dough
+                  value: "THICK"
+              - column:
+                  name: price
+                  value: 10.99
+              - column:
+                  name: calories
+                  value: 950
+        - insert:
+            tableName: pizza_pattern
+            columns:
+              - column:
+                  name: title
+                  value: "Vegetarian"
+              - column:
+                  name: description
+                  value: "Pizza loaded with fresh vegetables like bell peppers, onions, mushrooms, and olives"
+              - column:
+                  name: size
+                  value: 25
+              - column:
+                  name: dough
+                  value: "THIN"
+              - column:
+                  name: price
+                  value: 11.49
+              - column:
+                  name: calories
+                  value: 700

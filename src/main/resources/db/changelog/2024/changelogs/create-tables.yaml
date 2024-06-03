@@ -1,0 +1,726 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1717062684082-1
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk__user
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+              - column:
+                  name: role
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: is_blocked
+                  type: BOOLEAN
+              - column:
+                  name: creation_date
+                  type: DATETIME
+            tableName: _user
+  - changeSet:
+      id: 1717062684082-2
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_address
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: city
+                  type: VARCHAR(255)
+              - column:
+                  name: street
+                  type: VARCHAR(255)
+              - column:
+                  name: house
+                  type: VARCHAR(255)
+              - column:
+                  name: comment
+                  type: VARCHAR(255)
+            tableName: address
+  - changeSet:
+      id: 1717062684082-3
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_cart
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+            tableName: cart
+  - changeSet:
+      id: 1717062684082-4
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_cartitem
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: item_id
+                  type: BIGINT
+              - column:
+                  name: cart_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: quantity
+                  type: INT
+              - column:
+                  name: price
+                  type: DECIMAL
+              - column:
+                  name: creation_date
+                  type: DATETIME
+            tableName: cart_item
+  - changeSet:
+      id: 1717062684082-5
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_category
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+            tableName: category
+  - changeSet:
+      id: 1717062684082-6
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_delivery
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: address_id
+                  type: BIGINT
+              - column:
+                  name: order_id
+                  type: BIGINT
+              - column:
+                  name: delivery_fee
+                  type: DECIMAL
+            tableName: delivery
+  - changeSet:
+      id: 1717062684082-7
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_ingredient
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+              - column:
+                  name: price
+                  type: DECIMAL
+              - column:
+                  constraints:
+                    nullable: false
+                  name: calories
+                  type: INT
+            tableName: ingredient
+  - changeSet:
+      id: 1717062684082-8
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_item
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: price
+                  type: DECIMAL
+            tableName: item
+  - changeSet:
+      id: 1717062684082-9
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_item_category
+                  name: category_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_item_category
+                  name: item_id
+                  type: BIGINT
+            tableName: item_category
+  - changeSet:
+      id: 1717062684082-10
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_order_
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: order_status
+                  type: VARCHAR(255)
+              - column:
+                  name: order_items_total
+                  type: DECIMAL
+              - column:
+                  name: total_with_delivery
+                  type: DECIMAL
+              - column:
+                  name: creation_date
+                  type: DATETIME
+            tableName: order_
+  - changeSet:
+      id: 1717062684082-11
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_orderitem
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: order_id
+                  type: BIGINT
+              - column:
+                  name: item_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: quantity
+                  type: INT
+            tableName: order_item
+  - changeSet:
+      id: 1717062684082-12
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_phone
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+              - column:
+                  name: country_code
+                  type: VARCHAR(255)
+              - column:
+                  name: area_code
+                  type: VARCHAR(255)
+              - column:
+                  name: number
+                  type: VARCHAR(255)
+              - column:
+                  name: extension
+                  type: VARCHAR(255)
+              - column:
+                  name: user_id
+                  type: BIGINT
+            tableName: phone
+  - changeSet:
+      id: 1717062684082-13
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_pizza
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: pizza_pattern_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: size
+                  type: INT
+              - column:
+                  name: dough
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: calories
+                  type: INT
+            tableName: pizza
+  - changeSet:
+      id: 1717062684082-14
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_pizzaingredient
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: pizza_id
+                  type: BIGINT
+              - column:
+                  name: ingredient_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: quantity
+                  type: INT
+            tableName: pizza_ingredient
+  - changeSet:
+      id: 1717062684082-15
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_pizzapattern
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: size
+                  type: INT
+              - column:
+                  name: dough
+                  type: VARCHAR(255)
+              - column:
+                  name: price
+                  type: DECIMAL
+              - column:
+                  constraints:
+                    nullable: false
+                  name: calories
+                  type: INT
+            tableName: pizza_pattern
+  - changeSet:
+      id: 1717062684082-16
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_pizzapatterningredient
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: pizza_pattern_id
+                  type: BIGINT
+              - column:
+                  name: ingredient_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: quantity
+                  type: INT
+            tableName: pizza_pattern_ingredient
+  - changeSet:
+      id: 1717062684082-17
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_user_address
+                  name: address_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_user_address
+                  name: user_id
+                  type: BIGINT
+            tableName: user_address
+  - changeSet:
+      id: 1717062684082-18
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_user_favorite_pizza
+                  name: pizza_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_user_favorite_pizza
+                  name: user_id
+                  type: BIGINT
+            tableName: user_favorite_pizza
+  - changeSet:
+      id: 1717062684082-19
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: cart_id
+            baseTableName: cart_item
+            constraintName: FK_CARTITEM_ON_CART
+            referencedColumnNames: id
+            referencedTableName: cart
+  - changeSet:
+      id: 1717062684082-20
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: item_id
+            baseTableName: cart_item
+            constraintName: FK_CARTITEM_ON_ITEM
+            referencedColumnNames: id
+            referencedTableName: item
+  - changeSet:
+      id: 1717062684082-21
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: cart
+            constraintName: FK_CART_ON_USER
+            referencedColumnNames: id
+            referencedTableName: _user
+  - changeSet:
+      id: 1717062684082-22
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: address_id
+            baseTableName: delivery
+            constraintName: FK_DELIVERY_ON_ADDRESS
+            referencedColumnNames: id
+            referencedTableName: address
+  - changeSet:
+      id: 1717062684082-23
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: order_id
+            baseTableName: delivery
+            constraintName: FK_DELIVERY_ON_ORDER
+            referencedColumnNames: id
+            referencedTableName: order_
+  - changeSet:
+      id: 1717062684082-24
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: item_id
+            baseTableName: order_item
+            constraintName: FK_ORDERITEM_ON_ITEM
+            referencedColumnNames: id
+            referencedTableName: item
+  - changeSet:
+      id: 1717062684082-25
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: order_id
+            baseTableName: order_item
+            constraintName: FK_ORDERITEM_ON_ORDER
+            referencedColumnNames: id
+            referencedTableName: order_
+  - changeSet:
+      id: 1717062684082-26
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: order_
+            constraintName: FK_ORDER__ON_USER
+            referencedColumnNames: id
+            referencedTableName: _user
+  - changeSet:
+      id: 1717062684082-27
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: phone
+            constraintName: FK_PHONE_ON_USER
+            referencedColumnNames: id
+            referencedTableName: _user
+  - changeSet:
+      id: 1717062684082-28
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: ingredient_id
+            baseTableName: pizza_ingredient
+            constraintName: FK_PIZZAINGREDIENT_ON_INGREDIENT
+            referencedColumnNames: id
+            referencedTableName: ingredient
+  - changeSet:
+      id: 1717062684082-29
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: pizza_id
+            baseTableName: pizza_ingredient
+            constraintName: FK_PIZZAINGREDIENT_ON_PIZZA
+            referencedColumnNames: id
+            referencedTableName: pizza
+  - changeSet:
+      id: 1717062684082-30
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: ingredient_id
+            baseTableName: pizza_pattern_ingredient
+            constraintName: FK_PIZZAPATTERNINGREDIENT_ON_INGREDIENT
+            referencedColumnNames: id
+            referencedTableName: ingredient
+  - changeSet:
+      id: 1717062684082-31
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: pizza_pattern_id
+            baseTableName: pizza_pattern_ingredient
+            constraintName: FK_PIZZAPATTERNINGREDIENT_ON_PIZZAPATTERN
+            referencedColumnNames: id
+            referencedTableName: pizza_pattern
+  - changeSet:
+      id: 1717062684082-32
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id
+            baseTableName: pizza
+            constraintName: FK_PIZZA_ON_ID
+            referencedColumnNames: id
+            referencedTableName: item
+  - changeSet:
+      id: 1717062684082-33
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: pizza_pattern_id
+            baseTableName: pizza
+            constraintName: FK_PIZZA_ON_PIZZAPATTERN
+            referencedColumnNames: id
+            referencedTableName: pizza_pattern
+  - changeSet:
+      id: 1717062684082-34
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: category_id
+            baseTableName: item_category
+            constraintName: fk_itecat_on_category
+            referencedColumnNames: id
+            referencedTableName: category
+  - changeSet:
+      id: 1717062684082-35
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: item_id
+            baseTableName: item_category
+            constraintName: fk_itecat_on_item
+            referencedColumnNames: id
+            referencedTableName: item
+  - changeSet:
+      id: 1717062684082-36
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: address_id
+            baseTableName: user_address
+            constraintName: fk_useadd_on_address
+            referencedColumnNames: id
+            referencedTableName: address
+  - changeSet:
+      id: 1717062684082-37
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: user_address
+            constraintName: fk_useadd_on_user
+            referencedColumnNames: id
+            referencedTableName: _user
+  - changeSet:
+      id: 1717062684082-38
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: pizza_id
+            baseTableName: user_favorite_pizza
+            constraintName: fk_usefavpiz_on_pizza
+            referencedColumnNames: id
+            referencedTableName: pizza
+  - changeSet:
+      id: 1717062684082-39
+      author: alex (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: user_favorite_pizza
+            constraintName: fk_usefavpiz_on_user
+            referencedColumnNames: id
+            referencedTableName: _user
+

@@ -52,7 +52,7 @@ public class Order {
     private BigDecimal orderItemsTotal;
     private BigDecimal totalWithDelivery;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "order")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.ALL)
     private Delivery delivery;
 
     private LocalDateTime creationDate;
@@ -66,7 +66,6 @@ public class Order {
         orderItem.setOrder(null);
     }
 
-    //TODO нужно ли во второй сущности прописывать сеттер, или произойдет зацикливание?
     public void setDelivery(Delivery delivery) {
         this.delivery = delivery;
         delivery.setOrder(this);

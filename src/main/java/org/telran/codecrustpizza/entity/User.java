@@ -30,17 +30,15 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.telran.codecrustpizza.util.EntityUtil.changeManyToManyRef;
-
 @Data
 @Entity
-@Builder
+@Builder(toBuilder = true) //затем вызываем toBuilder.build()
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"phones", "addresses", "favoritePizzas", "cart", "orders"})
 @ToString(exclude = {"phones", "addresses", "favoritePizzas", "cart", "orders"})
 @Table(name = "_user")
-@NamedEntityGraphs({ //TODO подумать над тем, какие энтити графы необходимы в каждой сущности
+@NamedEntityGraphs({
         @NamedEntityGraph(
                 name = "User.withPhones", // как будет называться что мы получаем
                 attributeNodes = @NamedAttributeNode("phones") // какое поле подтягиваем
@@ -52,6 +50,10 @@ import static org.telran.codecrustpizza.util.EntityUtil.changeManyToManyRef;
         @NamedEntityGraph(
                 name = "User.withPhonesAndAddresses",
                 attributeNodes = {@NamedAttributeNode("phones"), @NamedAttributeNode("addresses")}
+        ),
+        @NamedEntityGraph(
+                name = "User.favoritePizzas",
+                attributeNodes = @NamedAttributeNode("favoritePizzas")
         )
 })
 public class User {
@@ -108,9 +110,8 @@ public class User {
     }
 
     public void addPizza(Pizza pizza) {
-//        favoritePizzas.add(pizza);
-//        pizza.getUsers().add(this);
-        changeManyToManyRef(favoritePizzas::add, pizza.getUsers()::add, pizza, this);
+        favoritePizzas.add(pizza);
+        pizza.getUsers().add(this);
     }
 
 

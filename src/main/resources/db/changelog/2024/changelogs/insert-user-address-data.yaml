@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 6
+      author: Alex
+      changes:
+        - insert:
+            tableName: user_address
+            columns:
+              - column:
+                  name: address_id
+                  value: 1
+              - column:
+                  name: user_id
+                  value: 1
+        - insert:
+            tableName: user_address
+            columns:
+              - column:
+                  name: address_id
+                  value: 2
+              - column:
+                  name: user_id
+                  value: 1
+        - insert:
+            tableName: user_address
+            columns:
+              - column:
+                  name: address_id
+                  value: 3
+              - column:
+                  name: user_id
+                  value: 2
+        - insert:
+            tableName: user_address
+            columns:
+              - column:
+                  name: address_id
+                  value: 4
+              - column:
+                  name: user_id
+                  value: 2

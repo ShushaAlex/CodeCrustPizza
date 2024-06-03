@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 19
+      author: Alex
+      changes:
+        - insert:
+            tableName: delivery
+            columns:
+              - column:
+                  name: address_id
+                  value: "1"
+              - column:
+                  name: order_id
+                  value: "1"
+              - column:
+                  name: delivery_fee
+                  value: "5.0"
+        - insert:
+            tableName: delivery
+            columns:
+              - column:
+                  name: address_id
+                  value: "2"
+              - column:
+                  name: order_id
+                  value: "2"
+              - column:
+                  name: delivery_fee
+                  value: "7.5"
+        - insert:
+            tableName: delivery
+            columns:
+              - column:
+                  name: address_id
+                  value: "3"
+              - column:
+                  name: order_id
+                  value: "3"
+              - column:
+                  name: delivery_fee
+                  value: "6.0"

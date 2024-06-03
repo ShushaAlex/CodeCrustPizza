@@ -1,0 +1,59 @@
+databaseChangeLog:
+  - changeSet:
+      id: 14
+      author: Alex
+      changes:
+        - insert:
+            tableName: pizza
+            columns:
+              - column:
+                  name: id
+                  value: "1"
+              - column:
+                  name: pizza_pattern_id
+                  value: "1"
+              - column:
+                  name: size
+                  value: "30"
+              - column:
+                  name: dough
+                  value: "THIN"
+              - column:
+                  name: calories
+                  value: "800"
+        - insert:
+            tableName: pizza
+            columns:
+              - column:
+                  name: id
+                  value: "2"
+              - column:
+                  name: pizza_pattern_id
+                  value: "2"
+              - column:
+                  name: size
+                  value: "30"
+              - column:
+                  name: dough
+                  value: "THICK"
+              - column:
+                  name: calories
+                  value: "950"
+        - insert:
+            tableName: pizza
+            columns:
+              - column:
+                  name: id
+                  value: "3"
+              - column:
+                  name: pizza_pattern_id
+                  value: "3"
+              - column:
+                  name: size
+                  value: "30"
+              - column:
+                  name: dough
+                  value: "THICK"
+              - column:
+                  name: calories
+                  value: "700"

@@ -1,5 +1,6 @@
 package org.telran.codecrustpizza.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -32,7 +33,7 @@ public class Delivery {
     @ManyToOne(fetch = FetchType.LAZY)
     private Address address;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Order order;
 
     private BigDecimal deliveryFee;

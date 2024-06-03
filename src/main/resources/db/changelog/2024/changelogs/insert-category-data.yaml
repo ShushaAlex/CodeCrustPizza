@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: 10
+      author: Alex
+      changes:
+        - insert:
+            tableName: category
+            columns:
+              - column:
+                  name: title
+                  value: "Vegetarian"
+        - insert:
+            tableName: category
+            columns:
+              - column:
+                  name: title
+                  value: "Meat Lovers"
+        - insert:
+            tableName: category
+            columns:
+              - column:
+                  name: title
+                  value: "Seafood"
+        - insert:
+            tableName: category
+            columns:
+              - column:
+                  name: title
+                  value: "Cheese Lovers"
+        - insert:
+            tableName: category
+            columns:
+              - column:
+                  name: title
+                  value: "Vegan"       

@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder(toBuilder = true)
 @EqualsAndHashCode(exclude = "items")
 @ToString(exclude = "items")
 public class Category {
@@ -27,5 +29,6 @@ public class Category {
     private String title;
 
     @ManyToMany(mappedBy = "categories")
+    @Builder.Default
     private Set<Item> items = new HashSet<>();
 }

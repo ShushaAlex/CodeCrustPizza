@@ -1,0 +1,77 @@
+databaseChangeLog:
+  - changeSet:
+      id: insertPizzaIngredient1
+      author: Alex
+      changes:
+        - insert:
+            tableName: pizza_ingredient
+            columns:
+              - column:
+                  name: pizza_id
+                  value: "1"
+              - column:
+                  name: ingredient_id
+                  value: "1"
+              - column:
+                  name: quantity
+                  value: "2"
+        - insert:
+            tableName: pizza_ingredient
+            columns:
+              - column:
+                  name: pizza_id
+                  value: "2"
+              - column:
+                  name: ingredient_id
+                  value: "2"
+              - column:
+                  name: quantity
+                  value: "3"
+        - insert:
+            tableName: pizza_ingredient
+            columns:
+              - column:
+                  name: pizza_id
+                  value: "3"
+              - column:
+                  name: ingredient_id
+                  value: "3"
+              - column:
+                  name: quantity
+                  value: "1"
+        - insert:
+            tableName: pizza_ingredient
+            columns:
+              - column:
+                  name: pizza_id
+                  value: "2"
+              - column:
+                  name: ingredient_id
+                  value: "4"
+              - column:
+                  name: quantity
+                  value: "2"
+        - insert:
+            tableName: pizza_ingredient
+            columns:
+              - column:
+                  name: pizza_id
+                  value: "1"
+              - column:
+                  name: ingredient_id
+                  value: "2"
+              - column:
+                  name: quantity
+                  value: "3"
+        - insert:
+            tableName: pizza_ingredient
+            columns:
+              - column:
+                  name: pizza_id
+                  value: "3"
+              - column:
+                  name: ingredient_id
+                  value: "4"
+              - column:
+                  name: quantity
+                  value: "1"

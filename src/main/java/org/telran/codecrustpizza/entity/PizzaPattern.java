@@ -7,6 +7,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -23,11 +25,15 @@ import java.util.Set;
 
 @Data
 @Entity
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"patternIngredients", "pizzas"})
 @ToString(exclude = {"patternIngredients", "pizzas"})
+@NamedEntityGraph(
+        name = "PizzaPattern.patternIngredients",
+        attributeNodes = @NamedAttributeNode("patternIngredients")
+)
 public class PizzaPattern {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
