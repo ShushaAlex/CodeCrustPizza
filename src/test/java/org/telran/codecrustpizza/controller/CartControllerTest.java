@@ -18,6 +18,7 @@ import org.telran.codecrustpizza.dto.cart.CartResponseDto;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -132,8 +133,13 @@ class CartControllerTest {
     @WithMockUser(username = "john.doe@example.com", authorities = {"ADMIN", "USER"})
     void clearCurrentUserCart() throws Exception {
 
-        mockMvc.perform(put("http://localhost:8080/api/cart/clear"))
+        var result = mockMvc.perform(put("http://localhost:8080/api/cart/clear"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()").value(0));
+                .andReturn();
+
+        String jsonResponse = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        CartResponseDto actualResponseDto = objectMapper.readValue(jsonResponse, CartResponseDto.class);
+
+        assertTrue(actualResponseDto.cartItems().isEmpty());
     }
 }
