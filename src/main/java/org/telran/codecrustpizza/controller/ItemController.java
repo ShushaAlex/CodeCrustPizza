@@ -65,9 +65,9 @@ public class ItemController {
         return itemService.saveItem(createDto);
     }
 
-    @PutMapping("/{itemId}/update")
+    @PutMapping("/update/{itemId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ItemResponseDto updateItem(@PathVariable Long itemId, @Valid ItemCreateRequestDto createRequestDto) {
+    public ItemResponseDto updateItem(@PathVariable Long itemId, @Valid @RequestBody ItemCreateRequestDto createRequestDto) {
 
         return itemService.updateItem(itemId, createRequestDto);
     }
@@ -86,10 +86,4 @@ public class ItemController {
         return itemService.removeCategory(itemId, category);
     }
 
-    @DeleteMapping("/{itemId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public boolean deleteItem(@PathVariable Long itemId) {
-
-        return itemService.deleteItem(itemId);
-    }
 }

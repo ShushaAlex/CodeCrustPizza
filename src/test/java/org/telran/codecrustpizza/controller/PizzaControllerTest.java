@@ -71,7 +71,7 @@ class PizzaControllerTest {
         String jsonResponse = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
         PizzaResponseDto actualResponseDto = objectMapper.readValue(jsonResponse, PizzaResponseDto.class);
 
-        String expectedTitle = "Margherita";
+        String expectedTitle = "Four Cheese";
 
         assertEquals(expectedTitle, actualResponseDto.title());
     }
