@@ -1,6 +1,7 @@
 package org.telran.codecrustpizza.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,6 +26,7 @@ public class CartController {
 
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public List<CartItemResponseDto> getCurrentUserCartItems() {
         Long userId = userService.getCurrentUserId();
 
@@ -32,6 +34,7 @@ public class CartController {
     }
 
     @PutMapping("/add")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public CartResponseDto addItem(@RequestParam Long itemId) {
         Long userId = userService.getCurrentUserId();
 
@@ -39,6 +42,7 @@ public class CartController {
     }
 
     @PutMapping("/remove")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public CartResponseDto removeItem(@RequestParam Long itemId) {
         Long userId = userService.getCurrentUserId();
 
@@ -46,6 +50,7 @@ public class CartController {
     }
 
     @PutMapping("/clear")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public CartResponseDto clearCurrentUserCart() {
         Long userId = userService.getCurrentUserId();
 

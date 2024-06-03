@@ -38,6 +38,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public List<ItemResponseDto> getAll() {
         return itemRepository.findAll().stream()
                 .map(itemMapper::toDto)

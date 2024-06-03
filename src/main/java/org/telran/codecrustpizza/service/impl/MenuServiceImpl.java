@@ -18,7 +18,7 @@ public class MenuServiceImpl implements MenuService {
     private final ItemService itemService;
 
     @Override
-    public MenuResponseDto getMenu() {
+    public MenuResponseDto getMenu() { // ToDo change to categories
         List<PizzaPatternResponseDto> pizzaPatterns = pizzaPatternService.findAll();
         List<ItemResponseDto> items = itemService.getAll();
         return new MenuResponseDto(pizzaPatterns, items);

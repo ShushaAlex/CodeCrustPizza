@@ -2,6 +2,7 @@ databaseChangeLog:
   - changeSet:
       id: 4
       author: Alex
+      #      runAlways: true если нужно запускать скрипт при каждом запуске
       changes:
         - insert:
             tableName: address

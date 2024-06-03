@@ -8,30 +8,6 @@ databaseChangeLog:
             columns:
               - column:
                   name: title
-                  value: "Margherita"
-              - column:
-                  name: description
-                  value: "Classic Italian pizza with tomato sauce, mozzarella cheese, and basil"
-              - column:
-                  name: price
-                  value: 9.99
-        - insert:
-            tableName: item
-            columns:
-              - column:
-                  name: title
-                  value: "Pepperoni"
-              - column:
-                  name: description
-                  value: "Pizza topped with spicy pepperoni slices and melted cheese"
-              - column:
-                  name: price
-                  value: 10.99
-        - insert:
-            tableName: item
-            columns:
-              - column:
-                  name: title
                   value: "Four Cheese"
               - column:
                   name: description
@@ -63,3 +39,27 @@ databaseChangeLog:
               - column:
                   name: price
                   value: 11.49
+        - insert:
+            tableName: item
+            columns:
+              - column:
+                  name: title
+                  value: "Tiramisu"
+              - column:
+                  name: description
+                  value: "Classic Italian dessert"
+              - column:
+                  name: price
+                  value: 9.99
+        - insert:
+            tableName: item
+            columns:
+              - column:
+                  name: title
+                  value: "Green Salad"
+              - column:
+                  name: description
+                  value: "Mix of greens"
+              - column:
+                  name: price
+                  value: 10.99

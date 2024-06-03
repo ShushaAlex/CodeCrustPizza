@@ -2,6 +2,7 @@ package org.telran.codecrustpizza.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,57 +31,65 @@ public class ItemController {
     private final MenuService menuService;
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public List<ItemResponseDto> getAll() {
 
         return itemService.getAll();
     }
 
     @GetMapping("/menu")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public MenuResponseDto getMenu() {
 
         return menuService.getMenu();
     }
 
     @GetMapping("/{itemId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public ItemResponseDto getById(@PathVariable Long itemId) {
 
         return itemService.getItemDtoById(itemId);
     }
 
     @GetMapping("/category")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public List<ItemResponseDto> findItemsByCategory(@RequestParam String category) {
 
         return itemService.findAllByCategory(category);
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ItemResponseDto saveItem(@Valid @RequestBody ItemCreateRequestDto createDto) {
 
         return itemService.saveItem(createDto);
     }
 
     @PutMapping("/{itemId}/update")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ItemResponseDto updateItem(@PathVariable Long itemId, @Valid ItemCreateRequestDto createRequestDto) {
 
         return itemService.updateItem(itemId, createRequestDto);
     }
 
     @PostMapping("/{itemId}/category")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ItemResponseDto addCategory(@PathVariable Long itemId, @RequestParam String category) {
 
         return itemService.addCategory(itemId, category);
     }
 
     @DeleteMapping("/{itemId}/category")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ItemResponseDto removeCategory(@PathVariable Long itemId, @RequestParam String category) {
 
         return itemService.removeCategory(itemId, category);
     }
 
     @DeleteMapping("/{itemId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public boolean deleteItem(@PathVariable Long itemId) {
 
         return itemService.deleteItem(itemId);
     }
-
 }

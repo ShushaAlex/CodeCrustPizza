@@ -17,7 +17,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: category_id
-                  value: 2
+                  value: 1
               - column:
                   name: item_id
                   value: 2
@@ -27,6 +27,24 @@ databaseChangeLog:
               - column:
                   name: category_id
                   value: 3
+              - column:
+                  name: item_id
+                  value: 3
+        - insert:
+            tableName: item_category
+            columns:
+              - column:
+                  name: category_id
+                  value: 2
+              - column:
+                  name: item_id
+                  value: 3
+        - insert:
+            tableName: item_category
+            columns:
+              - column:
+                  name: category_id
+                  value: 2
               - column:
                   name: item_id
                   value: 2
@@ -39,12 +57,3 @@ databaseChangeLog:
               - column:
                   name: item_id
                   value: 1
-        - insert:
-            tableName: item_category
-            columns:
-              - column:
-                  name: category_id
-                  value: 2
-              - column:
-                  name: item_id
-                  value: 4
