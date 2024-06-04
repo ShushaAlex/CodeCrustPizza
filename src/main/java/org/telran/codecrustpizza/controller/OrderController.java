@@ -1,6 +1,7 @@
 package org.telran.codecrustpizza.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +25,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public List<OrderResponseDto> getCurrentUserOrders() {
         Long userId = userService.getCurrentUserId();
 
@@ -31,12 +33,14 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     OrderResponseDto getOrderById(@PathVariable Long orderId) {
 
         return orderService.getOrderById(orderId);
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     OrderResponseDto createOrder(@RequestParam Long addressId) {
         Long userId = userService.getCurrentUserId();
 
@@ -44,12 +48,14 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}/cancel")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     OrderResponseDto cancelOrder(@PathVariable Long orderId) {
 
         return orderService.cancelOrder(orderId);
     }
 
     @PutMapping("/{orderId}/updateStatus")
+    @PreAuthorize("hasAuthority('ADMIN')")
     OrderResponseDto updateOrderStatus(@PathVariable Long orderId, @RequestParam OrderStatus status) {
 
         return orderService.updateOrderStatus(orderId, status);

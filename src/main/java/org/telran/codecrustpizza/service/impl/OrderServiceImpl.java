@@ -112,6 +112,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public List<OrderResponseDto> getOrdersByUserId(Long userId) {
 
         return orderRepository.findByUser_Id(userId)
