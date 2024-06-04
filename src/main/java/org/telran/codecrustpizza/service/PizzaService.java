@@ -56,14 +56,6 @@ public interface PizzaService<T, U, V, Y> {
     T updatePizza(Long id, U pizzaCreateDto);
 
     /**
-     * Deletes a pizza by its ID.
-     *
-     * @param id the ID of the pizza to be deleted.
-     * @return a boolean indicating whether the pizza was successfully deleted.
-     */
-    boolean deletePizza(Long id);
-
-    /**
      * Calculates the total calories of a set of ingredients.
      *
      * @param ingredients the set of ingredients whose total calories are to be calculated.

@@ -21,6 +21,7 @@ import org.telran.codecrustpizza.dto.user.UserChangePasswordRequestDto;
 import org.telran.codecrustpizza.dto.user.UserCreateRequestDto;
 import org.telran.codecrustpizza.dto.user.UserResponseDto;
 import org.telran.codecrustpizza.dto.user.UserSignInRequestDto;
+import org.telran.codecrustpizza.dto.user.UserWithFavoritePizzaResponseDto;
 import org.telran.codecrustpizza.security.AuthenticationService;
 
 import java.nio.charset.StandardCharsets;
@@ -292,10 +293,41 @@ class UserControllerTest {
     }
 
     @Test
-    void addFavoritePizzaToCurrentUser() {
+    @Transactional
+    @Rollback
+    @WithMockUser(username = "jane.smith@example.com", authorities = {"ADMIN", "USER"})
+    void addFavoritePizzaToCurrentUserTest() throws Exception {
+
+        int expectedPizzaCount = 3;
+
+        var result = mockMvc.perform(put("http://localhost:8080/api/user/favorites/add")
+                        .param("pizzaId", "2"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String jsonResponse = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        UserWithFavoritePizzaResponseDto actualResponseDto = objectMapper.readValue(jsonResponse, UserWithFavoritePizzaResponseDto.class);
+
+        assertEquals(expectedPizzaCount, actualResponseDto.favoritePizzas().size());
     }
 
     @Test
-    void removeFavoritePizzaFromCurrentUser() {
+    @Transactional
+    @Rollback
+    @WithMockUser(username = "jane.smith@example.com", authorities = {"ADMIN", "USER"})
+    void removeFavoritePizzaFromCurrentUserTest() throws Exception {
+
+        int expectedPizzaCount = 1;
+
+        var result = mockMvc.perform(put("http://localhost:8080/api/user/favorites/remove")
+                        .param("pizzaId", "1"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String jsonResponse = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        UserWithFavoritePizzaResponseDto actualResponseDto = objectMapper.readValue(jsonResponse, UserWithFavoritePizzaResponseDto.class);
+
+        assertEquals(expectedPizzaCount, actualResponseDto.favoritePizzas().size());
     }
+
 }

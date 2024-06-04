@@ -85,8 +85,22 @@ class OrderControllerTest {
     @Test
     @Transactional
     @Rollback
+    @WithMockUser(username = "jane.smith@example.com", authorities = {"ADMIN", "USER"})
+    void createOrderThrowsException() throws Exception {
+
+        mockMvc.perform(put("http://localhost:8080/api/cart/clear"))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(post("http://localhost:8080/api/order/create")
+                        .param("addressId", "3"))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
     @WithMockUser(authorities = "ADMIN")
-    void cancelOrder() throws Exception {
+    void cancelOrderTest() throws Exception {
 
         String expectedOrderStatus = "CANCELED";
 
@@ -105,7 +119,23 @@ class OrderControllerTest {
     @Transactional
     @Rollback
     @WithMockUser(authorities = "ADMIN")
-    void updateOrderStatus() throws Exception {
+    void cancelOrderThrowsException() throws Exception {
+
+        String newStatus = "PAYED";
+
+        mockMvc.perform(put("http://localhost:8080/api/order/2/updateStatus")
+                        .param("status", newStatus))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(put("http://localhost:8080/api/order/2/cancel"))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    @WithMockUser(authorities = "ADMIN")
+    void updateOrderStatusTest() throws Exception {
 
         String expectedOrderStatus = "PAYED";
 
@@ -118,5 +148,21 @@ class OrderControllerTest {
         OrderResponseDto actual = objectMapper.readValue(jsonResponse, OrderResponseDto.class);
 
         assertEquals(expectedOrderStatus, actual.status());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    @WithMockUser(authorities = "ADMIN")
+    void updateOrderStatusThrowsException() throws Exception {
+
+        String orderStatus = "PAYED";
+
+        mockMvc.perform(put("http://localhost:8080/api/order/2/cancel"))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(put("http://localhost:8080/api/order/2/updateStatus")
+                        .param("status", orderStatus))
+                .andExpect(status().isConflict());
     }
 }

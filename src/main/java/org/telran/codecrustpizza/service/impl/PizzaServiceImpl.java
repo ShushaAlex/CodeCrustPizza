@@ -56,7 +56,6 @@ public class PizzaServiceImpl implements PizzaService<PizzaResponseDto, PizzaCre
         PizzaPattern pizzaPattern = pizzaPatternRepository.findById(pizzaCreateDto.patternId())
                 .orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("PizzaPattern", pizzaCreateDto.patternId())));
 
-        // ToDo replace to mapper with arg PizzaPattern pizzaPattern
         Pizza pizza = Pizza.builder()
                 .title(pizzaCreateDto.title())
                 .size(pizzaCreateDto.size())
@@ -90,17 +89,7 @@ public class PizzaServiceImpl implements PizzaService<PizzaResponseDto, PizzaCre
 
     @Override
     public PizzaResponseDto updatePizza(Long id, PizzaCreateRequestDto pizzaCreateDto) {
-
         throw new UnsupportedOperationException("Implementation of this method is not provided.");
-    }
-
-    @Override
-    @Transactional
-    public boolean deletePizza(Long id) {
-
-        Pizza pizza = getPizzaById(id);
-        pizzaRepository.delete(pizza);
-        return true;
     }
 
     @Override

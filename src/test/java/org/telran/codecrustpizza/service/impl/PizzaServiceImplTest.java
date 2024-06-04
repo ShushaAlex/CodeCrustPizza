@@ -24,7 +24,6 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -140,29 +139,6 @@ class PizzaServiceImplTest {
         when(pizzaRepository.findById(id)).thenReturn(Optional.empty());
         // Validate
         assertThrows(EntityException.class, () -> pizzaService.getPizzaDtoById(id));
-    }
-
-    @Test
-    void deletePizzaSuccessTest() {
-        Long id = 1L;
-        Pizza pizza = PIZZA_1;
-
-        when(pizzaRepository.findById(id)).thenReturn(Optional.of(pizza));
-        //Exec
-        boolean result = pizzaService.deletePizza(id);
-        //Validate
-        assertTrue(result);
-        verify(pizzaRepository, times(1)).findById(id);
-    }
-
-    @Test
-    void deletePizzaThrowsEntityExceptionTest() {
-        // Prepare data
-        Long id = 1L;
-
-        when(pizzaRepository.findById(id)).thenReturn(Optional.empty());
-        //Validate
-        assertThrows(EntityException.class, () -> pizzaService.deletePizza(id));
     }
 
     @Test

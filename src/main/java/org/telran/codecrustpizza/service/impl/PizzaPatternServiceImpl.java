@@ -106,15 +106,6 @@ public class PizzaPatternServiceImpl implements PizzaService<PizzaPatternRespons
     }
 
     @Override
-    @Transactional
-    public boolean deletePizza(Long id) { // TODO подумать над логикой удаления
-        PizzaPattern pizzaPattern = pizzaPatternRepository.findById(id).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("PizzaPattern", id)));
-
-        pizzaPatternRepository.delete(pizzaPattern);
-        return true;
-    }
-
-    @Override
     public int calculateTotalCalories(Set<PizzaPatternIngredient> ingredients) {
         if (ingredients == null) throw new IllegalArgumentException("argument is null");
         if (ingredients.isEmpty()) return 0;

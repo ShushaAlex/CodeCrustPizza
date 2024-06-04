@@ -23,7 +23,6 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -155,31 +154,6 @@ class PizzaPatternServiceImplTest {
         when(pizzaPatternRepository.findById(id)).thenReturn(Optional.empty());
         // Validate
         assertThrows(EntityException.class, () -> pizzaPatternService.updatePizza(id, createDto));
-        verify(pizzaPatternRepository, times(1)).findById(id);
-    }
-
-    @Test
-    void deletePizzaSuccessTest() {
-        // Prepare data
-        Long id = 1L;
-        PizzaPattern pizzaPattern = PIZZA_PATTERN_1;
-
-        when(pizzaPatternRepository.findById(id)).thenReturn(Optional.of(pizzaPattern));
-        // Execute
-        boolean result = pizzaPatternService.deletePizza(id);
-        // Validate
-        assertTrue(result);
-        verify(pizzaPatternRepository, times(1)).findById(id);
-    }
-
-    @Test
-    void deletePizzaThrowsEntityException() {
-        // Prepare Data
-        Long id = 1L;
-
-        when(pizzaPatternRepository.findById(id)).thenReturn(Optional.empty());
-        //Validate
-        assertThrows(EntityException.class, () -> pizzaPatternService.deletePizza(id));
         verify(pizzaPatternRepository, times(1)).findById(id);
     }
 

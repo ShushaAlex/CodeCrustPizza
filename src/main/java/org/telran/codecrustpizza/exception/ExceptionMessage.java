@@ -24,10 +24,6 @@ public enum ExceptionMessage {
         return message;
     }
 
-    public String getCustomMessage(Long id) {
-        return String.format(message, id);
-    }
-
     public String getCustomMessage(String entity) {
         return String.format(message, entity);
     }
