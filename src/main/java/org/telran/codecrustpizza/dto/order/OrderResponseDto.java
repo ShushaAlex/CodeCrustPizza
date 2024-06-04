@@ -2,20 +2,20 @@ package org.telran.codecrustpizza.dto.order;
 
 import lombok.Builder;
 import org.telran.codecrustpizza.dto.delivery.DeliveryResponseDto;
-import org.telran.codecrustpizza.entity.OrderItem;
+import org.telran.codecrustpizza.dto.orderItem.OrderItemResponseDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Builder
 public record OrderResponseDto(
         Long id,
         Long userId,
-        Set<OrderItem> items,
+        List<OrderItemResponseDto> items,
         String status,
         BigDecimal itemsPriceTotal,
-        BigDecimal itemsTotal,
+        BigDecimal priceTotal,
         DeliveryResponseDto delivery,
         LocalDateTime createdAt
 ) {
