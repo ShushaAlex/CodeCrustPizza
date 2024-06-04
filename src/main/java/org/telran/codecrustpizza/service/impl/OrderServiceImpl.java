@@ -6,13 +6,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.telran.codecrustpizza.dto.order.OrderResponseDto;
 import org.telran.codecrustpizza.entity.Address;
 import org.telran.codecrustpizza.entity.Cart;
+import org.telran.codecrustpizza.entity.CartItem;
 import org.telran.codecrustpizza.entity.Delivery;
 import org.telran.codecrustpizza.entity.Order;
 import org.telran.codecrustpizza.entity.OrderItem;
-import org.telran.codecrustpizza.entity.User;
 import org.telran.codecrustpizza.entity.enums.OrderStatus;
+import org.telran.codecrustpizza.exception.CancelOrderException;
+import org.telran.codecrustpizza.exception.CartIsEmptyException;
 import org.telran.codecrustpizza.exception.EntityException;
-import org.telran.codecrustpizza.mapper.OrderItemMapper;
 import org.telran.codecrustpizza.mapper.OrderMapper;
 import org.telran.codecrustpizza.repository.AddressRepository;
 import org.telran.codecrustpizza.repository.OrderRepository;
@@ -40,7 +41,6 @@ public class OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
     private final CartService cartService;
     private final UserService userService;
-    private final OrderItemMapper orderItemMapper;
     private final AddressRepository addressRepository;
 
     @Override
@@ -48,26 +48,35 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponseDto createOrder(Long userId, Long addressId) {
 
         Cart cart = cartService.getCart(userId);
-        User user = userService.getById(userId);
 
-        Order order = cart.getCartItems().stream()
-                .map(orderItemMapper::cartItemToOrderItem)
-                .collect(Collectors.collectingAndThen(Collectors.toSet(), orderItems -> orderMapper.toEntity(user, orderItems)));
+        if (cart.getCartItems().isEmpty())
+            throw new CartIsEmptyException("Your cart is empty, first add items to the cart.");
+
+        Order order = Order.builder()
+                .user(userService.getById(userId))
+                .orderStatus(IN_PROCESSING)
+                .build();
+
+        order.setOrderItems(cart.getCartItems().stream()
+                .map(this::cartItemToOrderItem)
+                .collect(Collectors.toSet()));
+
         double totalItemPrice = 0.0;
 
         for (OrderItem orderItem : order.getOrderItems()) {
-            order.addOrderItem(orderItem);
             totalItemPrice += ((double) orderItem.getQuantity()) * orderItem.getItem().getPrice().doubleValue();
         }
 
         order.setOrderItemsTotal(BigDecimal.valueOf(totalItemPrice));
         order.setDelivery(createDelivery(addressId));
 
+        order.setTotalWithDelivery(BigDecimal.valueOf(totalItemPrice));
+
         if (totalItemPrice < ORDER_PRICE_FOR_FREE_DEL.doubleValue()) {
             order.getDelivery().setDeliveryFee(DELIVERY_FEE);
             order.setTotalWithDelivery(BigDecimal.valueOf(totalItemPrice + DELIVERY_FEE.doubleValue()));
         }
-        order.setTotalWithDelivery(BigDecimal.valueOf(totalItemPrice));
+
         order.setCreationDate(LocalDateTime.now());
 
         order = orderRepository.save(order);
@@ -89,15 +98,17 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderResponseDto cancelOrder(Long orderId) {
+
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("order", orderId)));
+
         if (order.getOrderStatus().equals(RECEIVED) || order.getOrderStatus().equals(IN_PROCESSING)) {
             order.setOrderStatus(CANCELED);
             orderRepository.save(order);
             return orderMapper.toDto(order);
+        } else {
+            throw new CancelOrderException("Order can not be canceled. It has already status: " + order.getOrderStatus());
         }
-        orderRepository.save(order);
-        return orderMapper.toDto(order);
     }
 
     @Override
@@ -123,6 +134,11 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponseDto updateOrderStatus(Long orderId, OrderStatus status) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("order", orderId)));
+
+        if (order.getOrderStatus().equals(CANCELED)) {
+            throw new CancelOrderException("this order is already canceled");
+        }
+
         order.setOrderStatus(status);
         orderRepository.save(order);
 
@@ -130,13 +146,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public Delivery createDelivery(Long addressId) {
+
         Address address = addressRepository.findById(addressId)
                 .orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("address", addressId)));
 
         return Delivery.builder()
                 .address(address)
                 .deliveryFee(BigDecimal.valueOf(0))
+                .build();
+    }
+
+    private OrderItem cartItemToOrderItem(CartItem cartItem) {
+        return OrderItem.builder()
+                .item(cartItem.getItem())
+                .quantity(cartItem.getQuantity())
                 .build();
     }
 }

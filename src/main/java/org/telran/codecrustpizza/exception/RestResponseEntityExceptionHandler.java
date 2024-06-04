@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = {EntityException.class})
+    @ExceptionHandler(value = {EntityException.class, CancelOrderException.class, CartIsEmptyException.class})
     @ResponseBody
     protected ResponseEntity<Object> handleConflict(
             RuntimeException ex, WebRequest request) {
