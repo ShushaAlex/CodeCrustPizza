@@ -11,15 +11,16 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.transaction.annotation.Transactional;
 import org.telran.codecrustpizza.CodeCrustPizzaApplication;
 import org.telran.codecrustpizza.dto.item.ItemCreateRequestDto;
 import org.telran.codecrustpizza.dto.item.ItemResponseDto;
-import org.telran.codecrustpizza.dto.menu.MenuResponseDto;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -57,18 +58,12 @@ class ItemControllerTest {
     @WithMockUser(authorities = {"ADMIN", "USER"})
     void getMenuTest() throws Exception {
 
-        int expectedItemsCount = 2;
-        int expectedPizzasCount = 3;
-
-        var result = mockMvc.perform(get("http://localhost:8080/api/item/menu"))
+        mockMvc.perform(get("http://localhost:8080/api/item/menu"))
+                .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk())
-                .andReturn();
-
-        String jsonResponse = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
-        MenuResponseDto actualResponseDto = objectMapper.readValue(jsonResponse, MenuResponseDto.class);
-
-        assertEquals(expectedItemsCount, actualResponseDto.items().size());
-        assertEquals(expectedPizzasCount, actualResponseDto.pizzaPatterns().size());
+                .andExpect(jsonPath("$.PIZZAS", hasSize(3)))
+                .andExpect(jsonPath("$.SALADS", hasSize(1)))
+                .andExpect(jsonPath("$.DESSERTS", hasSize(1)));
     }
 
     @Test

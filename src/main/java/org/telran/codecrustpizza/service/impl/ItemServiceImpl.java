@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telran.codecrustpizza.dto.item.ItemCreateRequestDto;
 import org.telran.codecrustpizza.dto.item.ItemResponseDto;
+import org.telran.codecrustpizza.dto.menu.MenuItemResponseDto;
 import org.telran.codecrustpizza.entity.Category;
 import org.telran.codecrustpizza.entity.Item;
 import org.telran.codecrustpizza.entity.enums.MenuCategory;
@@ -43,7 +44,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Map<MenuCategory, List<ItemResponseDto>> getAllForMenu() {
+    public Map<MenuCategory, List<MenuItemResponseDto>> getAllForMenu() {
         Map<MenuCategory, List<Item>> itemsGroupedByCategory = itemRepository.findAllExclPizzas().
                 stream()
                 .collect(Collectors.groupingBy(Item::getMenuCategory)); //TODO rethink
@@ -53,7 +54,7 @@ public class ItemServiceImpl implements ItemService {
                 .collect(Collectors
                         .toMap(Map.Entry::getKey, entry -> entry.getValue()
                                 .stream()
-                                .map(itemMapper::toDto)
+                                .map(itemMapper::toMenuItemDto)
                                 .collect(Collectors.toList())
                         ));
     }

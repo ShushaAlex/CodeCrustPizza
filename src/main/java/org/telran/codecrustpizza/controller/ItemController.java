@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.telran.codecrustpizza.dto.item.ItemCreateRequestDto;
 import org.telran.codecrustpizza.dto.item.ItemResponseDto;
-import org.telran.codecrustpizza.dto.menu.MenuResponseDto;
+import org.telran.codecrustpizza.dto.menu.MenuItemResponseDto;
+import org.telran.codecrustpizza.entity.enums.MenuCategory;
 import org.telran.codecrustpizza.service.ItemService;
 import org.telran.codecrustpizza.service.MenuService;
 
 import java.util.List;
+import java.util.Map;
 
 @Validated
 @RestController
@@ -39,7 +41,7 @@ public class ItemController {
 
     @GetMapping("/menu")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    public MenuResponseDto getMenu() {
+    public Map<MenuCategory, List<MenuItemResponseDto>> getMenu() {
 
         return menuService.getMenu();
     }

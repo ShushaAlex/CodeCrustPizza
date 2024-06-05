@@ -2,6 +2,7 @@ package org.telran.codecrustpizza.service;
 
 import org.telran.codecrustpizza.dto.item.ItemCreateRequestDto;
 import org.telran.codecrustpizza.dto.item.ItemResponseDto;
+import org.telran.codecrustpizza.dto.menu.MenuItemResponseDto;
 import org.telran.codecrustpizza.entity.Item;
 import org.telran.codecrustpizza.entity.enums.MenuCategory;
 
@@ -25,7 +26,7 @@ public interface ItemService {
      *
      * @return a map of {@link MenuCategory} and {@link ItemResponseDto} representing all items grouped by its menu category.
      */
-    Map<MenuCategory, List<ItemResponseDto>> getAllForMenu();
+    Map<MenuCategory, List<MenuItemResponseDto>> getAllForMenu();
 
     /**
      * Retrieves an Item entity by its ID.
