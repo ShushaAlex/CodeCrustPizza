@@ -13,6 +13,7 @@ public class ItemMapper {
         return Item.builder()
                 .title(dto.title())
                 .description(dto.description())
+                .menuCategory(dto.menuCategory())
                 .price(dto.price())
                 .build();
     }

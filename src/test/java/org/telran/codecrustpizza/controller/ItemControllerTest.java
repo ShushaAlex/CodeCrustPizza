@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.telran.codecrustpizza.CodeCrustPizzaApplication;
 import org.telran.codecrustpizza.dto.item.ItemCreateRequestDto;
 import org.telran.codecrustpizza.dto.item.ItemResponseDto;
+import org.telran.codecrustpizza.dto.menu.MenuResponseDto;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -54,8 +55,20 @@ class ItemControllerTest {
 
     @Test
     @WithMockUser(authorities = {"ADMIN", "USER"})
-    void getMenuTest() {
+    void getMenuTest() throws Exception {
 
+        int expectedItemsCount = 2;
+        int expectedPizzasCount = 3;
+
+        var result = mockMvc.perform(get("http://localhost:8080/api/item/menu"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String jsonResponse = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        MenuResponseDto actualResponseDto = objectMapper.readValue(jsonResponse, MenuResponseDto.class);
+
+        assertEquals(expectedItemsCount, actualResponseDto.items().size());
+        assertEquals(expectedPizzasCount, actualResponseDto.pizzaPatterns().size());
     }
 
     @Test

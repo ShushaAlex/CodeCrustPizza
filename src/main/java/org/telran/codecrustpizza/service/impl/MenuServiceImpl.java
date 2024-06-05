@@ -2,7 +2,6 @@ package org.telran.codecrustpizza.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.telran.codecrustpizza.dto.item.ItemResponseDto;
 import org.telran.codecrustpizza.dto.menu.MenuResponseDto;
 import org.telran.codecrustpizza.dto.pizza.pizzaPattern.PizzaPatternResponseDto;
 import org.telran.codecrustpizza.service.ItemService;
@@ -18,9 +17,9 @@ public class MenuServiceImpl implements MenuService {
     private final ItemService itemService;
 
     @Override
-    public MenuResponseDto getMenu() { // ToDo change to categories
+    public MenuResponseDto getMenu() {
         List<PizzaPatternResponseDto> pizzaPatterns = pizzaPatternService.findAll();
-        List<ItemResponseDto> items = itemService.getAll();
-        return new MenuResponseDto(pizzaPatterns, items);
+
+        return null;
     }
 }

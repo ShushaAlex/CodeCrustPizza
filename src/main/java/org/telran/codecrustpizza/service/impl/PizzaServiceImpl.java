@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.telran.codecrustpizza.entity.enums.MenuCategory.PIZZAS;
 import static org.telran.codecrustpizza.exception.ExceptionMessage.ENTITY_EXIST;
 import static org.telran.codecrustpizza.exception.ExceptionMessage.NO_SUCH_ID;
 
@@ -58,6 +59,7 @@ public class PizzaServiceImpl implements PizzaService<PizzaResponseDto, PizzaCre
 
         Pizza pizza = Pizza.builder()
                 .title(pizzaCreateDto.title())
+                .menuCategory(PIZZAS)
                 .size(pizzaCreateDto.size())
                 .dough(pizzaPattern.getDough())
                 .description(pizzaPattern.getDescription())

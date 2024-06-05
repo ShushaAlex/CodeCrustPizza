@@ -2,6 +2,8 @@ package org.telran.codecrustpizza.entity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,6 +21,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.telran.codecrustpizza.entity.enums.MenuCategory;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -39,6 +42,9 @@ public class Item {
     private String title;
     private String description;
     private BigDecimal price;
+
+    @Enumerated(value = EnumType.STRING)
+    private MenuCategory menuCategory;
 
     @Builder.Default
     @ManyToMany(cascade = CascadeType.ALL)

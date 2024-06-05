@@ -1,12 +1,13 @@
 package org.telran.codecrustpizza.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telran.codecrustpizza.dto.item.ItemCreateRequestDto;
 import org.telran.codecrustpizza.dto.item.ItemResponseDto;
 import org.telran.codecrustpizza.entity.Category;
 import org.telran.codecrustpizza.entity.Item;
+import org.telran.codecrustpizza.entity.enums.MenuCategory;
 import org.telran.codecrustpizza.exception.EntityException;
 import org.telran.codecrustpizza.mapper.ItemMapper;
 import org.telran.codecrustpizza.repository.CategoryRepository;
@@ -14,7 +15,9 @@ import org.telran.codecrustpizza.repository.ItemRepository;
 import org.telran.codecrustpizza.service.ItemService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.telran.codecrustpizza.exception.ExceptionMessage.CATEGORY_EXIST;
 import static org.telran.codecrustpizza.exception.ExceptionMessage.CATEGORY_NOT_EXIST;
@@ -24,18 +27,12 @@ import static org.telran.codecrustpizza.exception.ExceptionMessage.NO_SUCH_CATEG
 import static org.telran.codecrustpizza.exception.ExceptionMessage.NO_SUCH_ID;
 
 @Service
+@RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
     private final CategoryRepository categoryRepository;
-
-    @Autowired
-    public ItemServiceImpl(ItemRepository itemRepository, ItemMapper itemMapper, CategoryRepository categoryRepository) {
-        this.itemRepository = itemRepository;
-        this.itemMapper = itemMapper;
-        this.categoryRepository = categoryRepository;
-    }
 
     @Override
     @Transactional
@@ -43,6 +40,22 @@ public class ItemServiceImpl implements ItemService {
         return itemRepository.findAll().stream()
                 .map(itemMapper::toDto)
                 .toList();
+    }
+
+    @Override
+    public Map<MenuCategory, List<ItemResponseDto>> getAllForMenu() {
+        Map<MenuCategory, List<Item>> itemsGroupedByCategory = itemRepository.findAllExclPizzas().
+                stream()
+                .collect(Collectors.groupingBy(Item::getMenuCategory)); //TODO rethink
+
+        return itemsGroupedByCategory.entrySet()
+                .stream()
+                .collect(Collectors
+                        .toMap(Map.Entry::getKey, entry -> entry.getValue()
+                                .stream()
+                                .map(itemMapper::toDto)
+                                .collect(Collectors.toList())
+                        ));
     }
 
     @Override
@@ -88,6 +101,7 @@ public class ItemServiceImpl implements ItemService {
 
         item.setTitle(createDto.title());
         item.setDescription(createDto.description());
+        item.setMenuCategory(createDto.menuCategory());
         item.setPrice(createDto.price());
 
         item = itemRepository.save(item);
@@ -131,13 +145,4 @@ public class ItemServiceImpl implements ItemService {
         return itemMapper.toDto(item);
     }
 
-    @Override
-    @Transactional
-    public boolean deleteItem(Long id) {
-        Item item = itemRepository.findById(id).orElseThrow(() -> new EntityException(NO_SUCH_ID.getCustomMessage("item", id)));
-
-        itemRepository.delete(item);
-
-        return true;
-    }
 }

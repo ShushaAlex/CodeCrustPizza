@@ -13,6 +13,9 @@ databaseChangeLog:
                   name: description
                   value: "Pizza topped with a blend of four cheeses: mozzarella, cheddar, gouda, and parmesan"
               - column:
+                  name: menu_category
+                  value: "PIZZAS"
+              - column:
                   name: price
                   value: 11.99
         - insert:
@@ -24,6 +27,9 @@ databaseChangeLog:
               - column:
                   name: description
                   value: "Pizza with ham, pineapple, and tomato sauce, topped with mozzarella cheese"
+              - column:
+                  name: menu_category
+                  value: "PIZZAS"
               - column:
                   name: price
                   value: 12.99
@@ -37,6 +43,9 @@ databaseChangeLog:
                   name: description
                   value: "Pizza loaded with fresh vegetables like bell peppers, onions, mushrooms, and olives"
               - column:
+                  name: menu_category
+                  value: "PIZZAS"
+              - column:
                   name: price
                   value: 11.49
         - insert:
@@ -49,6 +58,9 @@ databaseChangeLog:
                   name: description
                   value: "Classic Italian dessert"
               - column:
+                  name: menu_category
+                  value: "DESSERTS"
+              - column:
                   name: price
                   value: 9.99
         - insert:
@@ -57,6 +69,9 @@ databaseChangeLog:
               - column:
                   name: title
                   value: "Green Salad"
+              - column:
+                  name: menu_category
+                  value: "SALADS"
               - column:
                   name: description
                   value: "Mix of greens"

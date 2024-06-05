@@ -3,8 +3,10 @@ package org.telran.codecrustpizza.service;
 import org.telran.codecrustpizza.dto.item.ItemCreateRequestDto;
 import org.telran.codecrustpizza.dto.item.ItemResponseDto;
 import org.telran.codecrustpizza.entity.Item;
+import org.telran.codecrustpizza.entity.enums.MenuCategory;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Service interface for managing items in an application.
@@ -17,6 +19,13 @@ public interface ItemService {
      * @return a list of {@link ItemResponseDto} representing all items.
      */
     List<ItemResponseDto> getAll();
+
+    /**
+     * Retrieves a list of all items from db with menu_categories exclude PIZZAS.
+     *
+     * @return a map of {@link MenuCategory} and {@link ItemResponseDto} representing all items grouped by its menu category.
+     */
+    Map<MenuCategory, List<ItemResponseDto>> getAllForMenu();
 
     /**
      * Retrieves an Item entity by its ID.
@@ -59,6 +68,8 @@ public interface ItemService {
      */
     ItemResponseDto updateItem(Long id, ItemCreateRequestDto createRequestDto);
 
+    // TODO save and delete category
+
     /**
      * Adds a category to an item.
      *
@@ -77,11 +88,4 @@ public interface ItemService {
      */
     ItemResponseDto removeCategory(Long id, String category);
 
-    /**
-     * Deletes an item by its ID.
-     *
-     * @param id the ID of the item to be deleted.
-     * @return a boolean indicating whether the item was successfully deleted.
-     */
-    boolean deleteItem(Long id);
 }
