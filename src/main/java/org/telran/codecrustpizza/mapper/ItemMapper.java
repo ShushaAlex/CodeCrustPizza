@@ -3,6 +3,7 @@ package org.telran.codecrustpizza.mapper;
 import org.springframework.stereotype.Component;
 import org.telran.codecrustpizza.dto.item.ItemCreateRequestDto;
 import org.telran.codecrustpizza.dto.item.ItemResponseDto;
+import org.telran.codecrustpizza.dto.menu.MenuItemResponseDto;
 import org.telran.codecrustpizza.entity.Category;
 import org.telran.codecrustpizza.entity.Item;
 
@@ -13,6 +14,7 @@ public class ItemMapper {
         return Item.builder()
                 .title(dto.title())
                 .description(dto.description())
+                .menuCategory(dto.menuCategory())
                 .price(dto.price())
                 .build();
     }
@@ -27,6 +29,14 @@ public class ItemMapper {
                         .stream()
                         .map(Category::getTitle)
                         .toList()
+        );
+    }
+
+    public MenuItemResponseDto toMenuItemDto(Item item) {
+        return new MenuItemResponseDto(
+                item.getTitle(),
+                item.getDescription(),
+                item.getPrice()
         );
     }
 }

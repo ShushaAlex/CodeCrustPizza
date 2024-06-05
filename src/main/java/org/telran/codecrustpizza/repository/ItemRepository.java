@@ -19,4 +19,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     @Query("SELECT i FROM Item i LEFT JOIN FETCH i.categories c WHERE c.title = :category")
     List<Item> findByCategory(String category);
+
+    @Query("SELECT i FROM Item i LEFT JOIN FETCH i.categories WHERE i.menuCategory != 'PIZZAS'")
+    List<Item> findAllExclPizzas();
 }

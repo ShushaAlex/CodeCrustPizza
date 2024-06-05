@@ -11,6 +11,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.transaction.annotation.Transactional;
 import org.telran.codecrustpizza.CodeCrustPizzaApplication;
 import org.telran.codecrustpizza.dto.item.ItemCreateRequestDto;
@@ -19,6 +20,7 @@ import org.telran.codecrustpizza.dto.item.ItemResponseDto;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -54,8 +56,14 @@ class ItemControllerTest {
 
     @Test
     @WithMockUser(authorities = {"ADMIN", "USER"})
-    void getMenuTest() {
+    void getMenuTest() throws Exception {
 
+        mockMvc.perform(get("http://localhost:8080/api/item/menu"))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.PIZZAS", hasSize(3)))
+                .andExpect(jsonPath("$.SALADS", hasSize(1)))
+                .andExpect(jsonPath("$.DESSERTS", hasSize(1)));
     }
 
     @Test
