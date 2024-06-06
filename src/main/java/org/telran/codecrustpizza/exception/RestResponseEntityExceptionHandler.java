@@ -2,6 +2,8 @@ package org.telran.codecrustpizza.exception;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -20,6 +22,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+@Slf4j
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -40,11 +43,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler(value = {EntityException.class, CancelOrderException.class, CartIsEmptyException.class})
     @ResponseBody
-    protected ResponseEntity<Object> handleConflict(
+    protected ResponseEntity<Object> handleCustomException(
             RuntimeException ex, WebRequest request) {
         String bodyOfResponse = ex.getMessage();
         return handleExceptionInternal(ex, bodyOfResponse,
-                new HttpHeaders(), HttpStatus.CONFLICT, request);
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(value = AccessDeniedException.class)
@@ -61,6 +64,17 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
 
         return new ResponseEntity<>(
-                constraintViolations.toString(), new HttpHeaders(), HttpStatus.CONFLICT);
+                constraintViolations.toString(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler(value = NotReadablePropertyException.class)
+    @ResponseBody
+    public ResponseEntity<Object> handleNotReadablePropertyExceptions(NotReadablePropertyException ex) {
+
+        String message = "it seams to be a problem with " + ex.getPropertyName();
+
+        return new ResponseEntity<>(
+                message, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 }
