@@ -12,9 +12,10 @@ import java.util.Map;
 public interface MenuService {
 
     /**
-     * Retrieves the current menu.
+     * Retrieves the menu containing various categories of items.
      *
-     * @return a {@link MenuItemResponseDto} representing the current menu.
+     * @return A map representing the menu categories with their corresponding items.
+     *         The map keys are the menu category names (MenuCategory enum), and the values are lists of MenuItemResponseDto objects.
      */
     Map<MenuCategory, List<MenuItemResponseDto>> getMenu();
 }
