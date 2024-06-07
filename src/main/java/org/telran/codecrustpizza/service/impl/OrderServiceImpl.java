@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telran.codecrustpizza.dto.order.OrderResponseDto;
+import org.telran.codecrustpizza.dto.payment.PaymentCreateDto;
 import org.telran.codecrustpizza.entity.Address;
 import org.telran.codecrustpizza.entity.Cart;
 import org.telran.codecrustpizza.entity.CartItem;
@@ -15,6 +16,7 @@ import org.telran.codecrustpizza.exception.CancelOrderException;
 import org.telran.codecrustpizza.exception.CartIsEmptyException;
 import org.telran.codecrustpizza.exception.EntityException;
 import org.telran.codecrustpizza.mapper.OrderMapper;
+import org.telran.codecrustpizza.mapper.PaymentMapper;
 import org.telran.codecrustpizza.repository.AddressRepository;
 import org.telran.codecrustpizza.repository.OrderRepository;
 import org.telran.codecrustpizza.service.CartService;
@@ -39,6 +41,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
+    private final PaymentMapper paymentMapper;
     private final CartService cartService;
     private final UserService userService;
     private final AddressRepository addressRepository;
@@ -157,6 +160,13 @@ public class OrderServiceImpl implements OrderService {
                 .address(address)
                 .deliveryFee(BigDecimal.valueOf(0))
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public PaymentCreateDto getPaymentDtoByOrderId(Long orderId) {
+
+        return paymentMapper.toPaymentCreateDto(getOrderById(orderId));
     }
 
     private OrderItem cartItemToOrderItem(CartItem cartItem) {

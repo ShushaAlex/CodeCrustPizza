@@ -43,6 +43,9 @@ dependencies {
     annotationProcessor group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: '0.1.0'
     //Commons
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.14.0'
+    //PayPal
+    implementation group: 'com.paypal.sdk', name: 'paypal-core', version: '1.7.2'
+    implementation group: 'com.paypal.sdk', name: 'rest-api-sdk', version: '1.14.0'
     // Swagger
     implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.5.0'
     // Security

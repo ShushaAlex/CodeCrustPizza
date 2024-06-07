@@ -62,7 +62,7 @@ class OrderControllerTest {
     @Transactional
     @Rollback
     @WithMockUser(username = "jane.smith@example.com", authorities = {"ADMIN", "USER"})
-    void createOrder() throws Exception {
+    void createOrderTest() throws Exception {
 
         String expectedOrderStatus = "IN_PROCESSING";
         int expectedOrderItemsCount = 2;
