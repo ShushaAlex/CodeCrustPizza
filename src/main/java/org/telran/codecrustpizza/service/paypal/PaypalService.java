@@ -11,6 +11,7 @@ import com.paypal.base.rest.PayPalRESTException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -21,20 +22,19 @@ public class PaypalService {
 
     private final APIContext apiContext;
 
-    public Payment createPayment(
-            Double total,
-            String currency,
-            String method,
-            String intent,
-            String description,
-            String cancelUrl,
-            String successUrl
+    public static final String SUCCESS_URL = "http://localhost:8080/api/payment/success";
+    public static final String CANCEL_URL = "http://localhost:8080/api/payment/cancel";
+    private static final String INTENT = "sale";
+    private static final String METHOD = "paypal";
+    private static final String CURRENCY = "EUR";
 
-    ) throws PayPalRESTException {
+    public Payment createPayment(
+            BigDecimal total,
+            String description) throws PayPalRESTException {
 
         Amount amount = new Amount();
-        amount.setCurrency(currency);
-        amount.setTotal(String.format(Locale.forLanguageTag(currency), "%.2f", total));
+        amount.setCurrency(CURRENCY);
+        amount.setTotal(String.format(Locale.forLanguageTag(CURRENCY), "%.2f", total));
 
         Transaction transaction = new Transaction();
         transaction.setDescription(description);
@@ -44,16 +44,16 @@ public class PaypalService {
         transactions.add(transaction);
 
         Payer payer = new Payer();
-        payer.setPaymentMethod(method);
+        payer.setPaymentMethod(METHOD);
 
         Payment payment = new Payment();
-        payment.setIntent(intent);
+        payment.setIntent(INTENT);
         payment.setPayer(payer);
         payment.setTransactions(transactions);
 
         RedirectUrls redirectUrls = new RedirectUrls();
-        redirectUrls.setCancelUrl(cancelUrl);
-        redirectUrls.setReturnUrl(successUrl);
+        redirectUrls.setCancelUrl(CANCEL_URL);
+        redirectUrls.setReturnUrl(SUCCESS_URL);
 
         payment.setRedirectUrls(redirectUrls);
 

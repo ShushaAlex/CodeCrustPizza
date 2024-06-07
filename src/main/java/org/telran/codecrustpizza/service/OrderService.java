@@ -1,6 +1,7 @@
 package org.telran.codecrustpizza.service;
 
 import org.telran.codecrustpizza.dto.order.OrderResponseDto;
+import org.telran.codecrustpizza.dto.payment.PaymentCreateDto;
 import org.telran.codecrustpizza.entity.Delivery;
 import org.telran.codecrustpizza.entity.enums.OrderStatus;
 
@@ -68,5 +69,5 @@ public interface OrderService {
      */
     Delivery createDelivery(Long addressId);
 
-    //Payment processPayment(Long orderId, PaymentDetails paymentDetails);
+    PaymentCreateDto getPaymentDtoByOrderId(Long orderId);
 }
