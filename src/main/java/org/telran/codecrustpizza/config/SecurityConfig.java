@@ -37,8 +37,9 @@ public class SecurityConfig {
 
                         .requestMatchers("api/user/register").permitAll()
                         .requestMatchers("api/user/login").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers(SWAGGER).permitAll()
-                        .anyRequest().permitAll()) //  authenticated()
+                        .anyRequest().authenticated())//  authenticated()
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -64,9 +65,10 @@ public class SecurityConfig {
             "/v3/api-docs/",
             "/swagger-resources/",
             "/swagger-resources",
-            "/swagger-ui/",
+            "/swagger-ui/**",
             "/swagger-ui.html",
-            "/swagger-ui/**", "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
             "/swagger-ui/",
             "/webjars/",
             "/configuration/",
@@ -75,11 +77,12 @@ public class SecurityConfig {
             "/public",
             "/favicon.ico",
             "/h2-console/",
-            "/conferenc/v1/swagger-ui.html",
+            "/conference/v1/swagger-ui.html",
             "/swagger-resources/configuration/ui",
             "/swagger-resources/configuration/security",
             "/",
-            "/login", "/logout",
+            "/login",
+            "/logout",
             "/csrf"
     };
 }
