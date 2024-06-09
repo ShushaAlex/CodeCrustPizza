@@ -67,13 +67,13 @@ public class UserController {
         return authenticationService.authenticate(request);
     }
 
-    @GetMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @Operation(summary = "Get current user", description = "Retrieve details of the currently authenticated user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved user details"),
             @ApiResponse(responseCode = "401", description = "User not authenticated")
     })
+    @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public UserResponseDto getCurrentUser() {
         Long userId = userService.getCurrentUserId();
 
@@ -125,7 +125,7 @@ public class UserController {
         return userService.changeName(userId, name);
     }
 
-    @Operation(summary = "Assign role to user", description = "Assign a role to a user")
+    @Operation(summary = "Assign role to user", description = "Assign a role to a user. Requires admin privileges.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully changed user password"),
             @ApiResponse(responseCode = "400", description = "User not found"),

@@ -1,5 +1,9 @@
 package org.telran.codecrustpizza.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,10 +25,16 @@ import java.util.List;
 @RestController
 @RequestMapping("api/ingredient")
 @RequiredArgsConstructor
+@Tag(name = "Ingredient Controller", description = "Operations related to ingredient management")
 public class IngredientController {
 
     private final IngredientService ingredientService;
 
+    @Operation(summary = "Get all ingredients", description = "Retrieve a list of all ingredients. Requires admin privileges.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved list of ingredients"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
+    })
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     List<IngredientResponseDto> getAll() {
@@ -32,6 +42,12 @@ public class IngredientController {
         return ingredientService.getAll();
     }
 
+    @Operation(summary = "Get ingredient by ID", description = "Retrieve a specific ingredient by its ID. Requires admin privileges.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved ingredient"),
+            @ApiResponse(responseCode = "400", description = "Ingredient not found"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
+    })
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     IngredientResponseDto getById(@PathVariable Long id) {
@@ -39,6 +55,12 @@ public class IngredientController {
         return ingredientService.getIngredientDtoById(id);
     }
 
+    @Operation(summary = "Save new ingredient", description = "Save a new ingredient. Requires admin privileges.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully saved ingredient"),
+            @ApiResponse(responseCode = "400", description = "Ingredient already exists"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
+    })
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     IngredientResponseDto saveIngredient(@Valid @RequestBody IngredientCreateRequestDto createDto) {
@@ -46,6 +68,12 @@ public class IngredientController {
         return ingredientService.saveIngredient(createDto);
     }
 
+    @Operation(summary = "Update ingredient", description = "Update an existing ingredient by its ID. Requires admin privileges.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully updated ingredient"),
+            @ApiResponse(responseCode = "400", description = "Ingredient not found"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
+    })
     @PutMapping("/{id}/update")
     @PreAuthorize("hasAuthority('ADMIN')")
     IngredientResponseDto updateIngredient(@PathVariable Long id, @Valid @RequestBody IngredientCreateRequestDto createDto) {
