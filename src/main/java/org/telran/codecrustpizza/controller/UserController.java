@@ -12,9 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -33,7 +31,6 @@ import org.telran.codecrustpizza.dto.user.UserWithFavoritePizzaResponseDto;
 import org.telran.codecrustpizza.entity.enums.Role;
 import org.telran.codecrustpizza.security.AuthenticationService;
 import org.telran.codecrustpizza.service.UserService;
-import org.telran.codecrustpizza.validator.UserPasswordValidator;
 
 import java.util.List;
 
@@ -47,12 +44,6 @@ public class UserController {
 
     private final UserService userService;
     private final AuthenticationService authenticationService;
-    private final UserPasswordValidator userPasswordValidator;
-
-    @InitBinder
-    protected void initBinder(WebDataBinder binder) {
-        binder.addValidators(userPasswordValidator);
-    }
 
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('ADMIN')")

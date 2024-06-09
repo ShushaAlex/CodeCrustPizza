@@ -12,7 +12,8 @@ public enum ExceptionMessage {
     CATEGORY_NOT_EXIST("such category not exist in this %s"),
     ENTITY_NOT_EXIST("This %s doesn't exist"),
     ENTITY_EXIST("This %s already exist"),
-    ENTITY_IS_NULL("This %s is null");
+    ENTITY_IS_NULL("This %s is null"),
+    PASSWORDS_NOT_SAME("Password and password confirmation are not same");
 
     private final String message;
 

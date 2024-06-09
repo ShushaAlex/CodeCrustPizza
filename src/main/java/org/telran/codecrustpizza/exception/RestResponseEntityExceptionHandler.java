@@ -3,7 +3,6 @@ package org.telran.codecrustpizza.exception;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -41,7 +40,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return ResponseEntity.of(Optional.of(errors));
     }
 
-    @ExceptionHandler(value = {EntityException.class, CancelOrderException.class, CartIsEmptyException.class})
+    @ExceptionHandler(value = {
+            EntityException.class,
+            CancelOrderException.class,
+            CartIsEmptyException.class,
+            ConfirmationPasswordException.class})
     @ResponseBody
     protected ResponseEntity<Object> handleCustomException(
             RuntimeException ex, WebRequest request) {
@@ -65,16 +68,5 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
         return new ResponseEntity<>(
                 constraintViolations.toString(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
-    }
-
-
-    @ExceptionHandler(value = NotReadablePropertyException.class)
-    @ResponseBody
-    public ResponseEntity<Object> handleNotReadablePropertyExceptions(NotReadablePropertyException ex) {
-
-        String message = "it seams to be a problem with " + ex.getPropertyName();
-
-        return new ResponseEntity<>(
-                message, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 }

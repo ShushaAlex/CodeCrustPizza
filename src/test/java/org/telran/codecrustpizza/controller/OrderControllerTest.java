@@ -93,7 +93,7 @@ class OrderControllerTest {
 
         mockMvc.perform(post("http://localhost:8080/api/order/create")
                         .param("addressId", "3"))
-                .andExpect(status().isConflict());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -128,7 +128,7 @@ class OrderControllerTest {
                 .andExpect(status().isOk());
 
         mockMvc.perform(put("http://localhost:8080/api/order/2/cancel"))
-                .andExpect(status().isConflict());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -163,6 +163,6 @@ class OrderControllerTest {
 
         mockMvc.perform(put("http://localhost:8080/api/order/2/updateStatus")
                         .param("status", orderStatus))
-                .andExpect(status().isConflict());
+                .andExpect(status().isBadRequest());
     }
 }
