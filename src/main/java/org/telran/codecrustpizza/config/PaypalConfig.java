@@ -1,11 +1,13 @@
 package org.telran.codecrustpizza.config;
 
 import com.paypal.base.rest.APIContext;
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@EnableEncryptableProperties
 public class PaypalConfig {
 
     @Value("${paypal.client-id}")
