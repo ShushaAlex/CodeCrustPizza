@@ -80,6 +80,12 @@ public class UserController {
         return userService.getUserDtoById(userId);
     }
 
+    @Operation(summary = "Register new user", description = "Register a new user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully registered new user"),
+            @ApiResponse(responseCode = "400", description = "User already registered"),
+            @ApiResponse(responseCode = "400", description = "Password and password confirmations are not same")
+    })
     @PostMapping("/register")
     @PermitAll
     public UserResponseDto registerUser(@Valid @RequestBody UserCreateRequestDto userCreateRequestDto) {
@@ -87,6 +93,11 @@ public class UserController {
         return userService.save(userCreateRequestDto);
     }
 
+    @Operation(summary = "Change user password", description = "Change the password of the current user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully changed user password"),
+            @ApiResponse(responseCode = "400", description = "Password and password confirmations are not same")
+    })
     @PutMapping("/change-password")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public UserResponseDto changePassword(@Valid @RequestBody UserChangePasswordRequestDto passwordRequestDto) {
@@ -95,6 +106,8 @@ public class UserController {
         return userService.changePassword(userId, passwordRequestDto);
     }
 
+    @Operation(summary = "Change user email", description = "Change the email of the current user")
+    @ApiResponse(responseCode = "200", description = "Successfully changed user email")
     @PutMapping("/change-email")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public UserResponseDto changeEmail(@Email @RequestParam String email) {
@@ -103,6 +116,8 @@ public class UserController {
         return userService.changeEmail(userId, email);
     }
 
+    @Operation(summary = "Change user name", description = "Change the name of the current user")
+    @ApiResponse(responseCode = "200", description = "Successfully changed name of current user")
     @PutMapping("/change-name")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public UserResponseDto changeName(@NotBlank @RequestParam String name) {
@@ -110,6 +125,12 @@ public class UserController {
         return userService.changeName(userId, name);
     }
 
+    @Operation(summary = "Assign role to user", description = "Assign a role to a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully changed user password"),
+            @ApiResponse(responseCode = "400", description = "User not found"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
+    })
     @PutMapping("/{id}/assign-role")
     @PreAuthorize("hasAuthority('ADMIN')")
     public UserResponseDto assignRole(@PathVariable Long id, @RequestParam String role) {
@@ -118,6 +139,11 @@ public class UserController {
         return userService.assignRole(id, role1);
     }
 
+    @Operation(summary = "Add phone to user", description = "Add a phone to the current user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully added phone to user"),
+            @ApiResponse(responseCode = "400", description = "Phone already exists")
+    })
     @PutMapping("/phone/add")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public UserResponseDto addPhone(@Valid @RequestBody PhoneCreateRequestDto phoneCreateRequestDto) {
@@ -126,6 +152,11 @@ public class UserController {
         return userService.addPhone(userId, phoneCreateRequestDto);
     }
 
+    @Operation(summary = "Remove phone from user", description = "Remove a phone from the current user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully removed phone from user"),
+            @ApiResponse(responseCode = "400", description = "User doesn't have phone with such id")
+    })
     @PutMapping("/phone/remove")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public UserResponseDto removePhone(@RequestParam Long phoneId) {
@@ -134,6 +165,11 @@ public class UserController {
         return userService.removePhone(userId, phoneId);
     }
 
+    @Operation(summary = "Add address to user", description = "Add an address to the current user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully added address to user"),
+            @ApiResponse(responseCode = "400", description = "Address already exists")
+    })
     @PutMapping("/address/add")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public UserResponseDto addAddress(@Valid @RequestBody AddressCreateRequestDto addressDto) {
@@ -142,6 +178,11 @@ public class UserController {
         return userService.addAddress(userId, addressDto);
     }
 
+    @Operation(summary = "Remove address from user", description = "Remove an address from the current user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully removed address from user"),
+            @ApiResponse(responseCode = "400", description = "User doesn't have address with such id")
+    })
     @PutMapping("/address/remove")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public UserResponseDto removeAddress(@RequestParam Long addressId) {
@@ -150,6 +191,9 @@ public class UserController {
         return userService.removeAddress(userId, addressId);
     }
 
+
+    @Operation(summary = "Add favorite pizza to current user", description = "Add a favorite pizza to the currently authenticated user")
+    @ApiResponse(responseCode = "200", description = "Successfully added favorite pizza to user")
     @PutMapping("/favorites/add")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public UserWithFavoritePizzaResponseDto addFavoritePizzaToCurrentUser(@RequestParam Long pizzaId) {
@@ -159,6 +203,11 @@ public class UserController {
     }
 
     @PutMapping("/favorites/remove")
+    @Operation(summary = "Remove favorite pizza from current user", description = "Remove a favorite pizza from the currently authenticated user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully removed favorite pizza from user"),
+            @ApiResponse(responseCode = "400", description = "User doesn't have this pizza in favorites")
+    })
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public UserWithFavoritePizzaResponseDto removeFavoritePizzaFromCurrentUser(@RequestParam Long pizzaId) {
         Long userId = userService.getCurrentUserId();
