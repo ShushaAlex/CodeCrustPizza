@@ -66,7 +66,7 @@ class UserControllerTest {
     @Test
     @Transactional
     @Rollback
-    void registerUserTest() throws Exception {
+    void registerUserSuccessTest() throws Exception {
         UserChangePasswordRequestDto passwordDto = new UserChangePasswordRequestDto("SecureP@ssw0rd", "SecureP@ssw0rd");
         UserCreateRequestDto requestDto = new UserCreateRequestDto(
                 "Name", "name@name.com", passwordDto);
@@ -87,7 +87,39 @@ class UserControllerTest {
     }
 
     @Test
-    void login_SuccessfulAuthentication_ReturnsJwtToken() throws Exception {
+    @Transactional
+    @Rollback
+    void registerUserPasswordCheckFailTest() throws Exception {
+        UserChangePasswordRequestDto passwordDto = new UserChangePasswordRequestDto("SecureP@ssw0rd", "SecureP@ssw0r");
+        UserCreateRequestDto requestDto = new UserCreateRequestDto(
+                "Name", "name@name.com", passwordDto);
+
+        mockMvc.perform(post("http://localhost:8080/api/user/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestDto))
+                        .characterEncoding("UTF-8"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void registerUserValidationFailTest() throws Exception {
+        UserChangePasswordRequestDto passwordDto = new UserChangePasswordRequestDto("SecureP@ssw0rd", "SecureP@ssw0rd");
+        UserCreateRequestDto requestDto = new UserCreateRequestDto(
+                "", "name@name.com", passwordDto);
+
+        var result = mockMvc.perform(post("http://localhost:8080/api/user/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestDto))
+                        .characterEncoding("UTF-8"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("{\"name\": \"name must not be blank\"}"));
+
+    }
+
+    @Test
+    void loginSuccessfulAuthenticationTest() throws Exception {
 
         UserSignInRequestDto validRequest = new UserSignInRequestDto("testuser", "testpassword");
 
@@ -182,11 +214,20 @@ class UserControllerTest {
     @Transactional
     @Rollback
     @WithMockUser(username = "john.doe@example.com", authorities = {"ADMIN", "USER"})
-    void assignRoleTest() throws Exception {
+    void assignRoleSuccessTest() throws Exception {
 
         mockMvc.perform(put("http://localhost:8080/api/user/1/assign-role")
                         .param("role", "USER"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(authorities = {"USER"})
+    void assignRoleForbidden() throws Exception {
+
+        mockMvc.perform(put("http://localhost:8080/api/user/1/assign-role")
+                        .param("role", "USER"))
+                .andExpect(status().isForbidden());
     }
 
     @Test

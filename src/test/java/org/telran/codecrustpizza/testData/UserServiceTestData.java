@@ -53,7 +53,7 @@ public class UserServiceTestData {
 
     public static UserChangePasswordRequestDto CHANGE_PASSWORD_DTO_1 = new UserChangePasswordRequestDto(
             PASSWORD_1,
-            PASSWORD_2
+            PASSWORD_1
     );
 
     public static UserCreateRequestDto USER_CREATE_DTO_1 = new UserCreateRequestDto(

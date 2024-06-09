@@ -21,6 +21,7 @@ import org.telran.codecrustpizza.entity.Pizza;
 import org.telran.codecrustpizza.entity.PizzaIngredient;
 import org.telran.codecrustpizza.entity.User;
 import org.telran.codecrustpizza.entity.enums.Role;
+import org.telran.codecrustpizza.exception.ConfirmationPasswordException;
 import org.telran.codecrustpizza.exception.EntityException;
 import org.telran.codecrustpizza.mapper.AddressMapper;
 import org.telran.codecrustpizza.mapper.PhoneMapper;
@@ -42,6 +43,8 @@ import static org.telran.codecrustpizza.exception.ExceptionMessage.EMAIL_EXIST;
 import static org.telran.codecrustpizza.exception.ExceptionMessage.ENTITY_EXIST;
 import static org.telran.codecrustpizza.exception.ExceptionMessage.NO_SUCH_EMAIL;
 import static org.telran.codecrustpizza.exception.ExceptionMessage.NO_SUCH_ID;
+import static org.telran.codecrustpizza.exception.ExceptionMessage.PASSWORDS_NOT_SAME;
+import static org.telran.codecrustpizza.util.PasswordCheck.validatePasswordsMatch;
 
 @Service
 @RequiredArgsConstructor
@@ -101,6 +104,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDto save(UserCreateRequestDto dto) {
+
+        if (!validatePasswordsMatch(dto.passwordRequestDto()))
+            throw new ConfirmationPasswordException(PASSWORDS_NOT_SAME.getCustomMessage());
 
         Optional<User> existingUser = userRepository.findByEmail(dto.email());
         if (existingUser.isPresent()) {
@@ -187,6 +193,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDto changePassword(Long userId, UserChangePasswordRequestDto changePasswordRequestDto) {
+
+        if (!validatePasswordsMatch(changePasswordRequestDto))
+            throw new ConfirmationPasswordException(PASSWORDS_NOT_SAME.getCustomMessage());
+
         User user = getById(userId);
         user.setPassword(changePasswordRequestDto.password());
         userRepository.save(user);
