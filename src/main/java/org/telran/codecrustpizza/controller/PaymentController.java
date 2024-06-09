@@ -3,6 +3,10 @@ package org.telran.codecrustpizza.controller;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,11 +24,17 @@ import org.telran.codecrustpizza.service.paypal.PaypalService;
 @RestController
 @RequestMapping(value = "api/payment")
 @RequiredArgsConstructor
+@Tag(name = "Payment Controller", description = "Operations related to payment processing")
 public class PaymentController {
 
     private final PaypalService paypalService;
     private final OrderService orderService;
 
+    @Operation(summary = "Create payment", description = "Initiate payment process for an order and redirect to PayPal")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Received redirection link"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @PostMapping("/pay")
     public String payment(@RequestParam Long orderId, HttpSession session) {
 
@@ -46,6 +56,12 @@ public class PaymentController {
         return "redirect:/";
     }
 
+
+    @Operation(summary = "Handle payment success", description = "Handle successful payment and update order status")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Payment approved and order status updated"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/success")
     public String paymentSuccess(@RequestParam String paymentId,
                                  @RequestParam(value = "PayerID") String payerId,
@@ -69,6 +85,7 @@ public class PaymentController {
         }
         return "Payment is processed";
     }
+
 
     @GetMapping("/cancel")
     public String paymentCancel() {
