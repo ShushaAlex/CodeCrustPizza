@@ -38,11 +38,10 @@ public class SecurityConfig {
                         .requestMatchers("api/user/register").permitAll()
                         .requestMatchers("api/user/login").permitAll()
                         .requestMatchers(SWAGGER).permitAll()
-                        .anyRequest().permitAll()) //  authenticated()
+                        .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
 
         return http.build();
     }
