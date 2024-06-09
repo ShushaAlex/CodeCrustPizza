@@ -46,7 +46,7 @@ dependencies {
     //PayPal
     implementation group: 'com.paypal.sdk', name: 'paypal-core', version: '1.7.2'
     implementation group: 'com.paypal.sdk', name: 'rest-api-sdk', version: '1.14.0'
-    // Swagger
+    // OpenApi
     implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.5.0'
     // Security
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '3.2.5'

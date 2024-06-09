@@ -1,5 +1,11 @@
 package org.telran.codecrustpizza.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -19,12 +25,19 @@ import java.util.List;
 @RestController
 @RequestMapping("api/cart")
 @RequiredArgsConstructor
+@Tag(name = "Cart Controller", description = "Operations related to cart management")
 public class CartController {
 
     private final UserService userService;
     private final CartService cartService;
 
-
+    @Operation(summary = "Get current user's cart items")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved cart items",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CartItemResponseDto.class))}),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden")
+    })
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public List<CartItemResponseDto> getCurrentUserCartItems() {
@@ -33,6 +46,13 @@ public class CartController {
         return cartService.getCartItems(userId);
     }
 
+    @Operation(summary = "Add an item to the current user's cart")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully added item to cart",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CartResponseDto.class))}),
+            @ApiResponse(responseCode = "400", description = "Item you are trying to add not found")
+    })
     @PutMapping("/add")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public CartResponseDto addItem(@RequestParam Long itemId) {
@@ -41,6 +61,13 @@ public class CartController {
         return cartService.addItemToCart(itemId, userId);
     }
 
+    @Operation(summary = "Remove an item from the current user's cart")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully removed item from cart",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CartResponseDto.class))}),
+            @ApiResponse(responseCode = "400", description = "Item you are trying to remove not found in cart")
+    })
     @PutMapping("/remove")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public CartResponseDto removeItem(@RequestParam Long itemId) {
@@ -49,6 +76,10 @@ public class CartController {
         return cartService.removeItemFromCart(itemId, userId);
     }
 
+    @Operation(summary = "Clear the current user's cart")
+    @ApiResponse(responseCode = "200", description = "Successfully cleared cart",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = CartResponseDto.class))})
     @PutMapping("/clear")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public CartResponseDto clearCurrentUserCart() {
