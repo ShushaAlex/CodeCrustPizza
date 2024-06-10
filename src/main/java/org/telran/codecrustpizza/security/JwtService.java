@@ -1,6 +1,5 @@
 package org.telran.codecrustpizza.security;
 
-import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -17,7 +16,6 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-@EnableEncryptableProperties
 public class JwtService {
 
     private final SecretKey secretKey;
