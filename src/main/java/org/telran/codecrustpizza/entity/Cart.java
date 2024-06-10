@@ -38,10 +38,6 @@ public class Cart {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private Set<CartItem> cartItems = new HashSet<>();
 
-    public void addCartItem(CartItem cartItem) {
-        cartItems.add(cartItem);
-        cartItem.setCart(this);
-    }
     public void removeCartItem(CartItem cartItem) {
         cartItems.remove(cartItem);
         cartItem.setCart(null);

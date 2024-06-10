@@ -120,15 +120,6 @@ public class User {
         pizza.getUsers().remove(this);
     }
 
-    public void addOrder(Order order) {
-        orders.add(order);
-        order.setUser(this);
-    }
-    public void removeOrder(Order order) {
-        orders.remove(order);
-        order.setUser(null);
-    }
-
     public void setCart(Cart cart) {
         this.cart = cart;
         cart.setUser(this);

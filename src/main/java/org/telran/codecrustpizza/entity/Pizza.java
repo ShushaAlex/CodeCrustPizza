@@ -59,13 +59,4 @@ public class Pizza extends Item {
     @Builder.Default
     @ManyToMany(mappedBy = "favoritePizzas")
     private Set<User> users = new HashSet<>();
-
-    public void addPizzaIngredient(PizzaIngredient ingredient) {
-        pizzaIngredients.add(ingredient);
-        ingredient.setPizza(this);
-    }
-    public void removePizzaIngredient(PizzaIngredient ingredient) {
-        pizzaIngredients.remove(ingredient);
-        ingredient.setPizza(null);
-    }
 }

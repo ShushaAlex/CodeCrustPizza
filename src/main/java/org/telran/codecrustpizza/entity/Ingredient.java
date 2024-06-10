@@ -40,22 +40,4 @@ public class Ingredient {
     @Builder.Default
     @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL)
     private Set<PizzaPatternIngredient> pizzaPatternIngredients = new HashSet<>();
-
-    public void addPizzaIngredient(PizzaIngredient ingredient) {
-        pizzaIngredients.add(ingredient);
-        ingredient.setIngredient(this);
-    }
-    public void removePizzaIngredient(PizzaIngredient ingredient) {
-        pizzaIngredients.remove(ingredient);
-        ingredient.setIngredient(null);
-    }
-
-    public void addPizzaPatternIngredient(PizzaPatternIngredient ingredient) {
-        pizzaPatternIngredients.add(ingredient);
-        ingredient.setIngredient(this);
-    }
-    public void removePizzaPatternIngredient(PizzaPatternIngredient ingredient) {
-        pizzaPatternIngredients.remove(ingredient);
-        ingredient.setIngredient(null);
-    }
 }

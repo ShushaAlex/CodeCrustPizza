@@ -62,17 +62,4 @@ public class PizzaPattern {
         patternIngredients.add(patternIngredient);
         patternIngredient.setPizzaPattern(this);
     }
-    public void removePizzaPatternIngredient(PizzaPatternIngredient patternIngredient) {
-        patternIngredients.remove(patternIngredient);
-        patternIngredient.setPizzaPattern(null);
-    }
-
-    public void addPizza(Pizza pizza) {
-        pizzas.add(pizza);
-        pizza.setPizzaPattern(this);
-    }
-    public void removePizza(Pizza pizza) {
-        pizzas.remove(pizza);
-        pizza.setPizzaPattern(null);
-    }
 }

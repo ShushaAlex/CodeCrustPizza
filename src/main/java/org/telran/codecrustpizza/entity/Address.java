@@ -42,13 +42,4 @@ public class Address {
     @Builder.Default
     @OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
     private Set<Delivery> deliveries = new HashSet<>();
-
-    public void addDelivery(Delivery delivery) {
-        deliveries.add(delivery);
-        delivery.setAddress(this);
-    }
-    public void removeDelivery(Delivery delivery) {
-        deliveries.remove(delivery);
-        delivery.setAddress(null);
-    }
 }
